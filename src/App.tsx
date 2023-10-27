@@ -4,6 +4,7 @@ import Modal from "./components/Modal/Modal";
 import Button from "./components/Button/Button";
 import SearchSkill from "./components/SearchSkill/SearchSkill";
 import { AppThemeProvider } from "./core/theme/provider";
+import Employee from "./Employee/Employee";
 
 function App() {
   const [theme, setTheme] = useState("light");
@@ -66,6 +67,7 @@ function App() {
           <Button btnType="primary">Submit</Button>
           <Button btnType="secondary">Submit</Button>
         </Modal>
+        <Employee />
       </div>
     </AppThemeProvider>
   );
