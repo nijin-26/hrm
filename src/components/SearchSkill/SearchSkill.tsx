@@ -9,31 +9,62 @@ import {
 
 import { IoIosRemoveCircleOutline } from "react-icons/io";
 
-const SearchSkill = () => {
+interface searchSkillProps {
+  listOfSkills: { id: string; name: string }[];
+  selectedSkills: { id: string; name: string }[];
+  handleSelectedSkills: (value: string) => void;
+  removeSelectedSkill: (value: string) => void;
+}
+
+const SearchSkill = ({
+  listOfSkills,
+  selectedSkills,
+  handleSelectedSkills,
+  removeSelectedSkill,
+}: searchSkillProps) => {
   const [showList, setShowList] = useState(false);
+  const [searchInput, setSearchInput] = useState<string>("");
 
   return (
     <SkillSearchContainer>
       <div>
         <SelectedSkills>
-          <SelectedSkillTag>
-            <span>HTML</span>
-            <IoIosRemoveCircleOutline className="remove-skill-btn" />
-          </SelectedSkillTag>
+          {selectedSkills.map((sk) => (
+            <SelectedSkillTag key={sk.id}>
+              <span>{sk.name}</span>
+              <IoIosRemoveCircleOutline
+                onClick={() => removeSelectedSkill(sk.id)}
+                className="remove-skill-btn"
+              />
+            </SelectedSkillTag>
+          ))}
         </SelectedSkills>
         <SearchSkillInput
+          onChange={(e) => setSearchInput(e.target.value)}
           onFocus={() => setShowList(true)}
-          onBlur={() => setShowList(false)}
+          onBlur={() => {
+            setTimeout(() => setShowList(false), 100);
+          }}
         />
       </div>
       {showList && (
         <DropDownContent>
           <ul>
-            <li>HTML</li>
-            <li>CSS</li>
-            <li>Javascript</li>
-            <li>ReactJs</li>
-            <li>Angular</li>
+            {listOfSkills.map((sk) => {
+              if (sk.name.toLowerCase().includes(searchInput.toLowerCase())) {
+                return (
+                  <li
+                    key={sk.id}
+                    onClick={() => {
+                      handleSelectedSkills(sk.id);
+                      setShowList(false);
+                    }}
+                  >
+                    {sk.name}
+                  </li>
+                );
+              }
+            })}
           </ul>
         </DropDownContent>
       )}
