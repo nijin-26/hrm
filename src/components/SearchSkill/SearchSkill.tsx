@@ -40,6 +40,7 @@ const SearchSkill = ({
           ))}
         </SelectedSkills>
         <SearchSkillInput
+          value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
           onFocus={() => setShowList(true)}
           onBlur={() => {

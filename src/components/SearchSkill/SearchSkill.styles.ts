@@ -8,7 +8,7 @@ export const SkillSearchContainer = styled.div`
   & > div {
     display: flex;
     border: 1px solid #ccc;
-    padding: 2px;
+    padding: 8px 4px;
     border-radius: 8px;
   }
 `;
@@ -26,6 +26,7 @@ export const SelectedSkills = styled.div`
 
 export const SelectedSkillTag = styled.p`
   display: flex;
+  margin: 0;
   justify-content: space-evenly;
   align-items: center;
   gap: 6px;

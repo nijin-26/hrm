@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { ThemeProvider } from "styled-components";
 
 import Modal from "./components/Modal/Modal";
 import Button from "./components/Button/Button";
 import SearchSkill from "./components/SearchSkill/SearchSkill";
+import { AppThemeProvider } from "./core/theme/provider";
 
 function App() {
   const [theme, setTheme] = useState("light");
@@ -30,20 +30,6 @@ function App() {
     { id: string; name: string }[]
   >([]);
 
-  const lightTheme = {
-    primary: "#201e20",
-    secondary: "#e0a96d",
-    bgColor: "#f9f5f0",
-    fontColor: "#000",
-  };
-
-  const darkTheme = {
-    primary: "#36454f",
-    secondary: "#e0a96d",
-    bgColor: "#202020",
-    fontColor: "#ffffff",
-  };
-
   const handleSelectedSkills = (id: string) => {
     const selectedSkill = skills.filter((sk) => sk.id === id);
     const updateListOfSkills = skills.filter((sk) => sk.id !== id);
@@ -66,7 +52,7 @@ function App() {
   };
 
   return (
-    <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
+    <AppThemeProvider selectedTheme={theme}>
       <div className="App">
         <h1>Hello, Welcome to HRM App</h1>
         <button onClick={() => setIsOpen(true)}>Open modal</button>
@@ -81,7 +67,7 @@ function App() {
           <Button btnType="secondary">Submit</Button>
         </Modal>
       </div>
-    </ThemeProvider>
+    </AppThemeProvider>
   );
 }
 
