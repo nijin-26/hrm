@@ -1,10 +1,11 @@
 import { useState } from "react";
+import AppContextProvider from "./core/store/AppContext";
 
-import Modal from "./components/Modal/Modal";
-import Button from "./components/Button/Button";
-import SearchSkill from "./components/SearchSkill/SearchSkill";
+import Modal from "./components/common/Modal/Modal";
+import Button from "./components/common/Button/Button";
+import SearchSkill from "./components/common/SearchSkill/SearchSkill";
 import { AppThemeProvider } from "./core/theme/provider";
-import Employee from "./Employee/Employee";
+import NavBar from "./components/common/NavBar/NavBar";
 
 function App() {
   const [theme, setTheme] = useState("light");
@@ -53,23 +54,27 @@ function App() {
   };
 
   return (
-    <AppThemeProvider selectedTheme={theme}>
-      <div className="App">
-        <h1>Hello, Welcome to HRM App</h1>
-        <button onClick={() => setIsOpen(true)}>Open modal</button>
-        <SearchSkill
-          listOfSkills={skills}
-          selectedSkills={selectedSkills}
-          handleSelectedSkills={handleSelectedSkills}
-          removeSelectedSkill={handleRemoveSelectedSkill}
-        />
-        <Modal isOpen={isOpen} handleModalClose={() => setIsOpen(false)}>
-          <Button btnType="primary">Submit</Button>
-          <Button btnType="secondary">Submit</Button>
-        </Modal>
-        <Employee />
-      </div>
-    </AppThemeProvider>
+    <AppContextProvider>
+      <AppThemeProvider selectedTheme={theme}>
+        <>
+          <NavBar />
+          <main>
+            <h1>Hello, Welcome to HRM App</h1>
+            <button onClick={() => setIsOpen(true)}>Open modal</button>
+            <SearchSkill
+              listOfSkills={skills}
+              selectedSkills={selectedSkills}
+              handleSelectedSkills={handleSelectedSkills}
+              removeSelectedSkill={handleRemoveSelectedSkill}
+            />
+            <Modal isOpen={isOpen} handleModalClose={() => setIsOpen(false)}>
+              <Button btnType="primary">Submit</Button>
+              <Button btnType="secondary">Submit</Button>
+            </Modal>
+          </main>
+        </>
+      </AppThemeProvider>
+    </AppContextProvider>
   );
 }
 
