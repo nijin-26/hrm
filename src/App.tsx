@@ -6,6 +6,9 @@ import Button from "./components/common/Button/Button";
 import SearchSkill from "./components/common/SearchSkill/SearchSkill";
 import { AppThemeProvider } from "./core/theme/provider";
 import NavBar from "./components/common/NavBar/NavBar";
+import { GlobalStyle } from "./core/styles/global";
+import Layout from "./Layout/Layout";
+import TableView from "./components/Employee/Listing/TableView";
 
 function App() {
   const [theme, setTheme] = useState("light");
@@ -56,23 +59,10 @@ function App() {
   return (
     <AppContextProvider>
       <AppThemeProvider selectedTheme={theme}>
-        <>
-          <NavBar />
-          <main>
-            <h1>Hello, Welcome to HRM App</h1>
-            <button onClick={() => setIsOpen(true)}>Open modal</button>
-            <SearchSkill
-              listOfSkills={skills}
-              selectedSkills={selectedSkills}
-              handleSelectedSkills={handleSelectedSkills}
-              removeSelectedSkill={handleRemoveSelectedSkill}
-            />
-            <Modal isOpen={isOpen} handleModalClose={() => setIsOpen(false)}>
-              <Button btnType="primary">Submit</Button>
-              <Button btnType="secondary">Submit</Button>
-            </Modal>
-          </main>
-        </>
+        <Layout>
+          <h1>Welcome to hRM app</h1>
+          <TableView employees={[]} />
+        </Layout>
       </AppThemeProvider>
     </AppContextProvider>
   );
