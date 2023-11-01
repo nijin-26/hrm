@@ -6,7 +6,6 @@ export const Nav = styled.nav`
 
   & > .header-container {
     justify-content: space-between;
-    padding: 0 16px;
     height: 80px;
     gap: 20px;
   }

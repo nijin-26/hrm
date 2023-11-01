@@ -3,7 +3,7 @@ import { createGlobalStyle } from "styled-components";
 export const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
-    font-family: 'Fira Sans', sans-serif;
+    font-family: 'Mulish', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     height: 100%;
@@ -13,6 +13,7 @@ export const GlobalStyle = createGlobalStyle`
 
   .container {
     margin: 0 auto;
+    padding: 0 16px;
     max-width: 1200px;
   }
 

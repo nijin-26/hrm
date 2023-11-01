@@ -1,17 +1,12 @@
-import { ReactNode } from "react";
 import { StyledButton } from "./Button.styles";
+import { IButton } from "../../../core/interfaces/interfaces";
 
 const Button = ({
   type = "button",
   btnType = "primary",
   children,
   handleBtnClick,
-}: {
-  type?: "button" | "submit" | "reset";
-  btnType: "primary" | "secondary";
-  children: ReactNode;
-  handleBtnClick?: () => void;
-}) => {
+}: IButton) => {
   return (
     <StyledButton btnType={btnType} type={type} onClick={handleBtnClick}>
       {children}

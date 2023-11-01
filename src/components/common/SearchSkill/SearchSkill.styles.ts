@@ -57,6 +57,7 @@ export const SearchSkillInput = styled.input`
 `;
 
 export const DropDownContent = styled.div`
+  background-color: ${(props) => props.theme.bgColor};
   position: absolute;
   left: 0;
   right: 0;

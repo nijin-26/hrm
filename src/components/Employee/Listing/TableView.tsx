@@ -1,37 +1,45 @@
-interface employeeDetail {
-  id: string;
-  fullName: string;
-  email: string;
-  date: number;
-}
+import { BiEdit, BiUserMinus } from "react-icons/bi";
 
-const TableRow = ({ id, fullName, email, date }: employeeDetail) => {
+import { TableWrapper } from "./listing.styles";
+import { IEmployeeDetails } from "../../../core/interfaces/interfaces";
+
+const TableRow = ({ id, fullName, email, date }: IEmployeeDetails) => {
   return (
     <tr>
       <td>{id}</td>
       <td>{fullName}</td>
       <td>{email}</td>
       <td>{date}</td>
+      <td className="action-btn-container">
+        <span>
+          <BiEdit />
+        </span>
+        <span>
+          <BiUserMinus />
+        </span>
+      </td>
     </tr>
   );
 };
 
-const TableView = ({ employees }: { employees: employeeDetail[] }) => {
+const TableView = ({ employees }: { employees: IEmployeeDetails[] }) => {
   return (
-    <table>
-      <thead>
-        <th>ID</th>
-        <th>Full Name</th>
-        <th>Email</th>
-        <th>Hire Date</th>
-        <th>Actions</th>
-      </thead>
-      <tbody>
-        {employees.map((employee: employeeDetail) => (
-          <TableRow {...employee} />
-        ))}
-      </tbody>
-    </table>
+    <TableWrapper>
+      <table>
+        <thead>
+          <th>ID</th>
+          <th>Full Name</th>
+          <th>Email</th>
+          <th>Hire Date</th>
+          <th>Actions</th>
+        </thead>
+        <tbody>
+          {employees.map((employee: IEmployeeDetails) => (
+            <TableRow {...employee} />
+          ))}
+        </tbody>
+      </table>
+    </TableWrapper>
   );
 };
 

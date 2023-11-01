@@ -1,16 +1,8 @@
-import { ReactNode } from "react";
 import { ModalContainer, Overlay } from "./Modal.styles";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import { IModal } from "../../../core/interfaces/interfaces";
 
-const Modal = ({
-  isOpen = false,
-  handleModalClose,
-  children,
-}: {
-  isOpen: boolean;
-  handleModalClose: () => void;
-  children: ReactNode;
-}) => {
+const Modal = ({ isOpen = false, handleModalClose, children }: IModal) => {
   return (
     <>
       <Overlay isOpen={isOpen} onClick={handleModalClose} />
