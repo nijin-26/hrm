@@ -1,9 +1,11 @@
 import { useState } from "react";
 import SearchSkill from "../../common/SearchSkill/SearchSkill";
 import { ISkills } from "../../../core/interfaces/interfaces";
-import Select from "../../common/Select/Select";
+import Select from "../../common/FilterSelect/FilterSelect";
 
 const FilterOptions = () => {
+  const [department, setDepartment] = useState("");
+  const [role, setRole] = useState("");
   const [skills, setSkills] = useState<ISkills[]>([
     {
       id: "S1",
@@ -25,6 +27,8 @@ const FilterOptions = () => {
 
   const [selectedSkills, setSelectedSkills] = useState<ISkills[]>([]);
 
+  const handleSelectDept = () => {};
+
   const handleSelectedSkills = (id: string) => {
     const selectedSkill = skills.filter((sk) => sk.id === id);
     const updateListOfSkills = skills.filter((sk) => sk.id !== id);
@@ -42,9 +46,12 @@ const FilterOptions = () => {
     setSkills((prev) => [...prev, selectedSkill] as ISkills[]);
   };
   return (
-    <div>
-      <Select>
-        <option value="">Hello</option>
+    <div className="flex">
+      <Select value={department} onChange={handleSelectDept}>
+        <option value="development">Development</option>
+      </Select>
+      <Select value={role} onChange={() => {}}>
+        <option value="frontend">Frontend</option>
       </Select>
       <SearchSkill
         listOfSkills={skills}

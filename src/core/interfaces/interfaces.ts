@@ -13,6 +13,12 @@ export interface IModal {
   children: ReactNode;
 }
 
+export interface IFilterSelect {
+  value: string;
+  onChange: () => void;
+  children: ReactNode;
+}
+
 export interface ISkills {
   id: string;
   name: string;

@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import NavBar from "../components/common/NavBar/NavBar";
 import { GlobalStyle } from "../core/styles/global";
 
