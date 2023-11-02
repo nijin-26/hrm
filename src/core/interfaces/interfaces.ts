@@ -15,8 +15,16 @@ export interface IModal {
 
 export interface IFilterSelect {
   value: string;
-  onChange: () => void;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   children: ReactNode;
+}
+
+export interface ISearchSkills {
+  placeholder: string;
+  listOfSkills: { id: string; name: string }[];
+  selectedSkills: { id: string; name: string }[];
+  handleSelectedSkills: (value: string) => void;
+  removeSelectedSkill: (value: string) => void;
 }
 
 export interface ISkills {
@@ -26,7 +34,15 @@ export interface ISkills {
 
 export interface IEmployeeDetails {
   id: string;
-  fullName: string;
-  email: string;
-  date: number;
+  fullName?: string;
+  dateOfBirth?: number;
+  dateOfJoin?: number;
+  email?: string;
+  mobile?: string;
+  workLocation?: string;
+  imageURL?: string;
+  department?: string;
+  role?: string;
+  skill?: string[];
+  [key: string]: any;
 }

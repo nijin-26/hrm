@@ -2,21 +2,24 @@ import styled from "styled-components";
 
 export const SkillSearchContainer = styled.div`
   position: relative;
-  width: 30%;
+  min-width: 50%;
   height: 100%;
+  background-color: #fff;
+  flex-grow: 1;
+  border: 1px solid #000;
+  border-radius: 8px;
 
   & > div {
     display: flex;
-    border: 1px solid #ccc;
     padding: 8px 4px;
-    border-radius: 8px;
   }
 `;
 
 export const SelectedSkills = styled.div`
+  padding: 6px 0;
   display: flex;
   height: 100%;
-  max-width: 260px;
+  max-width: 180px;
   font-size: 12px;
   gap: 4px;
   color: var(--font-color);
@@ -25,10 +28,12 @@ export const SelectedSkills = styled.div`
 `;
 
 export const SelectedSkillTag = styled.p`
+  height: 100%;
   display: flex;
   margin: 0;
   justify-content: space-evenly;
   align-items: center;
+  white-space: nowrap;
   gap: 6px;
   border-radius: 50px;
   padding: 8px;
@@ -49,7 +54,9 @@ export const SelectedSkillTag = styled.p`
 `;
 
 export const SearchSkillInput = styled.input`
-  padding: 0 6px;
+  height: 100%;
+  min-width: 120px;
+  padding: 8px 6px;
   font-size: 18px;
   flex: 1;
   border: none;
@@ -57,7 +64,7 @@ export const SearchSkillInput = styled.input`
 `;
 
 export const DropDownContent = styled.div`
-  background-color: ${(props) => props.theme.bgColor};
+  background-color: #fff;
   position: absolute;
   left: 0;
   right: 0;

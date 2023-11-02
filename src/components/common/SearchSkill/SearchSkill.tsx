@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   DropDownContent,
   SearchSkillInput,
@@ -8,20 +8,15 @@ import {
 } from "./SearchSkill.styles";
 
 import { IoIosRemoveCircleOutline } from "react-icons/io";
-
-interface searchSkillProps {
-  listOfSkills: { id: string; name: string }[];
-  selectedSkills: { id: string; name: string }[];
-  handleSelectedSkills: (value: string) => void;
-  removeSelectedSkill: (value: string) => void;
-}
+import { ISearchSkills } from "../../../core/interfaces/interfaces";
 
 const SearchSkill = ({
+  placeholder,
   listOfSkills,
   selectedSkills,
   handleSelectedSkills,
   removeSelectedSkill,
-}: searchSkillProps) => {
+}: ISearchSkills) => {
   const [showList, setShowList] = useState(false);
   const [searchInput, setSearchInput] = useState<string>("");
 
@@ -40,6 +35,7 @@ const SearchSkill = ({
           ))}
         </SelectedSkills>
         <SearchSkillInput
+          placeholder={placeholder}
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
           onFocus={() => setShowList(true)}
