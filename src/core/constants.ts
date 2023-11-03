@@ -1,4 +1,6 @@
-export const employeeTableHeader = [
+import { IEmployeeDetails, ITableHeader } from "./interfaces/interfaces";
+
+export const employeeTableHeader: ITableHeader[] = [
   {
     id: "id",
     name: "ID",
@@ -21,7 +23,7 @@ export const employeeTableHeader = [
   },
 ];
 
-export const employees = [
+export const employees: IEmployeeDetails[] = [
   {
     id: "2625",
     fullName: "Nijin Nazar",

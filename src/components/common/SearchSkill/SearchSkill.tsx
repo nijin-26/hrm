@@ -24,11 +24,11 @@ const SearchSkill = ({
     <SkillSearchContainer>
       <div>
         <SelectedSkills>
-          {selectedSkills.map((sk) => (
-            <SelectedSkillTag key={sk.id}>
-              <span>{sk.name}</span>
+          {selectedSkills.map((skill) => (
+            <SelectedSkillTag key={skill.id}>
+              <span>{skill.name}</span>
               <IoIosRemoveCircleOutline
-                onClick={() => removeSelectedSkill(sk.id)}
+                onClick={() => removeSelectedSkill(skill.id)}
                 className="remove-skill-btn"
               />
             </SelectedSkillTag>
@@ -47,17 +47,19 @@ const SearchSkill = ({
       {showList && (
         <DropDownContent>
           <ul>
-            {listOfSkills.map((sk) => {
-              if (sk.name.toLowerCase().includes(searchInput.toLowerCase())) {
+            {listOfSkills.map((skill) => {
+              if (
+                skill.name.toLowerCase().includes(searchInput.toLowerCase())
+              ) {
                 return (
                   <li
-                    key={sk.id}
+                    key={skill.id}
                     onClick={() => {
-                      handleSelectedSkills(sk.id);
+                      handleSelectedSkills(skill.id);
                       setShowList(false);
                     }}
                   >
-                    {sk.name}
+                    {skill.name}
                   </li>
                 );
               }

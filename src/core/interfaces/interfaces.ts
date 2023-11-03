@@ -1,8 +1,9 @@
 import { ReactNode } from "react";
 
 export interface IButton {
+  className?: string;
   type?: "button" | "submit" | "reset";
-  btnType: "primary" | "secondary";
+  btnType?: "primary" | "secondary";
   children: ReactNode;
   handleBtnClick?: () => void;
 }
@@ -14,9 +15,9 @@ export interface IModal {
 }
 
 export interface IFilterSelect {
+  options: { id: string; name: string }[];
   value: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  children: ReactNode;
 }
 
 export interface ISearchSkills {
@@ -27,7 +28,23 @@ export interface ISearchSkills {
   removeSelectedSkill: (value: string) => void;
 }
 
+export interface IImageUpload {
+  src?: string;
+  value?: string;
+  onChange?: () => void;
+}
+
 export interface ISkills {
+  id: string;
+  name: string;
+}
+
+export interface ITableViewProps<T, U> {
+  tableHeaders: T[];
+  tableData: U[];
+}
+
+export interface ITableHeader {
   id: string;
   name: string;
 }

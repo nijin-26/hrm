@@ -10,6 +10,7 @@ import { GlobalStyle } from "./core/styles/global";
 import Layout from "./Layout/Layout";
 import TableView from "./components/Employee/Listing/TableView";
 import EmployeeListing from "./pages/EmployeeListing/EmployeeListing";
+import EmployeeForm from "./pages/EmployeeForm/EmployeeForm";
 
 function App() {
   const [theme, setTheme] = useState("light");
@@ -19,6 +20,7 @@ function App() {
     <AppContextProvider>
       <AppThemeProvider selectedTheme={theme}>
         <Layout>
+          {/* <EmployeeForm /> */}
           <EmployeeListing />
         </Layout>
       </AppThemeProvider>

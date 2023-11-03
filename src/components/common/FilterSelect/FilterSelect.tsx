@@ -1,14 +1,18 @@
 import { IFilterSelect } from "../../../core/interfaces/interfaces";
 
 const FilterSelect = ({
+  options,
   value,
   onChange,
-  children,
   ...props
 }: IFilterSelect) => {
   return (
     <select value={value} onChange={onChange} {...props}>
-      {children}
+      {options.map((option) => (
+        <option key={option.id} value={option.id}>
+          {option.name}
+        </option>
+      ))}
     </select>
   );
 };

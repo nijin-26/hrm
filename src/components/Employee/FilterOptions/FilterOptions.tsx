@@ -18,16 +18,16 @@ const FilterOptions = () => {
   }, [skillList]);
 
   const handleSelectedSkills = (id: string) => {
-    const selectedSkill = skills.filter((sk) => sk.id === id);
-    const updateListOfSkills = skills.filter((sk) => sk.id !== id);
+    const selectedSkill = skills.filter((skill) => skill.id === id);
+    const updateListOfSkills = skills.filter((skill) => skill.id !== id);
     setSelectedSkills((prev) => [...prev, ...selectedSkill] as ISkills[]);
     setSkills(updateListOfSkills);
   };
 
   const handleRemoveSelectedSkill = (id: string) => {
-    const selectedSkill = selectedSkills.find((sk) => sk.id === id);
+    const selectedSkill = selectedSkills.find((skill) => skill.id === id);
     const updatedListOfSelectedSkills = selectedSkills.filter(
-      (sk) => sk.id !== id
+      (skill) => skill.id !== id
     );
 
     setSelectedSkills(updatedListOfSelectedSkills);
@@ -36,21 +36,15 @@ const FilterOptions = () => {
   return (
     <FilterOptionsWrapper className="flex">
       <FilterSelect
+        options={departments}
         value={selectedDepartment}
         onChange={(e) => setSelectedDepartment(e.target.value)}
-      >
-        {departments.map((dept) => (
-          <option value={dept.id}>{dept.name}</option>
-        ))}
-      </FilterSelect>
+      />
       <FilterSelect
+        options={roles}
         value={selectedRole}
         onChange={(e) => setSelectedRole(e.target.value)}
-      >
-        {roles.map((role) => (
-          <option value={role.id}>{role.name}</option>
-        ))}
-      </FilterSelect>
+      />
       <SearchSkill
         placeholder="Search by skills"
         listOfSkills={skills}
