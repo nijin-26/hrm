@@ -1,6 +1,4 @@
-import styled from "styled-components";
-
-export const FormWrapper = styled.div`
+.formContainer {
   height: 70vh;
   width: 600px;
   margin: 20px auto;
@@ -8,4 +6,4 @@ export const FormWrapper = styled.div`
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 8px;
-`;
+}

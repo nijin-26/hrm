@@ -1,12 +1,11 @@
-import { useState, useEffect } from "react";
 import { Form, Formik } from "formik";
 import ImageUpload from "../../components/Employee/ImageUpload/ImageUpload";
-import { FormWrapper } from "./EmployeeForm.style";
 import Input from "../../components/common/Input/Input";
 import SearchSkill from "../../components/common/SearchSkill/SearchSkill";
-import { skillList } from "../../core/constants";
-import { ISkills } from "../../core/interfaces/interfaces";
 import useSkills from "../../core/hooks/useSkills";
+
+import style from "./style.module.scss";
+
 const EmployeeForm = () => {
   const employeeDetails = {
     id: "",
@@ -30,7 +29,7 @@ const EmployeeForm = () => {
   } = useSkills();
 
   return (
-    <FormWrapper>
+    <div className={style.formContainer}>
       <ImageUpload />
       <Formik initialValues={employeeDetails} onSubmit={() => {}}>
         <Form>
@@ -40,12 +39,7 @@ const EmployeeForm = () => {
             type="text"
             placeholder="Enter Full Name"
           />
-          <Input
-            label="Full Name"
-            name="fullName"
-            type="date"
-            placeholder="Enter Full Name"
-          />
+          <Input label="Date of Join" name="dateOfJoin" type="date" />
           <Input
             label="Email ID"
             name="email"
@@ -58,6 +52,8 @@ const EmployeeForm = () => {
             type="number"
             placeholder="Enter Mobile Number"
           />
+          <Input label="Date of Birth" name="dateOfBirth" type="date" />
+
           <SearchSkill
             placeholder="Search skills to add"
             listOfSkills={skills}
@@ -67,7 +63,7 @@ const EmployeeForm = () => {
           />
         </Form>
       </Formik>
-    </FormWrapper>
+    </div>
   );
 };
 

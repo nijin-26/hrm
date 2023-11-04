@@ -47,11 +47,11 @@ const SearchSkill = ({
       {showList && (
         <DropDownContent>
           <ul>
-            {listOfSkills.map((skill) => {
-              if (
-                skill.name.toLowerCase().includes(searchInput.toLowerCase())
-              ) {
-                return (
+            {listOfSkills.map(
+              (skill) =>
+                skill.name
+                  .toLowerCase()
+                  .includes(searchInput.toLowerCase()) && (
                   <li
                     key={skill.id}
                     onClick={() => {
@@ -61,9 +61,8 @@ const SearchSkill = ({
                   >
                     {skill.name}
                   </li>
-                );
-              }
-            })}
+                )
+            )}
           </ul>
         </DropDownContent>
       )}

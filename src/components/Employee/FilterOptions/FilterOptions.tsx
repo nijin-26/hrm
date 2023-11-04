@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SearchSkill from "../../common/SearchSkill/SearchSkill";
-import { ISkills } from "../../../core/interfaces/interfaces";
 import FilterSelect from "../../common/FilterSelect/FilterSelect";
 import { FilterOptionsWrapper } from "./FilterOptions.style";
-import { departments, roles, skillList } from "../../../core/constants";
+import { departments, roles } from "../../../core/constants";
 import useSkills from "../../../core/hooks/useSkills";
 
 const FilterOptions = () => {
