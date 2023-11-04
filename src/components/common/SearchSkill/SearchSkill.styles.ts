@@ -19,7 +19,7 @@ export const SelectedSkills = styled.div`
   padding: 6px 0;
   display: flex;
   height: 100%;
-  max-width: 180px;
+  max-width: 230px;
   font-size: 12px;
   gap: 4px;
   color: var(--font-color);

@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const ImageHolder = styled.div`
   justify-content: center;
   position: relative;
+  margin: 20px 0;
 
   & > input {
     display: none;

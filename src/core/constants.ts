@@ -221,6 +221,12 @@ export const employees: IEmployeeDetails[] = [
   // },
 ];
 
+export const workLocation = [
+  { id: "Trivandrum", name: "Trivandrum" },
+  { id: "Kochi", name: "Kochi" },
+  { id: "Calicut", name: "Calicut" },
+];
+
 export const departments = [
   { id: "D1", name: "Development" },
   { id: "D2", name: "DevOps" },

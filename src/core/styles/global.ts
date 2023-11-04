@@ -25,8 +25,13 @@ export const GlobalStyle = createGlobalStyle`
     border: 1px solid ${(props) => props.theme.primary};
     background-color: #fff;
     outline: none;
+    font-family: 'Mulish', sans-serif;
+    font-weight: 600;
   }
 
+  label {
+    font-weight: 700;
+  }
 
   .text-left {
     text-align: left;
