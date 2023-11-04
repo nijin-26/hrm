@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
-import NavBar from "../components/common/NavBar/NavBar";
-import { GlobalStyle } from "../core/styles/global";
+import NavBar from "../common/NavBar/NavBar";
+import { GlobalStyle } from "../../core/styles/global";
 
 const Layout = ({ children }: { children: ReactNode }) => {
   return (

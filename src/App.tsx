@@ -7,7 +7,7 @@ import SearchSkill from "./components/common/SearchSkill/SearchSkill";
 import { AppThemeProvider } from "./core/theme/provider";
 import NavBar from "./components/common/NavBar/NavBar";
 import { GlobalStyle } from "./core/styles/global";
-import Layout from "./Layout/Layout";
+import Layout from "./components/Layout/Layout";
 import TableView from "./components/Employee/Listing/TableView";
 import EmployeeListing from "./pages/EmployeeListing/EmployeeListing";
 import EmployeeForm from "./pages/EmployeeForm/EmployeeForm";
@@ -20,8 +20,8 @@ function App() {
     <AppContextProvider>
       <AppThemeProvider selectedTheme={theme}>
         <Layout>
-          {/* <EmployeeForm /> */}
-          <EmployeeListing />
+          <EmployeeForm />
+          {/* <EmployeeListing /> */}
         </Layout>
       </AppThemeProvider>
     </AppContextProvider>

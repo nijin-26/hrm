@@ -4,35 +4,19 @@ import { ISkills } from "../../../core/interfaces/interfaces";
 import FilterSelect from "../../common/FilterSelect/FilterSelect";
 import { FilterOptionsWrapper } from "./FilterOptions.style";
 import { departments, roles, skillList } from "../../../core/constants";
+import useSkills from "../../../core/hooks/useSkills";
 
 const FilterOptions = () => {
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
 
-  const [skills, setSkills] = useState<ISkills[]>([]);
-  const [selectedSkills, setSelectedSkills] = useState<ISkills[]>([]);
+  const {
+    skills,
+    selectedSkills,
+    handleSelectedSkills,
+    handleRemoveSelectedSkill,
+  } = useSkills();
 
-  useEffect(() => {
-    //TODO: Fetch all skills from firebase
-    setSkills(skillList);
-  }, [skillList]);
-
-  const handleSelectedSkills = (id: string) => {
-    const selectedSkill = skills.filter((skill) => skill.id === id);
-    const updateListOfSkills = skills.filter((skill) => skill.id !== id);
-    setSelectedSkills((prev) => [...prev, ...selectedSkill] as ISkills[]);
-    setSkills(updateListOfSkills);
-  };
-
-  const handleRemoveSelectedSkill = (id: string) => {
-    const selectedSkill = selectedSkills.find((skill) => skill.id === id);
-    const updatedListOfSelectedSkills = selectedSkills.filter(
-      (skill) => skill.id !== id
-    );
-
-    setSelectedSkills(updatedListOfSelectedSkills);
-    setSkills((prev) => [...prev, selectedSkill] as ISkills[]);
-  };
   return (
     <FilterOptionsWrapper className="flex">
       <FilterSelect

@@ -6,15 +6,8 @@ import Input from "../../components/common/Input/Input";
 import SearchSkill from "../../components/common/SearchSkill/SearchSkill";
 import { skillList } from "../../core/constants";
 import { ISkills } from "../../core/interfaces/interfaces";
+import useSkills from "../../core/hooks/useSkills";
 const EmployeeForm = () => {
-  const [skills, setSkills] = useState<ISkills[]>([]);
-  const [selectedSkills, setSelectedSkills] = useState<ISkills[]>([]);
-
-  useEffect(() => {
-    //TODO: Fetch all skills from firebase
-    setSkills(skillList);
-  }, [skillList]);
-
   const employeeDetails = {
     id: "",
     fullName: "",
@@ -29,22 +22,12 @@ const EmployeeForm = () => {
     skill: [],
   };
 
-  const handleSelectedSkills = (id: string) => {
-    const selectedSkill = skills.filter((skill) => skill.id === id);
-    const updateListOfSkills = skills.filter((skill) => skill.id !== id);
-    setSelectedSkills((prev) => [...prev, ...selectedSkill] as ISkills[]);
-    setSkills(updateListOfSkills);
-  };
-
-  const handleRemoveSelectedSkill = (id: string) => {
-    const selectedSkill = selectedSkills.find((skill) => skill.id === id);
-    const updatedListOfSelectedSkills = selectedSkills.filter(
-      (skill) => skill.id !== id
-    );
-
-    setSelectedSkills(updatedListOfSelectedSkills);
-    setSkills((prev) => [...prev, selectedSkill] as ISkills[]);
-  };
+  const {
+    skills,
+    selectedSkills,
+    handleSelectedSkills,
+    handleRemoveSelectedSkill,
+  } = useSkills();
 
   return (
     <FormWrapper>
