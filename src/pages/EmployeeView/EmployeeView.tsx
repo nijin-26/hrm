@@ -19,7 +19,7 @@ import { getFormattedDate } from "../../core/utils/formatDate";
 
 const EmployeeView = () => {
   const [selectedEmployee, setSelectedEmployee] = useState<IEmployeeDetails>();
-  const theme = useTheme();
+  // const theme = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -65,7 +65,7 @@ const EmployeeView = () => {
           <div className={styles.employeeDetailTag}>
             <AiOutlineMail />
             <span>
-              <a href="mailto:${selectedEmployee.email}">
+              <a href={`mailto:${selectedEmployee?.email}`}>
                 {selectedEmployee?.email}
               </a>
             </span>
@@ -73,7 +73,7 @@ const EmployeeView = () => {
           <div className={styles.employeeDetailTag}>
             <AiOutlineMobile />
             <span>
-              <a href="tel:${selectedEmployee.mobile}">
+              <a href={`tel:${selectedEmployee?.mobile}`}>
                 {selectedEmployee?.mobile}
               </a>
             </span>

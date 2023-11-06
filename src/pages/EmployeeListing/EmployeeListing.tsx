@@ -9,10 +9,11 @@ import { useState } from "react";
 import Button from "../../components/common/Button/Button";
 import { BiUserPlus } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
+import { Fade } from "react-awesome-reveal";
 
 const EmployeeListing = () => {
   const navigate = useNavigate();
-  const [toggleFilter, setToggleFilter] = useState(false);
+  const [toggleFilter, setToggleFilter] = useState(true);
   const employeeData = getEmployeeData(employees);
 
   return (
@@ -27,9 +28,11 @@ const EmployeeListing = () => {
         </Button>
       </div>
       {toggleFilter && (
-        <FilterOptions
-          handleToggleFilter={() => setToggleFilter(!toggleFilter)}
-        />
+        <Fade>
+          <FilterOptions
+            handleToggleFilter={() => setToggleFilter(!toggleFilter)}
+          />
+        </Fade>
       )}
       <TableView tableHeaders={employeeTableHeader} tableData={employeeData} />
     </div>
