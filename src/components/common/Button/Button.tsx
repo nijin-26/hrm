@@ -6,14 +6,14 @@ const Button = ({
   type = "button",
   btnType = "primary",
   children,
-  handleBtnClick,
+  onClick,
 }: IButton) => {
   return (
     <StyledButton
       className={className}
       btnType={btnType}
       type={type}
-      onClick={handleBtnClick}
+      onClick={onClick}
     >
       {children}
     </StyledButton>

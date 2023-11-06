@@ -19,7 +19,11 @@ export interface IButton {
   type?: "button" | "submit" | "reset";
   btnType?: "primary" | "secondary";
   children: ReactNode;
-  handleBtnClick?: () => void;
+  onClick?: () => void;
+}
+
+export interface IFilterOptions {
+  handleToggleFilter: () => void;
 }
 
 export interface IModal {

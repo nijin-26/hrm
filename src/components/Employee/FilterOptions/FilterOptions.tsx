@@ -5,7 +5,10 @@ import { FilterOptionsWrapper } from "./FilterOptions.style";
 import { departments, roles } from "../../../core/constants";
 import useSkills from "../../../core/hooks/useSkills";
 
-const FilterOptions = () => {
+import { MdFilterListOff } from "react-icons/md";
+import { IFilterOptions } from "../../../core/interfaces/interfaces";
+
+const FilterOptions = ({ handleToggleFilter }: IFilterOptions) => {
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
 
@@ -35,6 +38,7 @@ const FilterOptions = () => {
         handleSelectedSkills={handleSelectedSkills}
         removeSelectedSkill={handleRemoveSelectedSkill}
       />
+      <MdFilterListOff size={36} onClick={handleToggleFilter} />
     </FilterOptionsWrapper>
   );
 };

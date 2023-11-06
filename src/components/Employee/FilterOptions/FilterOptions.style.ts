@@ -7,4 +7,9 @@ export const FilterOptionsWrapper = styled.div`
   select {
     flex-grow: 1;
   }
+
+  svg {
+    align-self: center;
+    cursor: pointer;
+  }
 `;

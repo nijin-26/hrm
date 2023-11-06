@@ -1,4 +1,18 @@
-
 .employeeListingContainer {
   margin: 20px auto;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+
+  svg {
+    cursor: pointer;
+  }
 }
