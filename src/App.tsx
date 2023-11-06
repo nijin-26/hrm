@@ -3,8 +3,9 @@ import AppContextProvider from "./core/store/AppContext";
 
 import { AppThemeProvider } from "./core/theme/provider";
 import Layout from "./components/Layout/Layout";
-import EmployeeListing from "./pages/EmployeeListing/EmployeeListing";
-import EmployeeForm from "./pages/EmployeeForm/EmployeeForm";
+
+import { RouterProvider } from "react-router-dom";
+import { routes } from "./core/routing/publicRoutes";
 
 function App() {
   const [theme, setTheme] = useState("light");
@@ -13,10 +14,7 @@ function App() {
   return (
     <AppContextProvider>
       <AppThemeProvider selectedTheme={theme}>
-        <Layout>
-          <EmployeeForm />
-          {/* <EmployeeListing /> */}
-        </Layout>
+        <RouterProvider router={routes} />
       </AppThemeProvider>
     </AppContextProvider>
   );
