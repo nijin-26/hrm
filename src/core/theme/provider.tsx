@@ -8,5 +8,9 @@ export const AppThemeProvider = ({
   children: React.ReactElement;
 }) => {
   const { state } = useAppContext();
-  return <ThemeProvider theme={themes[state.theme]}>{children}</ThemeProvider>;
+  return (
+    <ThemeProvider theme={themes[state.theme] || themes["light"]}>
+      {children}
+    </ThemeProvider>
+  );
 };
