@@ -10,10 +10,10 @@ export const getEmployeeData = (employees: IEmployeeDetails[]) => {
       dateOfJoin: getFormattedDate(employee.dateOfJoin as number)[0],
       actions: (
         <div className="action-btn-container">
-          <span>
+          <span id="edit">
             <BiEdit />
           </span>
-          <span>
+          <span id="remove">
             <BiUserMinus />
           </span>
         </div>

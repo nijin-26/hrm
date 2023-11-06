@@ -104,7 +104,9 @@ const EmployeeView = () => {
           const skill = skillList.find((skill) => skill.id === skillId);
           return (
             skill && (
-              <span className={styles.selectedSkillTag}>{skill.name}</span>
+              <span key={skill.id} className={styles.selectedSkillTag}>
+                {skill.name}
+              </span>
             )
           );
         })}
