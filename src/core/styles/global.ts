@@ -27,6 +27,7 @@ export const GlobalStyle = createGlobalStyle`
     outline: none;
     font-family: 'Mulish', sans-serif;
     font-weight: 600;
+    font-size: 15px;
   }
 
   label {

@@ -1,10 +1,12 @@
 import { ThemeProvider } from "styled-components";
 import { themes } from "./theme";
+import { useAppContext } from "../store/AppContext";
 
 export const AppThemeProvider = ({
-  selectedTheme,
   children,
 }: {
-  selectedTheme: string;
   children: React.ReactElement;
-}) => <ThemeProvider theme={themes[selectedTheme]}>{children}</ThemeProvider>;
+}) => {
+  const { state } = useAppContext();
+  return <ThemeProvider theme={themes[state.theme]}>{children}</ThemeProvider>;
+};

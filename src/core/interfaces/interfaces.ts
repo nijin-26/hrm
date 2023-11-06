@@ -1,5 +1,19 @@
-import { ReactNode } from "react";
+import { type } from "os";
+import { Dispatch, ReactNode } from "react";
 
+export interface IContextState {
+  theme: "light" | "dark" | string;
+}
+
+export interface IAppContext {
+  state: IContextState;
+  dispatch: Dispatch<any>;
+}
+
+export interface IContextAction {
+  type: string;
+  payload?: any;
+}
 export interface IButton {
   className?: string;
   type?: "button" | "submit" | "reset";

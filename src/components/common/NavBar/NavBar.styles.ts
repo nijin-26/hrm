@@ -17,12 +17,17 @@ export const Nav = styled.nav`
 
   & .search-employee-container .search-icon {
     position: absolute;
-    right: 0px;
-    top: 8px;
+    right: -25px;
+    top: 12px;
     color: ${(props) => props.theme.primary};
   }
 
   & .search-employee-container input {
     width: 100%;
+    font-size: 18px;
   }
+`;
+
+export const ThemeToggle = styled.div`
+  cursor: pointer;
 `;
