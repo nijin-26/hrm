@@ -8,7 +8,7 @@ import { LiaBirthdayCakeSolid } from "react-icons/lia";
 
 import styles from "./style.module.scss";
 
-import { useTheme } from "styled-components";
+import styled, { CSSProperties, useTheme } from "styled-components";
 
 import placeholder from "../../assets/placeholder-image.png";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -19,7 +19,7 @@ import { getFormattedDate } from "../../core/utils/formatDate";
 
 const EmployeeView = () => {
   const [selectedEmployee, setSelectedEmployee] = useState<IEmployeeDetails>();
-  // const theme = useTheme();
+  const theme = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -40,11 +40,43 @@ const EmployeeView = () => {
     else navigate("/"); // TODO: Toast message - Employee Not found
   }, []);
 
+  const employeeDetailsStyle = {
+    color: theme.fontColor,
+  } as CSSProperties;
+
+  const linkStyle = {
+    color: theme.fontColor,
+  } as CSSProperties;
+
+  const SelectedSkillsContainer = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 30px;
+    padding: 0 20px;
+
+    .selectedSkillTag {
+      border-radius: 50px;
+      padding: 10px;
+      &:nth-child(even) {
+        background-color: ${(props) => props.theme.primary};
+        color: ${(props) => props.theme.secondary};
+      }
+      &:nth-child(odd) {
+        background-color: ${(props) => props.theme.secondary};
+        color: ${(props) => props.theme.primary};
+      }
+    }
+  `;
+
   return (
     <section className={styles.viewEmployeeContainer}>
-      <div className={styles.employeeDetails}>
+      <div className={styles.employeeDetails} style={employeeDetailsStyle}>
         <div className={styles.leftSide}>
-          <div className={styles.employeeImage}>
+          <div
+            className={styles.employeeImage}
+            style={{ border: `1px solid ${theme.secondary}` }}
+          >
             <img
               src={
                 selectedEmployee?.imageURL
@@ -65,7 +97,7 @@ const EmployeeView = () => {
           <div className={styles.employeeDetailTag}>
             <AiOutlineMail />
             <span>
-              <a href={`mailto:${selectedEmployee?.email}`}>
+              <a href={`mailto:${selectedEmployee?.email}`} style={linkStyle}>
                 {selectedEmployee?.email}
               </a>
             </span>
@@ -73,7 +105,7 @@ const EmployeeView = () => {
           <div className={styles.employeeDetailTag}>
             <AiOutlineMobile />
             <span>
-              <a href={`tel:${selectedEmployee?.mobile}`}>
+              <a href={`tel:${selectedEmployee?.mobile}`} style={linkStyle}>
                 {selectedEmployee?.mobile}
               </a>
             </span>
@@ -99,18 +131,18 @@ const EmployeeView = () => {
         </div>
       </div>
       <h4>Skills</h4>
-      <div className={styles.selectedSkillContainer}>
+      <SelectedSkillsContainer>
         {selectedEmployee?.skill?.map((skillId) => {
           const skill = skillList.find((skill) => skill.id === skillId);
           return (
             skill && (
-              <span key={skill.id} className={styles.selectedSkillTag}>
+              <span key={skill.id} className="selectedSkillTag">
                 {skill.name}
               </span>
             )
           );
         })}
-      </div>
+      </SelectedSkillsContainer>
     </section>
   );
 };

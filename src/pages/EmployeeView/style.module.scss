@@ -63,23 +63,23 @@ h4 {
   font-size: 24px;
 }
 
-.selectedSkillContainer {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 30px;
-  padding: 0 20px;
-}
+// .selectedSkillContainer {
+//   display: flex;
+//   align-items: center;
+//   gap: 10px;
+//   margin-bottom: 30px;
+//   padding: 0 20px;
+// }
 
-.selectedSkillTag {
-  border-radius: 50px;
-  padding: 10px;
-  &:nth-child(even) {
-    background-color: red;
-    color: #000;
-  }
-  &:nth-child(odd) {
-    background-color: black;
-    color: red;
-  }
-}
+// .selectedSkillTag {
+//   border-radius: 50px;
+//   padding: 10px;
+//   &:nth-child(even) {
+//     background-color: red;
+//     color: #000;
+//   }
+//   &:nth-child(odd) {
+//     background-color: black;
+//     color: red;
+//   }
+// }

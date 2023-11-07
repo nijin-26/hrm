@@ -6,7 +6,7 @@ export const FilterSelectWrapper = styled.div`
   &::after {
     content: "⌄";
     position: absolute;
-    right: 10px;
+    right: 8px;
     top: 42%;
     transform: translateY(-50%);
     pointer-events: none;
@@ -17,5 +17,6 @@ export const FilterSelectWrapper = styled.div`
   select {
     appearance: none;
     height: 100%;
+    padding: 4px 8px;
   }
 `;

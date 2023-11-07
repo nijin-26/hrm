@@ -56,15 +56,17 @@ export const SelectedSkillTag = styled.p`
 export const SearchSkillInput = styled.input`
   height: 100%;
   min-width: 120px;
-  padding: 8px 6px;
-  font-size: 18px;
+  padding: 10px 6px;
+  font-size: 16px;
   flex: 1;
   border: none;
   outline: none;
 `;
 
 export const DropDownContent = styled.div`
-  background-color: #fff;
+  background-color: ${(props) => props.theme.bgColor};
+  border: 2px solid ${(props) => props.theme.secondary};
+  border-radius: 8px;
   position: absolute;
   left: 0;
   right: 0;

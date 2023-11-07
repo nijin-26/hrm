@@ -22,12 +22,13 @@ export const ModalContainer = styled.div<{ isOpen: Boolean }>`
   position: fixed;
   max-height: 80vh;
   width: 600px;
-  background-color: #fff;
+  background-color: ${(props) => props.theme.bgColor};
   border: 1px solid #ccc;
   border-radius: 6px;
   overflow-y: auto;
   overflow-x: hidden;
   z-index: 3;
+  color: ${(props) => props.theme.fontColor};
 
   ${(props) =>
     props.isOpen &&
