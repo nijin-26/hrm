@@ -10,6 +10,7 @@ import Button from "../../components/common/Button/Button";
 import { BiUserPlus } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { Fade } from "react-awesome-reveal";
+import { Tooltip } from "react-tooltip";
 
 const EmployeeListing = () => {
   const navigate = useNavigate();
@@ -27,7 +28,17 @@ const EmployeeListing = () => {
       <div className={styles.topbar}>
         <div className={styles.header}>
           <h1>Employees</h1>
-          <GoFilter size={36} onClick={() => setToggleFilter(!toggleFilter)} />
+          <GoFilter
+            className="filter-toggle"
+            size={36}
+            onClick={() => setToggleFilter(!toggleFilter)}
+          />
+          <Tooltip
+            anchorSelect=".filter-toggle"
+            place="right"
+            variant="info"
+            content="Toggle Filter Options"
+          />
         </div>
         <Button onClick={() => navigate("/add")}>
           <BiUserPlus size={32} />

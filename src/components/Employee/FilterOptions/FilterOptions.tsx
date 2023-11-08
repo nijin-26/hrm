@@ -7,6 +7,7 @@ import useSkills from "../../../core/hooks/useSkills";
 
 import { MdFilterListOff } from "react-icons/md";
 import { IFilterOptions } from "../../../core/interfaces/interfaces";
+import { Tooltip } from "react-tooltip";
 
 const FilterOptions = ({ handleToggleFilter }: IFilterOptions) => {
   const [selectedDepartment, setSelectedDepartment] = useState("");
@@ -49,7 +50,17 @@ const FilterOptions = ({ handleToggleFilter }: IFilterOptions) => {
         />
       </div>
 
-      <MdFilterListOff size={36} onClick={handleClearFilters} />
+      <MdFilterListOff
+        className="clear-filter"
+        size={36}
+        onClick={handleClearFilters}
+      />
+      <Tooltip
+        anchorSelect=".clear-filter"
+        content="Clear All Filters"
+        place="right"
+        variant="info"
+      />
     </FilterOptionsWrapper>
   );
 };
