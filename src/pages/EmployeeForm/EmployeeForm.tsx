@@ -1,5 +1,5 @@
 import { Form, Formik } from "formik";
-import ImageUpload from "../../components/Employee/ImageUpload/ImageUpload";
+import ImageUpload from "../../components/common/ImageUpload/ImageUpload";
 import Input from "../../components/common/Input/Input";
 import SearchSkill from "../../components/common/SearchSkill/SearchSkill";
 import useSkills from "../../core/hooks/useSkills";

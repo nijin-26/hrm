@@ -1,7 +1,7 @@
 import placeholderImage from "../../../assets/placeholder-image.png";
 import { IImageUpload } from "../../../core/interfaces/interfaces";
 
-import Button from "../../common/Button/Button";
+import Button from "../Button/Button";
 import { ImageHolder } from "./ImageUpload.style";
 
 const ImageUpload = ({

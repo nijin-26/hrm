@@ -1,5 +1,4 @@
-import { type } from "os";
-import { Dispatch, ReactNode } from "react";
+import { Dispatch, MouseEvent, MouseEventHandler, ReactNode } from "react";
 
 export interface IContextState {
   theme: "light" | "dark" | string;
@@ -60,6 +59,7 @@ export interface ISkills {
 export interface ITableViewProps<T, U> {
   tableHeaders: T[];
   tableData: U[];
+  handleRowClick: (e: MouseEvent<HTMLElement>, id: string) => void;
 }
 
 export interface ITableHeader {

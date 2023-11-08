@@ -1,11 +1,11 @@
 import { GoFilter } from "react-icons/go";
 import FilterOptions from "../../components/Employee/FilterOptions/FilterOptions";
-import TableView from "../../components/Employee/Listing/TableView";
+import TableView from "../../components/common/Listing/TableView";
 import { employeeTableHeader, employees } from "../../core/constants";
 import { getEmployeeData } from "../../core/utils/getEmployeeData";
 
 import styles from "./style.module.scss";
-import { useState } from "react";
+import { MouseEvent, useState } from "react";
 import Button from "../../components/common/Button/Button";
 import { BiUserPlus } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +15,12 @@ const EmployeeListing = () => {
   const navigate = useNavigate();
   const [toggleFilter, setToggleFilter] = useState(true);
   const employeeData = getEmployeeData(employees);
+
+  const handleRowClick = (e: MouseEvent<HTMLElement>, id: string) => {
+    const target = e.target as HTMLElement;
+    if (target.closest("#edit")) navigate(`/edit/${id}`);
+    if (target.tagName === "TD") navigate(`/view/${id}`);
+  };
 
   return (
     <div className={styles.employeeListingContainer}>
@@ -34,7 +40,11 @@ const EmployeeListing = () => {
           />
         </Fade>
       )}
-      <TableView tableHeaders={employeeTableHeader} tableData={employeeData} />
+      <TableView
+        handleRowClick={handleRowClick}
+        tableHeaders={employeeTableHeader}
+        tableData={employeeData}
+      />
     </div>
   );
 };
