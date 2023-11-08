@@ -17,7 +17,14 @@ const FilterOptions = ({ handleToggleFilter }: IFilterOptions) => {
     selectedSkills,
     handleSelectedSkills,
     handleRemoveSelectedSkill,
+    handleResetSkills,
   } = useSkills();
+
+  const handleClearFilters = () => {
+    handleResetSkills();
+    setSelectedDepartment("");
+    setSelectedRole("");
+  };
 
   return (
     <FilterOptionsWrapper className="flex">
@@ -31,14 +38,18 @@ const FilterOptions = ({ handleToggleFilter }: IFilterOptions) => {
         value={selectedRole}
         onChange={(e) => setSelectedRole(e.target.value)}
       />
-      <SearchSkill
-        placeholder="Search by skills"
-        listOfSkills={skills}
-        selectedSkills={selectedSkills}
-        handleSelectedSkills={handleSelectedSkills}
-        removeSelectedSkill={handleRemoveSelectedSkill}
-      />
-      <MdFilterListOff size={36} onClick={handleToggleFilter} />
+      <div className="skillWrapper">
+        <SearchSkill
+          position="inside"
+          placeholder="Search by skills"
+          listOfSkills={skills}
+          selectedSkills={selectedSkills}
+          handleSelectedSkills={handleSelectedSkills}
+          removeSelectedSkill={handleRemoveSelectedSkill}
+        />
+      </div>
+
+      <MdFilterListOff size={36} onClick={handleClearFilters} />
     </FilterOptionsWrapper>
   );
 };

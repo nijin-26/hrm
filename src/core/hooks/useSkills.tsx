@@ -28,11 +28,17 @@ function useSkills() {
     setSkills((prev) => [...prev, selectedSkill] as ISkills[]);
   };
 
+  const handleResetSkills = () => {
+    setSelectedSkills([]);
+    setSkills(skillList);
+  };
+
   return {
     skills,
     selectedSkills,
     handleSelectedSkills,
     handleRemoveSelectedSkill,
+    handleResetSkills,
   };
 }
 

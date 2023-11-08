@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 export const SkillSearchContainer = styled.div`
   position: relative;
-  min-width: 50%;
   height: 100%;
   background-color: #fff;
   flex-grow: 1;
@@ -11,7 +10,7 @@ export const SkillSearchContainer = styled.div`
 
   & > div {
     display: flex;
-    padding: 8px 4px;
+    padding: 2px 4px;
   }
 `;
 
@@ -25,6 +24,15 @@ export const SelectedSkills = styled.div`
   color: var(--font-color);
   overflow-x: auto;
   scrollbar-width: thin;
+
+  &.outside {
+    margin: 8px 0;
+    max-width: unset;
+    overflow: hidden;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
 `;
 
 export const SelectedSkillTag = styled.p`
@@ -77,6 +85,7 @@ export const DropDownContent = styled.div`
   & > ul {
     list-style: none;
     padding: 0;
+    margin: 0;
     width: 100%;
   }
 

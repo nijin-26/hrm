@@ -38,6 +38,7 @@ export interface IFilterSelect {
 }
 
 export interface ISearchSkills {
+  position: "inside" | "outside";
   placeholder: string;
   listOfSkills: { id: string; name: string }[];
   selectedSkills: { id: string; name: string }[];

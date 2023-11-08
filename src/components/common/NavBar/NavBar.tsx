@@ -4,18 +4,24 @@ import { BsMoonStars } from "react-icons/bs";
 import Logo from "../../../assets/logo.png";
 
 import { Nav, ThemeToggle } from "./NavBar.styles";
-import { Link } from "react-router-dom";
+import { Link, useLoaderData, useLocation } from "react-router-dom";
 import { useAppContext } from "../../../core/store/AppContext";
 
 const NavBar = () => {
   const { state, dispatch } = useAppContext();
+  const { pathname } = useLocation();
+  console.log(pathname);
+
   return (
     <Nav>
       <div className="header-container container flex align-center">
         <Link to="/">
           <img src={Logo} alt="HR Management App Logo" width="40" />
         </Link>
-        <div className="search-employee-container">
+        <div
+          className="search-employee-container"
+          style={pathname !== "/" ? { visibility: "hidden" } : {}}
+        >
           <input
             className="search-employee-input"
             type="text"

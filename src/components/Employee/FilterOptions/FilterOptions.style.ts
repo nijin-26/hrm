@@ -1,9 +1,8 @@
 import styled from "styled-components";
 
 export const FilterOptionsWrapper = styled.div`
-  width: 60%;
+  width: 80%;
   gap: 12px;
-
   select {
     flex-grow: 1;
   }
@@ -11,5 +10,9 @@ export const FilterOptionsWrapper = styled.div`
   svg {
     align-self: center;
     cursor: pointer;
+  }
+
+  & > .skillWrapper {
+    max-width: 80%;
   }
 `;

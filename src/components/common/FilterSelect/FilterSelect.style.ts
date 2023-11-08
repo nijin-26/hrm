@@ -10,7 +10,7 @@ export const FilterSelectWrapper = styled.div`
     top: 42%;
     transform: translateY(-50%);
     pointer-events: none;
-    color: var(--primary-color);
+    color: inherit;
     font-size: 20px;
   }
 

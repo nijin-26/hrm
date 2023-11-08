@@ -97,13 +97,17 @@ const EmployeeForm = () => {
                 datas={roles}
               />
             </div>
-            <SearchSkill
-              placeholder="Search skills to add"
-              listOfSkills={skills}
-              selectedSkills={selectedSkills}
-              handleSelectedSkills={handleSelectedSkills}
-              removeSelectedSkill={handleRemoveSelectedSkill}
-            />
+            <div className={style.skillInputWrapper}>
+              <SearchSkill
+                position="outside"
+                placeholder="Search skills to add"
+                listOfSkills={skills}
+                selectedSkills={selectedSkills}
+                handleSelectedSkills={handleSelectedSkills}
+                removeSelectedSkill={handleRemoveSelectedSkill}
+              />
+            </div>
+
             <div className={style.formButtons}>
               <Button btnType="secondary">Cancel</Button>
               <Button type="submit">Submit</Button>
