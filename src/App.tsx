@@ -1,16 +1,15 @@
 import AppContextProvider from "./core/store/AppContext";
 
-import { AppThemeProvider } from "./core/theme/provider";
-
 import { RouterProvider } from "react-router-dom";
 import { routes } from "./core/routing/publicRoutes";
+import ThemeContextProvider from "./core/theme/ThemeContext";
 
 function App() {
   return (
     <AppContextProvider>
-      <AppThemeProvider>
+      <ThemeContextProvider>
         <RouterProvider router={routes} />
-      </AppThemeProvider>
+      </ThemeContextProvider>
     </AppContextProvider>
   );
 }

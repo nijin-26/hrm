@@ -4,13 +4,12 @@ import { BsMoonStars } from "react-icons/bs";
 import Logo from "../../../assets/logo.png";
 
 import { Nav, ThemeToggle } from "./NavBar.styles";
-import { Link, useLoaderData, useLocation } from "react-router-dom";
-import { useAppContext } from "../../../core/store/AppContext";
+import { Link, useLocation } from "react-router-dom";
+import { useThemeContext } from "../../../core/theme/ThemeContext";
 
 const NavBar = () => {
-  const { state, dispatch } = useAppContext();
+  const { state, dispatch } = useThemeContext();
   const { pathname } = useLocation();
-  console.log(pathname);
 
   return (
     <Nav>
@@ -29,8 +28,8 @@ const NavBar = () => {
           />
           <BiSearchAlt2 className="search-icon" fontSize={28} />
         </div>
-        <ThemeToggle onClick={() => dispatch({ type: "TOGGLE_THEME" })}>
-          {state.theme === "light" ? (
+        <ThemeToggle onClick={() => dispatch({ type: "TOGGLE_DARK_LIGHT" })}>
+          {state.colorMode === "light" ? (
             <BsMoonStars color="#fff" fontSize={32} />
           ) : (
             <FaRegSun color="#fff" fontSize={32} />

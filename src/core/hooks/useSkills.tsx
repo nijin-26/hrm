@@ -1,6 +1,6 @@
 import { skillList } from "../constants";
 import { useState, useEffect } from "react";
-import { ISkills } from "../interfaces/interfaces";
+import { ISkills } from "../interfaces/Common";
 
 function useSkills() {
   const [skills, setSkills] = useState<ISkills[]>([]);

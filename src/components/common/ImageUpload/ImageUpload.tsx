@@ -1,5 +1,5 @@
 import placeholderImage from "../../../assets/placeholder-image.png";
-import { IImageUpload } from "../../../core/interfaces/interfaces";
+import { IImageUpload } from "../../../core/interfaces/Common";
 
 import Button from "../Button/Button";
 import { ImageHolder } from "./ImageUpload.style";

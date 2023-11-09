@@ -1,13 +1,12 @@
 import { ReactNode, createContext, useContext, useReducer } from "react";
 import {
   IAppContext,
-  IContextAction,
-  IContextState,
-} from "../interfaces/interfaces";
+  IAppContextState,
+} from "../interfaces/AppContextInterface";
 
-const initialState: IContextState = {
-  theme: localStorage.getItem("theme") || "light",
-};
+import { IContextAction } from "../interfaces/Common";
+
+const initialState: IAppContextState = {};
 
 const AppContext = createContext<IAppContext>({
   state: initialState,
@@ -18,20 +17,13 @@ export function useAppContext() {
   return useContext(AppContext);
 }
 
-// Define the reducer function
 function appReducer(
-  state: IContextState,
+  state: IAppContextState,
   action: IContextAction
-): IContextState {
+): IAppContextState {
   switch (action.type) {
-    case "TOGGLE_THEME":
-      if (state.theme === "light") {
-        localStorage.setItem("theme", "dark");
-        return { ...state, theme: "dark" };
-      } else {
-        localStorage.setItem("theme", "light");
-        return { ...state, theme: "light" };
-      }
+    case "ADD_EMP":
+      return state;
     default:
       return state;
   }

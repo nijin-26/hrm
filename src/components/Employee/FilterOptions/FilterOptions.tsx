@@ -6,7 +6,7 @@ import { departments, roles } from "../../../core/constants";
 import useSkills from "../../../core/hooks/useSkills";
 
 import { MdFilterListOff } from "react-icons/md";
-import { IFilterOptions } from "../../../core/interfaces/interfaces";
+import { IFilterOptions } from "../../../core/interfaces/Common";
 import { Tooltip } from "react-tooltip";
 
 const FilterOptions = ({ handleToggleFilter }: IFilterOptions) => {

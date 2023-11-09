@@ -8,7 +8,7 @@ import {
 } from "./SearchSkill.styles";
 
 import { IoIosRemoveCircleOutline } from "react-icons/io";
-import { ISearchSkills } from "../../../core/interfaces/interfaces";
+import { ISearchSkills } from "../../../core/interfaces/Common";
 
 const SearchSkill = ({
   position,

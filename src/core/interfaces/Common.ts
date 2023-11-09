@@ -1,18 +1,10 @@
-import { Dispatch, MouseEvent, MouseEventHandler, ReactNode } from "react";
-
-export interface IContextState {
-  theme: "light" | "dark" | string;
-}
-
-export interface IAppContext {
-  state: IContextState;
-  dispatch: Dispatch<any>;
-}
+import { MouseEvent, ReactNode } from "react";
 
 export interface IContextAction {
   type: string;
   payload?: any;
 }
+
 export interface IButton {
   className?: string;
   type?: "button" | "submit" | "reset";

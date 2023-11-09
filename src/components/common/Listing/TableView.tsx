@@ -1,5 +1,5 @@
 import { TableWrapper } from "./listing.styles";
-import { ITableViewProps } from "../../../core/interfaces/interfaces";
+import { ITableViewProps } from "../../../core/interfaces/Common";
 
 const TableView = <T, U>({
   tableHeaders,

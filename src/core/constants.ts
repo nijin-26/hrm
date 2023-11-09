@@ -1,4 +1,4 @@
-import { IEmployeeDetails, ITableHeader } from "./interfaces/interfaces";
+import { IEmployeeDetails, ITableHeader } from "./interfaces/Common";
 
 export const employeeTableHeader: ITableHeader[] = [
   {

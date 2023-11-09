@@ -1,4 +1,4 @@
-import { IEmployeeDetails } from "../interfaces/interfaces";
+import { IEmployeeDetails } from "../interfaces/Common";
 import { getFormattedDate } from "./formatDate";
 
 import { BiEdit, BiUserMinus } from "react-icons/bi";

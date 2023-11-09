@@ -1,3 +1,5 @@
+import { ITheme } from "../interfaces/ThemeInterfaces";
+
 const lightTheme = {
   primary: "#201e20",
   secondary: "#e0a96d",
@@ -12,16 +14,7 @@ const darkTheme = {
   fontColor: "#ffffff",
 };
 
-export type Theme = typeof lightTheme;
-
-export const themes: {
-  [key: string]: {
-    primary: string;
-    secondary: string;
-    bgColor: string;
-    fontColor: string;
-  };
-} = {
+export const themes: { [key: string]: ITheme } = {
   light: lightTheme,
   dark: darkTheme,
 };

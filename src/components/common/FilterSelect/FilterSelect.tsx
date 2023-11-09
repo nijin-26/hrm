@@ -1,4 +1,4 @@
-import { IFilterSelect } from "../../../core/interfaces/interfaces";
+import { IFilterSelect } from "../../../core/interfaces/Common";
 import { FilterSelectWrapper } from "./FilterSelect.style";
 import { CSSProperties, useTheme } from "styled-components";
 

@@ -14,7 +14,7 @@ import placeholder from "../../assets/placeholder-image.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { departments, employees, roles, skillList } from "../../core/constants";
-import { IEmployeeDetails } from "../../core/interfaces/interfaces";
+import { IEmployeeDetails } from "../../core/interfaces/Common";
 import { getFormattedDate } from "../../core/utils/formatDate";
 
 const EmployeeView = () => {

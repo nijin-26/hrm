@@ -1,5 +1,5 @@
 import { StyledButton } from "./Button.styles";
-import { IButton } from "../../../core/interfaces/interfaces";
+import { IButton } from "../../../core/interfaces/Common";
 
 const Button = ({
   className,
