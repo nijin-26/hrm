@@ -15,6 +15,11 @@ export interface IButton {
 
 export interface IFilterOptions {
   handleToggleFilter: () => void;
+  handleFilterChange: (
+    department: string,
+    role: string,
+    skills: ISkills[]
+  ) => void;
 }
 
 export interface IModal {

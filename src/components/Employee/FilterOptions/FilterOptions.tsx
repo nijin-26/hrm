@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchSkill from "../../common/SearchSkill/SearchSkill";
 import FilterSelect from "../../common/FilterSelect/FilterSelect";
 import { FilterOptionsWrapper } from "./FilterOptions.style";
@@ -9,7 +9,10 @@ import { MdFilterListOff } from "react-icons/md";
 import { IFilterOptions } from "../../../core/interfaces/Common";
 import { Tooltip } from "react-tooltip";
 
-const FilterOptions = ({ handleToggleFilter }: IFilterOptions) => {
+const FilterOptions = ({
+  handleToggleFilter,
+  handleFilterChange,
+}: IFilterOptions) => {
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
 
@@ -20,6 +23,10 @@ const FilterOptions = ({ handleToggleFilter }: IFilterOptions) => {
     handleRemoveSelectedSkill,
     handleResetSkills,
   } = useSkills();
+
+  useEffect(() => {
+    handleFilterChange(selectedDepartment, selectedRole, selectedSkills);
+  }, [selectedDepartment, selectedRole, selectedSkills]);
 
   const handleClearFilters = () => {
     handleResetSkills();

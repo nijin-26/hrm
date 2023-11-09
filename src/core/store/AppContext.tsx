@@ -4,9 +4,14 @@ import {
   IAppContextState,
 } from "../interfaces/AppContextInterface";
 
-import { IContextAction } from "../interfaces/Common";
+import rootReducer from "./reducers";
 
-const initialState: IAppContextState = {};
+const initialState: IAppContextState = {
+  employees: [],
+  skills: [],
+  roles: [],
+  department: [],
+};
 
 const AppContext = createContext<IAppContext>({
   state: initialState,
@@ -17,20 +22,8 @@ export function useAppContext() {
   return useContext(AppContext);
 }
 
-function appReducer(
-  state: IAppContextState,
-  action: IContextAction
-): IAppContextState {
-  switch (action.type) {
-    case "ADD_EMP":
-      return state;
-    default:
-      return state;
-  }
-}
-
 function AppContextProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(appReducer, initialState);
+  const [state, dispatch] = useReducer(rootReducer, initialState);
 
   return (
     <AppContext.Provider value={{ state, dispatch }}>

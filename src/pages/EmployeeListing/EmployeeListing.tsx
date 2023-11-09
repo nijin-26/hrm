@@ -11,11 +11,18 @@ import { BiUserPlus } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { Fade } from "react-awesome-reveal";
 import { Tooltip } from "react-tooltip";
+import { ISkills } from "../../core/interfaces/Common";
 
 const EmployeeListing = () => {
   const navigate = useNavigate();
   const [toggleFilter, setToggleFilter] = useState(true);
   const employeeData = getEmployeeData(employees);
+
+  const handleFilters = (
+    department: string,
+    role: string,
+    skills: ISkills[]
+  ) => {};
 
   const handleRowClick = (e: MouseEvent<HTMLElement>, id: string) => {
     const target = e.target as HTMLElement;
@@ -47,6 +54,7 @@ const EmployeeListing = () => {
       {toggleFilter && (
         <Fade>
           <FilterOptions
+            handleFilterChange={handleFilters}
             handleToggleFilter={() => setToggleFilter(!toggleFilter)}
           />
         </Fade>
