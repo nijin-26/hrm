@@ -15,8 +15,8 @@ const initialState: IThemeContextState = {
 };
 
 const ThemeContext = createContext<IThemeContext>({
-  state: initialState,
-  dispatch: () => {},
+  tState: initialState,
+  tDispatch: () => {},
 });
 
 export function useThemeContext() {
@@ -39,11 +39,11 @@ const themeReducer = (state: IThemeContextState, action: IContextAction) => {
 };
 
 function ThemeContextProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(themeReducer, initialState);
+  const [tState, tDispatch] = useReducer(themeReducer, initialState);
 
   return (
-    <ThemeContext.Provider value={{ state, dispatch }}>
-      <ThemeProvider theme={state.theme}>{children}</ThemeProvider>
+    <ThemeContext.Provider value={{ tState, tDispatch }}>
+      <ThemeProvider theme={tState.theme}>{children}</ThemeProvider>
     </ThemeContext.Provider>
   );
 }

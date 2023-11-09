@@ -1,15 +1,16 @@
 import { IAppContextState } from "../../interfaces/AppContextInterface";
 import { IContextAction } from "../../interfaces/Common";
-import { employeeReducer } from "./employeeReducer";
+import { employeeFilterReducer, employeeReducer } from "./employeeReducers";
 import { skillsReducer } from "./skillReducer";
 
 const rootReducer = (
-  state: IAppContextState,
+  { employees, filteredEmployees, skills }: IAppContextState,
   action: IContextAction
 ): IAppContextState => {
   return {
-    employees: employeeReducer(state.employees, action),
-    skills: skillsReducer(state.skills, action),
+    employees: employeeReducer(employees, action),
+    filteredEmployees: employeeFilterReducer(filteredEmployees, action),
+    skills: skillsReducer(skills, action),
     roles: [], // TODO:
     department: [], //TODO:
   };

@@ -14,7 +14,6 @@ import { CSSProperties, useTheme } from "styled-components";
 const EmployeeForm = () => {
   const location = useLocation();
   const theme = useTheme();
-  console.log(theme);
   const employeeDetails = {
     id: "",
     fullName: "",
@@ -49,7 +48,12 @@ const EmployeeForm = () => {
       } Employee`}</h1>
       <div className={style.formContainer} style={formContainerStyle}>
         <ImageUpload />
-        <Formik initialValues={employeeDetails} onSubmit={() => {}}>
+        <Formik
+          initialValues={employeeDetails}
+          onSubmit={(values) => {
+            console.log(values);
+          }}
+        >
           <Form style={{ marginTop: "40px" }}>
             <div className={style.inputGroup}>
               <Input

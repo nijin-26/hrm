@@ -1,22 +1,33 @@
 import { GoFilter } from "react-icons/go";
 import FilterOptions from "../../components/Employee/FilterOptions/FilterOptions";
 import TableView from "../../components/common/Listing/TableView";
-import { employeeTableHeader, employees } from "../../core/constants";
-import { getEmployeeData } from "../../core/utils/getEmployeeData";
+import { employeeTableHeader } from "../../core/constants";
 
 import styles from "./style.module.scss";
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import Button from "../../components/common/Button/Button";
 import { BiUserPlus } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { Fade } from "react-awesome-reveal";
 import { Tooltip } from "react-tooltip";
 import { ISkills } from "../../core/interfaces/Common";
+import { useAppContext } from "../../core/store/AppContext";
+import actionType from "../../core/store/actionTypes";
 
 const EmployeeListing = () => {
-  const navigate = useNavigate();
   const [toggleFilter, setToggleFilter] = useState(true);
-  const employeeData = getEmployeeData(employees);
+  const { state, dispatch } = useAppContext();
+
+  const navigate = useNavigate();
+
+  const employees =
+    state.filteredEmployees.length === 0
+      ? state.employees
+      : state.filteredEmployees;
+
+  useEffect(() => {
+    dispatch({ type: actionType.FETCH_EMPLOYEES });
+  }, []);
 
   const handleFilters = (
     department: string,
@@ -62,7 +73,7 @@ const EmployeeListing = () => {
       <TableView
         handleRowClick={handleRowClick}
         tableHeaders={employeeTableHeader}
-        tableData={employeeData}
+        tableData={employees}
       />
     </div>
   );

@@ -13,6 +13,6 @@ export interface IThemeContextState {
 }
 
 export interface IThemeContext {
-  state: IThemeContextState;
-  dispatch: Dispatch<any>;
+  tState: IThemeContextState;
+  tDispatch: Dispatch<any>;
 }

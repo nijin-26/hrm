@@ -8,6 +8,7 @@ import rootReducer from "./reducers";
 
 const initialState: IAppContextState = {
   employees: [],
+  filteredEmployees: [],
   skills: [],
   roles: [],
   department: [],

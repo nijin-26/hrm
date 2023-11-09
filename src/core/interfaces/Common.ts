@@ -1,4 +1,5 @@
 import { MouseEvent, ReactNode } from "react";
+import { JsxElement } from "typescript";
 
 export interface IContextAction {
   type: string;
@@ -68,8 +69,8 @@ export interface ITableHeader {
 export interface IEmployeeDetails {
   id: string;
   fullName?: string;
-  dateOfBirth?: number;
-  dateOfJoin?: number;
+  dateOfBirth?: number | string;
+  dateOfJoin?: number | string;
   email?: string;
   mobile?: string;
   workLocation?: string;
@@ -77,5 +78,5 @@ export interface IEmployeeDetails {
   department?: string;
   role?: string;
   skill?: string[];
-  [key: string]: any;
+  actions?: JsxElement | ReactNode;
 }

@@ -16,12 +16,23 @@ import { useEffect, useState } from "react";
 import { departments, employees, roles, skillList } from "../../core/constants";
 import { IEmployeeDetails } from "../../core/interfaces/Common";
 import { getFormattedDate } from "../../core/utils/formatDate";
+import { useAppContext } from "../../core/store/AppContext";
 
 const EmployeeView = () => {
+  const { state } = useAppContext();
   const [selectedEmployee, setSelectedEmployee] = useState<IEmployeeDetails>();
   const theme = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const employeeId = location.pathname.split("/")[2];
+    const selected = state.employees.find(
+      (employee) => employee.id === employeeId
+    );
+    if (selected) setSelectedEmployee(selected as IEmployeeDetails);
+    else navigate("/"); // TODO: Toast message - Employee Not found
+  }, []);
 
   let department =
     selectedEmployee &&
@@ -32,13 +43,6 @@ const EmployeeView = () => {
   let role =
     selectedEmployee &&
     roles.find((role) => role.id === selectedEmployee?.role);
-
-  useEffect(() => {
-    const employeeId = location.pathname.split("/")[2];
-    const selected = employees.find((employee) => employee.id === employeeId);
-    if (selected) setSelectedEmployee(selected as IEmployeeDetails);
-    else navigate("/"); // TODO: Toast message - Employee Not found
-  }, []);
 
   const employeeDetailsStyle = {
     color: theme.fontColor,

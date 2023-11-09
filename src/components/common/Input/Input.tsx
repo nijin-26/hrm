@@ -1,5 +1,6 @@
-import { useField } from "formik";
+import { FieldHookConfig, FormikProps, useField } from "formik";
 import { InputWrapper } from "./Input.style";
+import { IEmployeeDetails } from "../../../core/interfaces/Common";
 
 const Input = ({ label, ...props }: any) => {
   const [field, meta] = useField(props);
