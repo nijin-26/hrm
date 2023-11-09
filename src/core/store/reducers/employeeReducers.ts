@@ -24,14 +24,26 @@ export const employeeFilterReducer = (
   action: IContextAction
 ) => {
   switch (action.type) {
-    case actionTypes.SET_FILTERED_EMPLOYEES: {
-      return action.payload;
-    }
     case actionTypes.SEARCH_EMPLOYEE: {
-      const updateList = state.filter((employee) =>
-        employee.fullName?.toLowerCase().includes(action.payload)
+      const {
+        employeeList,
+        searchInput,
+      }: { employeeList: IEmployeeDetails[]; searchInput: string } =
+        action.payload;
+
+      const updateList = employeeList.filter((employee) =>
+        employee.fullName?.toLowerCase().includes(searchInput)
       );
       return updateList;
+    }
+    case actionTypes.FILTER_BY_DEPARTMENT: {
+      return state;
+    }
+    case actionTypes.FILTER_BY_ROLE: {
+      return state;
+    }
+    case actionTypes.FILTER_BY_SKILLS: {
+      return state;
     }
     default:
       return state;

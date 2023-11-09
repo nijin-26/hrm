@@ -18,14 +18,13 @@ const NavBar = () => {
 
   const handleInputChange = (e: ChangeEvent) => {
     const target = e.target as HTMLInputElement;
-    dispatch({
-      type: actionTypes.SET_FILTERED_EMPLOYEES,
-      payload: state.employees,
-    });
 
     dispatch({
       type: actionTypes.SEARCH_EMPLOYEE,
-      payload: target.value.toLowerCase(),
+      payload: {
+        employeeList: state.employees,
+        searchInput: target.value.toLowerCase(),
+      },
     });
   };
 
