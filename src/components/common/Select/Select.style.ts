@@ -9,15 +9,23 @@ export const SelectWrapper = styled.div`
   position: relative;
 
   select {
-    width: 100%;
+    /* width: 100%; */
     appearance: none;
+  }
+
+  .error {
+    color: red;
+  }
+
+  .errorPlaceHolder {
+    visibility: hidden;
   }
 
   &::after {
     content: "⌄";
     position: absolute;
     right: 22px;
-    top: 58%;
+    top: 45%;
     transform: translateY(-50%);
     pointer-events: none;
     color: var(--primary-color);

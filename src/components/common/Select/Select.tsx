@@ -18,7 +18,9 @@ const Select = ({ label, datas, placeholder, ...props }: any) => {
       </select>
       {meta.touched && meta.error ? (
         <div className="error">{meta.error}</div>
-      ) : null}
+      ) : (
+        <span className="errorPlaceHolder">Error Placeholder</span>
+      )}
     </SelectWrapper>
   );
 };

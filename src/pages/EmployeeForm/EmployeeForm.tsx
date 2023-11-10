@@ -3,6 +3,7 @@ import ImageUpload from "../../components/common/ImageUpload/ImageUpload";
 import Input from "../../components/common/Input/Input";
 import SearchSkill from "../../components/common/SearchSkill/SearchSkill";
 import useSkills from "../../core/hooks/useSkills";
+import * as Yup from "yup";
 
 import style from "./style.module.scss";
 import Select from "../../components/common/Select/Select";
@@ -10,15 +11,24 @@ import { departments, roles, workLocation } from "../../core/constants";
 import Button from "../../components/common/Button/Button";
 import { useLocation } from "react-router-dom";
 import { CSSProperties, useTheme } from "styled-components";
+import { employeeFormValidationSchema } from "../../core/utils/employeeFormValidationSchema";
+import { IEmployeeDetails } from "../../core/interfaces/Common";
 
 const EmployeeForm = () => {
   const location = useLocation();
   const theme = useTheme();
-  const employeeDetails = {
+  const {
+    skills,
+    selectedSkills,
+    handleSelectedSkills,
+    handleRemoveSelectedSkill,
+  } = useSkills();
+
+  let employeeDetails = {
     id: "",
     fullName: "",
-    dateOfBirth: 0,
-    dateOfJoin: 0,
+    dateOfBirth: "",
+    dateOfJoin: "",
     email: "",
     mobile: "",
     workLocation: "",
@@ -28,14 +38,11 @@ const EmployeeForm = () => {
     skill: [],
   };
 
-  const {
-    skills,
-    selectedSkills,
-    handleSelectedSkills,
-    handleRemoveSelectedSkill,
-  } = useSkills();
-
   const currentFormType = location.pathname.split("/")[1];
+
+  const handleFormSubmit = (values: IEmployeeDetails) => {
+    console.log(values);
+  };
 
   const formContainerStyle = {
     backgroundColor: theme.bgColor,
@@ -50,9 +57,8 @@ const EmployeeForm = () => {
         <ImageUpload />
         <Formik
           initialValues={employeeDetails}
-          onSubmit={(values) => {
-            console.log(values);
-          }}
+          validationSchema={employeeFormValidationSchema}
+          onSubmit={handleFormSubmit}
         >
           <Form style={{ marginTop: "40px" }}>
             <div className={style.inputGroup}>
