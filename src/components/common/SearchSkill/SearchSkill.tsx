@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { KeyboardEvent, useState } from "react";
 import {
   DropDownContent,
   SearchSkillInput,
@@ -8,68 +8,89 @@ import {
 } from "./SearchSkill.styles";
 
 import { IoIosRemoveCircleOutline } from "react-icons/io";
-
-interface searchSkillProps {
-  listOfSkills: { id: string; name: string }[];
-  selectedSkills: { id: string; name: string }[];
-  handleSelectedSkills: (value: string) => void;
-  removeSelectedSkill: (value: string) => void;
-}
+import { ISearchSkills } from "../../../core/interfaces/interfaces";
 
 const SearchSkill = ({
+  position,
+  placeholder,
   listOfSkills,
   selectedSkills,
   handleSelectedSkills,
   removeSelectedSkill,
-}: searchSkillProps) => {
+}: ISearchSkills) => {
   const [showList, setShowList] = useState(false);
   const [searchInput, setSearchInput] = useState<string>("");
 
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === "Backspace") {
+    }
+  };
+
   return (
-    <SkillSearchContainer>
-      <div>
-        <SelectedSkills>
-          {selectedSkills.map((sk) => (
-            <SelectedSkillTag key={sk.id}>
-              <span>{sk.name}</span>
+    <>
+      <SkillSearchContainer>
+        <div>
+          {position === "inside" && (
+            <SelectedSkills>
+              {selectedSkills.map((skill) => (
+                <SelectedSkillTag key={skill.id}>
+                  <span>{skill.name}</span>
+                  <IoIosRemoveCircleOutline
+                    onClick={() => removeSelectedSkill(skill.id)}
+                    className="remove-skill-btn"
+                  />
+                </SelectedSkillTag>
+              ))}
+            </SelectedSkills>
+          )}
+          <SearchSkillInput
+            placeholder={placeholder}
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            onFocus={() => setShowList(true)}
+            onBlur={() => {
+              setTimeout(() => setShowList(false), 100);
+            }}
+            onKeyDown={handleKeyDown}
+          />
+        </div>
+        {showList && (
+          <DropDownContent>
+            <ul>
+              {listOfSkills.map(
+                (skill) =>
+                  skill.name
+                    .toLowerCase()
+                    .includes(searchInput.toLowerCase()) && (
+                    <li
+                      key={skill.id}
+                      onClick={() => {
+                        handleSelectedSkills(skill.id);
+                        setShowList(false);
+                      }}
+                    >
+                      {skill.name}
+                    </li>
+                  )
+              )}
+            </ul>
+          </DropDownContent>
+        )}
+      </SkillSearchContainer>
+      {position === "outside" && (
+        <SelectedSkills className={position}>
+          {selectedSkills.map((skill) => (
+            <SelectedSkillTag key={skill.id}>
+              <span>{skill.name}</span>
               <IoIosRemoveCircleOutline
-                onClick={() => removeSelectedSkill(sk.id)}
+                onClick={() => removeSelectedSkill(skill.id)}
                 className="remove-skill-btn"
               />
             </SelectedSkillTag>
           ))}
         </SelectedSkills>
-        <SearchSkillInput
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-          onFocus={() => setShowList(true)}
-          onBlur={() => {
-            setTimeout(() => setShowList(false), 100);
-          }}
-        />
-      </div>
-      {showList && (
-        <DropDownContent>
-          <ul>
-            {listOfSkills.map((sk) => {
-              if (sk.name.toLowerCase().includes(searchInput.toLowerCase())) {
-                return (
-                  <li
-                    key={sk.id}
-                    onClick={() => {
-                      handleSelectedSkills(sk.id);
-                      setShowList(false);
-                    }}
-                  >
-                    {sk.name}
-                  </li>
-                );
-              }
-            })}
-          </ul>
-        </DropDownContent>
       )}
-    </SkillSearchContainer>
+    </>
   );
 };
 

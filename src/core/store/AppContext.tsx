@@ -1,21 +1,41 @@
 import { ReactNode, createContext, useContext, useReducer } from "react";
+import {
+  IAppContext,
+  IContextAction,
+  IContextState,
+} from "../interfaces/interfaces";
 
-const initialState = {};
+const initialState: IContextState = {
+  theme: localStorage.getItem("theme") || "light",
+};
 
-const AppContext = createContext(initialState);
+const AppContext = createContext<IAppContext>({
+  state: initialState,
+  dispatch: () => {},
+});
 
 export function useAppContext() {
   return useContext(AppContext);
 }
 
-const appReducer = (state: any, action: any) => {
+// Define the reducer function
+function appReducer(
+  state: IContextState,
+  action: IContextAction
+): IContextState {
   switch (action.type) {
-    case "ADD":
-      return state;
+    case "TOGGLE_THEME":
+      if (state.theme === "light") {
+        localStorage.setItem("theme", "dark");
+        return { ...state, theme: "dark" };
+      } else {
+        localStorage.setItem("theme", "light");
+        return { ...state, theme: "light" };
+      }
     default:
       return state;
   }
-};
+}
 
 function AppContextProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(appReducer, initialState);

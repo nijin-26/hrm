@@ -11,6 +11,7 @@ export const StyledButton = styled.button<{
   border: none;
   transition: 0.3s;
   cursor: pointer;
+  font-size: 16px;
 
   ${(props) =>
     props.btnType === "primary" &&
