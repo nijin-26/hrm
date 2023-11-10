@@ -3,18 +3,25 @@ import ImageUpload from "../../components/common/ImageUpload/ImageUpload";
 import Input from "../../components/common/Input/Input";
 import SearchSkill from "../../components/common/SearchSkill/SearchSkill";
 import useSkills from "../../core/hooks/useSkills";
-import * as Yup from "yup";
 
 import style from "./style.module.scss";
 import Select from "../../components/common/Select/Select";
-import { departments, roles, workLocation } from "../../core/constants";
+import {
+  departments,
+  roles,
+  skillList,
+  workLocation,
+} from "../../core/constants";
 import Button from "../../components/common/Button/Button";
 import { useLocation } from "react-router-dom";
 import { CSSProperties, useTheme } from "styled-components";
 import { employeeFormValidationSchema } from "../../core/utils/employeeFormValidationSchema";
 import { IEmployeeDetails } from "../../core/interfaces/Common";
+import { useAppContext } from "../../core/store/AppContext";
+import { getFormattedDate } from "../../core/utils/formatDate";
 
 const EmployeeForm = () => {
+  const { state } = useAppContext();
   const location = useLocation();
   const theme = useTheme();
   const {
@@ -24,7 +31,7 @@ const EmployeeForm = () => {
     handleRemoveSelectedSkill,
   } = useSkills();
 
-  let employeeDetails = {
+  let initialEmployeeDetails: IEmployeeDetails = {
     id: "",
     fullName: "",
     dateOfBirth: "",
@@ -39,6 +46,24 @@ const EmployeeForm = () => {
   };
 
   const currentFormType = location.pathname.split("/")[1];
+  const employeeId = location.pathname.split("/")[2];
+
+  if (currentFormType === "edit" && employeeId) {
+    const selectedEmp: IEmployeeDetails | undefined = state.employees.find(
+      (employee) => employee.id === employeeId
+    );
+    if (selectedEmp) {
+      initialEmployeeDetails = {
+        ...selectedEmp,
+        dateOfBirth: getFormattedDate(selectedEmp.dateOfBirth as string)[1],
+        dateOfJoin: getFormattedDate(selectedEmp.dateOfJoin as string)[1],
+      };
+      skills.map((skill) => {
+        if (selectedEmp.skill?.includes(skill.id))
+          handleSelectedSkills(skill.id);
+      });
+    }
+  }
 
   const handleFormSubmit = (values: IEmployeeDetails) => {
     console.log(values);
@@ -56,7 +81,7 @@ const EmployeeForm = () => {
       <div className={style.formContainer} style={formContainerStyle}>
         <ImageUpload />
         <Formik
-          initialValues={employeeDetails}
+          initialValues={initialEmployeeDetails}
           validationSchema={employeeFormValidationSchema}
           onSubmit={handleFormSubmit}
         >

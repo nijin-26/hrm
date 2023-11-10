@@ -10,6 +10,7 @@ export const getEmployeeData = (
     return {
       ...employee,
       dateOfJoin: getFormattedDate(employee.dateOfJoin as number)[0],
+      dateOfBirth: getFormattedDate(employee.dateOfBirth as number)[0],
       actions: (
         <div className="action-btn-container">
           <span id="edit">

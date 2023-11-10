@@ -8,7 +8,11 @@ export const employeeFormValidationSchema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email address")
     .required("Email is required"),
-  mobile: Yup.string().required("Mobile number is required"),
+  mobile: Yup.string()
+    .required("Mobile number is required")
+    .matches(/^[0-9]+$/, "Mobile number must only contain digits")
+    .min(10, "Mobile number must be at least 10 digits")
+    .max(10, "Mobile number must not exceed 10 digits"),
   workLocation: Yup.string().required("Work Location is required"),
   imageURL: Yup.string(),
   department: Yup.string().required("Department is required"),
