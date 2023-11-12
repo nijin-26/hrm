@@ -12,20 +12,20 @@ import actionTypes from "../../../core/store/actionTypes";
 
 const NavBar = () => {
   const { tState, tDispatch } = useThemeContext();
-  const { state, dispatch } = useAppContext();
+  const { dispatch } = useAppContext();
 
   const { pathname } = useLocation();
 
   const handleInputChange = (e: ChangeEvent) => {
     const target = e.target as HTMLInputElement;
-
     dispatch({
-      type: actionTypes.SEARCH_EMPLOYEE,
+      type: actionTypes.SET_FILTERS,
       payload: {
-        employeeList: state.employees,
-        searchInput: target.value.toLowerCase(),
+        name: target.name,
+        value: target.value,
       },
     });
+    dispatch({ type: actionTypes.FILTER_EMPLOYEES });
   };
 
   return (
@@ -41,6 +41,7 @@ const NavBar = () => {
           <input
             onChange={handleInputChange}
             className="search-employee-input"
+            name="name"
             type="text"
             placeholder="Search by Name"
           />

@@ -12,6 +12,12 @@ const initialState: IAppContextState = {
   skills: [],
   roles: [],
   department: [],
+  filter: {
+    name: "",
+    department: "",
+    role: "",
+    skills: [],
+  },
 };
 
 const AppContext = createContext<IAppContext>({

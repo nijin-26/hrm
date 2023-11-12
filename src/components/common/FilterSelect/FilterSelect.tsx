@@ -6,6 +6,7 @@ const FilterSelect = ({
   options,
   value,
   onChange,
+  name,
   ...props
 }: IFilterSelect) => {
   const theme = useTheme();
@@ -16,7 +17,7 @@ const FilterSelect = ({
 
   return (
     <FilterSelectWrapper style={selectThemeStyle}>
-      <select value={value} onChange={onChange} {...props}>
+      <select value={value} name={name} onChange={onChange} {...props}>
         {options.map((option) => (
           <option key={option.id} value={option.id}>
             {option.name}

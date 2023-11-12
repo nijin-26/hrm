@@ -16,11 +16,6 @@ export interface IButton {
 
 export interface IFilterOptions {
   handleToggleFilter: () => void;
-  handleFilterChange: (
-    department: string,
-    role: string,
-    skills: ISkills[]
-  ) => void;
 }
 
 export interface IModal {
@@ -30,6 +25,7 @@ export interface IModal {
 }
 
 export interface IFilterSelect {
+  name: string;
   options: { id: string; name: string }[];
   value: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;

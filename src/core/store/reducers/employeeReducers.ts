@@ -1,4 +1,5 @@
 import { employees } from "../../constants";
+import { IAppContextState } from "../../interfaces/AppContextInterface";
 
 import { IContextAction, IEmployeeDetails } from "../../interfaces/Common";
 import { getEmployeeData } from "../../utils/getEmployeeData";
@@ -19,33 +20,46 @@ export const employeeReducer = (
   }
 };
 
-export const employeeFilterReducer = (
-  state: IEmployeeDetails[],
+export const filteredEmployeesReducer = (
+  state: IAppContextState,
   action: IContextAction
-) => {
-  switch (action.type) {
-    case actionTypes.SEARCH_EMPLOYEE: {
-      const {
-        employeeList,
-        searchInput,
-      }: { employeeList: IEmployeeDetails[]; searchInput: string } =
-        action.payload;
+): IEmployeeDetails[] => {
+  const { employees } = state;
+  let filteredEmployees = [...employees];
 
-      const updateList = employeeList.filter((employee) =>
-        employee.fullName?.toLowerCase().includes(searchInput)
-      );
-      return updateList;
+  switch (action.type) {
+    case actionTypes.FILTER_EMPLOYEES: {
+      const { name, department, role, skills } = state.filter;
+
+      if (name !== "")
+        filteredEmployees = filteredEmployees.filter((employee) =>
+          employee.fullName?.toLowerCase().includes(name.toLowerCase())
+        );
+
+      if (department !== "")
+        filteredEmployees = filteredEmployees.filter((employee) =>
+          employee.department?.includes(department)
+        );
+
+      if (role !== "")
+        filteredEmployees = filteredEmployees.filter((employee) =>
+          employee.role?.includes(role)
+        );
+
+      if (skills.length > 0) {
+        filteredEmployees = filteredEmployees.filter((employee) => {
+          return skills.every((selectedSkill) =>
+            employee.skill?.includes(selectedSkill.id)
+          );
+        });
+      }
+
+      return filteredEmployees;
     }
-    case actionTypes.FILTER_BY_DEPARTMENT: {
-      return state;
-    }
-    case actionTypes.FILTER_BY_ROLE: {
-      return state;
-    }
-    case actionTypes.FILTER_BY_SKILLS: {
-      return state;
+    case actionTypes.RESET_FILTERS: {
+      return state.filteredEmployees;
     }
     default:
-      return state;
+      return state.filteredEmployees;
   }
 };

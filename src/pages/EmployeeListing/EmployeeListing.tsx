@@ -29,12 +29,6 @@ const EmployeeListing = () => {
     dispatch({ type: actionType.FETCH_EMPLOYEES });
   }, []);
 
-  const handleFilters = (
-    department: string,
-    role: string,
-    skills: ISkills[]
-  ) => {};
-
   const handleRowClick = (e: MouseEvent<HTMLElement>, id: string) => {
     const target = e.target as HTMLElement;
     if (target.closest("#edit")) navigate(`/edit/${id}`);
@@ -65,7 +59,6 @@ const EmployeeListing = () => {
       {toggleFilter && (
         <Fade>
           <FilterOptions
-            handleFilterChange={handleFilters}
             handleToggleFilter={() => setToggleFilter(!toggleFilter)}
           />
         </Fade>

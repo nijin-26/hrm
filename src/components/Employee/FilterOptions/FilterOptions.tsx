@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import SearchSkill from "../../common/SearchSkill/SearchSkill";
 import FilterSelect from "../../common/FilterSelect/FilterSelect";
 import { FilterOptionsWrapper } from "./FilterOptions.style";
@@ -8,13 +8,12 @@ import useSkills from "../../../core/hooks/useSkills";
 import { MdFilterListOff } from "react-icons/md";
 import { IFilterOptions } from "../../../core/interfaces/Common";
 import { Tooltip } from "react-tooltip";
+import { useAppContext } from "../../../core/store/AppContext";
+import actionTypes from "../../../core/store/actionTypes";
 
-const FilterOptions = ({
-  handleToggleFilter,
-  handleFilterChange,
-}: IFilterOptions) => {
-  const [selectedDepartment, setSelectedDepartment] = useState("");
-  const [selectedRole, setSelectedRole] = useState("");
+const FilterOptions = ({ handleToggleFilter }: IFilterOptions) => {
+  const { state, dispatch } = useAppContext();
+  const { filter } = state;
 
   const {
     skills,
@@ -25,26 +24,45 @@ const FilterOptions = ({
   } = useSkills();
 
   useEffect(() => {
-    handleFilterChange(selectedDepartment, selectedRole, selectedSkills);
-  }, [selectedDepartment, selectedRole, selectedSkills]);
+    dispatch({
+      type: actionTypes.SET_FILTERS,
+      payload: {
+        name: skills,
+        value: selectedSkills,
+      },
+    });
+    dispatch({ type: actionTypes.FILTER_EMPLOYEES });
+  }, [selectedSkills]);
+
+  const handleFilterChange = (e: ChangeEvent) => {
+    const target = e.target as HTMLSelectElement;
+    dispatch({
+      type: actionTypes.SET_FILTERS,
+      payload: {
+        name: target.name,
+        value: target.value,
+      },
+    });
+    dispatch({ type: actionTypes.FILTER_EMPLOYEES });
+  };
 
   const handleClearFilters = () => {
     handleResetSkills();
-    setSelectedDepartment("");
-    setSelectedRole("");
   };
 
   return (
     <FilterOptionsWrapper className="flex">
       <FilterSelect
+        name="department"
         options={departments}
-        value={selectedDepartment}
-        onChange={(e) => setSelectedDepartment(e.target.value)}
+        value={filter.department}
+        onChange={handleFilterChange}
       />
       <FilterSelect
+        name="role"
         options={roles}
-        value={selectedRole}
-        onChange={(e) => setSelectedRole(e.target.value)}
+        value={filter.role}
+        onChange={handleFilterChange}
       />
       <div className="skillWrapper">
         <SearchSkill
