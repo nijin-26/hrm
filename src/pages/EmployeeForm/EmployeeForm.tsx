@@ -20,8 +20,10 @@ import { IEmployeeDetails } from "../../core/interfaces/Common";
 import { useAppContext } from "../../core/store/AppContext";
 import { getFormattedDate } from "../../core/utils/formatDate";
 import { Fade } from "react-awesome-reveal";
+import { ChangeEvent, useState } from "react";
 
 const EmployeeForm = () => {
+  const [imageSrc, setImageSrc] = useState<string>("");
   const { state } = useAppContext();
   const location = useLocation();
   const theme = useTheme();
@@ -68,6 +70,18 @@ const EmployeeForm = () => {
     }
   }
 
+  const handleImageInput = (e: ChangeEvent) => {
+    const target = e.target as HTMLInputElement;
+    if (target.files && target.files.length !== 0) {
+      const imageSrc = URL.createObjectURL(target.files[0]);
+      setImageSrc(imageSrc);
+    }
+  };
+
+  const removeSelectedImage = () => {
+    setImageSrc("");
+  };
+
   const handleFormSubmit = (values: IEmployeeDetails) => {
     console.log(values);
   };
@@ -82,7 +96,11 @@ const EmployeeForm = () => {
         currentFormType === "edit" ? "Edit" : "Add"
       } Employee`}</h1>
       <div className={style.formContainer} style={formContainerStyle}>
-        <ImageUpload />
+        <ImageUpload
+          src={imageSrc}
+          removeSelectedImage={removeSelectedImage}
+          handleImageInput={handleImageInput}
+        />
         <Formik
           initialValues={initialEmployeeDetails}
           validationSchema={employeeFormValidationSchema}

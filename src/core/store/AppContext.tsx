@@ -17,7 +17,7 @@ const initialState: IAppContextState = {
     department: "",
     role: "",
     skills: [],
-    sortBy: "name",
+    sortBy: "fullName",
     sortOrder: "asc",
   },
 };

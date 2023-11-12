@@ -1,4 +1,4 @@
-import { MouseEvent, ReactNode } from "react";
+import { ChangeEvent, MouseEvent, ReactNode } from "react";
 import { JsxElement } from "typescript";
 
 export interface IContextAction {
@@ -44,9 +44,9 @@ export interface ISearchSkills {
 }
 
 export interface IImageUpload {
-  src?: string;
-  value?: string;
-  onChange?: () => void;
+  src: string | undefined;
+  handleImageInput: (e: ChangeEvent) => void;
+  removeSelectedImage: () => void;
 }
 
 export interface ISkills {

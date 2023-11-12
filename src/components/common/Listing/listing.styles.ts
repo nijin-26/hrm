@@ -11,6 +11,12 @@ export const TableWrapper = styled.div`
     width: 100%;
   }
 
+  th > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   table,
   th,
   td {

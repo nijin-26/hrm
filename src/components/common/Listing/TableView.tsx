@@ -1,5 +1,9 @@
 import { TableWrapper } from "./listing.styles";
+import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
+import { AiOutlineSortAscending } from "react-icons/ai";
 import { ITableViewProps } from "../../../core/interfaces/Common";
+import { useAppContext } from "../../../core/store/AppContext";
+import { useEffect } from "react";
 
 const TableView = <T, U>({
   tableHeaders,
@@ -7,6 +11,18 @@ const TableView = <T, U>({
   handleSort,
   handleRowClick,
 }: ITableViewProps<T, U>) => {
+  const { state } = useAppContext();
+  const { sortBy, sortOrder } = state.filterSort;
+
+  useEffect(() => {
+    console.log(sortBy, sortOrder, "table view");
+  }, []);
+
+  const handleCurrentSortIcon = () => {
+    if (sortOrder === "asc") return <TiArrowSortedDown size={24} />;
+    else return <TiArrowSortedUp size={24} />;
+  };
+
   return (
     <TableWrapper>
       <table>
@@ -17,7 +33,12 @@ const TableView = <T, U>({
                 onClick={() => header.isSortable && handleSort(header.id)}
                 key={header.id}
               >
-                {header.name}
+                <div>
+                  <span>{header.name}</span>
+                  {header.isSortable && sortOrder && sortBy === header.id ? (
+                    <span>{handleCurrentSortIcon()}</span>
+                  ) : null}
+                </div>
               </th>
             ))}
           </tr>

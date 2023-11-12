@@ -26,7 +26,6 @@ const FilterOptions = ({ handleToggleFilter }: IFilterOptions) => {
   } = useSkills();
 
   useEffect(() => {
-    console.log("hi", selectedSkills);
     dispatch({
       type: actionTypes.SET_FILTERS,
       payload: {
