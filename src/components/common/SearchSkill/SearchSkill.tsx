@@ -15,11 +15,12 @@ const SearchSkill = ({
   placeholder,
   listOfSkills,
   selectedSkills,
+  searchInput,
+  handleInput,
   handleSelectedSkills,
   removeSelectedSkill,
 }: ISearchSkills) => {
   const [showList, setShowList] = useState(false);
-  const [searchInput, setSearchInput] = useState<string>("");
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Backspace") {
@@ -46,7 +47,7 @@ const SearchSkill = ({
           <SearchSkillInput
             placeholder={placeholder}
             value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
+            onChange={(e) => handleInput(e.target.value)}
             onFocus={() => setShowList(true)}
             onBlur={() => {
               setTimeout(() => setShowList(false), 100);

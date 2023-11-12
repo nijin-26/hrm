@@ -3,6 +3,7 @@ import { FilterSelectWrapper } from "./FilterSelect.style";
 import { CSSProperties, useTheme } from "styled-components";
 
 const FilterSelect = ({
+  placeholder,
   options,
   value,
   onChange,
@@ -17,7 +18,16 @@ const FilterSelect = ({
 
   return (
     <FilterSelectWrapper style={selectThemeStyle}>
-      <select value={value} name={name} onChange={onChange} {...props}>
+      <select
+        autoComplete="off"
+        value={value}
+        name={name}
+        onChange={onChange}
+        {...props}
+      >
+        <option value="" selected>
+          {placeholder}
+        </option>
         {options.map((option) => (
           <option key={option.id} value={option.id}>
             {option.name}

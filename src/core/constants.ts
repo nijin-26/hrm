@@ -4,22 +4,27 @@ export const employeeTableHeader: ITableHeader[] = [
   {
     id: "id",
     name: "ID",
+    isSortable: false,
   },
   {
     id: "fullName",
     name: "Full Name",
+    isSortable: true,
   },
   {
     id: "email",
     name: "Email",
+    isSortable: true,
   },
   {
     id: "dateOfJoin",
     name: "Joined At",
+    isSortable: true,
   },
   {
     id: "actions",
     name: "Actions",
+    isSortable: false,
   },
 ];
 

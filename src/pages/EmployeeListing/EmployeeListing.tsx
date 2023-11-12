@@ -1,7 +1,7 @@
 import { GoFilter } from "react-icons/go";
 import FilterOptions from "../../components/Employee/FilterOptions/FilterOptions";
 import TableView from "../../components/common/Listing/TableView";
-import { employeeTableHeader } from "../../core/constants";
+import { employeeTableHeader, employees } from "../../core/constants";
 
 import styles from "./style.module.scss";
 import { MouseEvent, useEffect, useState } from "react";
@@ -10,23 +10,20 @@ import { BiUserPlus } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { Fade } from "react-awesome-reveal";
 import { Tooltip } from "react-tooltip";
-import { ISkills } from "../../core/interfaces/Common";
 import { useAppContext } from "../../core/store/AppContext";
 import actionType from "../../core/store/actionTypes";
 
 const EmployeeListing = () => {
   const [toggleFilter, setToggleFilter] = useState(true);
   const { state, dispatch } = useAppContext();
+  const { sortBy, sortOrder } = state.filterSort;
 
   const navigate = useNavigate();
 
-  const employees =
-    state.filteredEmployees.length === 0
-      ? state.employees
-      : state.filteredEmployees;
-
   useEffect(() => {
-    dispatch({ type: actionType.FETCH_EMPLOYEES });
+    // TODO: Fetch employees
+    dispatch({ type: actionType.SET_EMPLOYEES, payload: employees });
+    dispatch({ type: actionType.SET_FILTERED_EMPLOYEES, payload: employees });
   }, []);
 
   const handleRowClick = (e: MouseEvent<HTMLElement>, id: string) => {
@@ -35,40 +32,56 @@ const EmployeeListing = () => {
     if (target.tagName === "TD") navigate(`/view/${id}`);
   };
 
+  const handleSort = (column: string) => {
+    if (column === sortBy) {
+      dispatch({
+        type: actionType.SET_SORT_ORDER,
+        payload: sortOrder === "asc" ? "desc" : "asc",
+      });
+    } else {
+      dispatch({ type: actionType.SET_SORT_BY, payload: column });
+      dispatch({ type: actionType.SET_SORT_ORDER, payload: "asc" });
+    }
+    dispatch({ type: actionType.FILTER_SORT_EMPLOYEES });
+  };
+
   return (
-    <div className={styles.employeeListingContainer}>
-      <div className={styles.topbar}>
-        <div className={styles.header}>
-          <h1>Employees</h1>
-          <GoFilter
-            className="filter-toggle"
-            size={36}
-            onClick={() => setToggleFilter(!toggleFilter)}
-          />
-          <Tooltip
-            anchorSelect=".filter-toggle"
-            place="right"
-            variant="info"
-            content="Toggle Filter Options"
-          />
+    <Fade>
+      <div className={styles.employeeListingContainer}>
+        <div className={styles.topbar}>
+          <div className={styles.header}>
+            <h1>Employees</h1>
+            <GoFilter
+              className="filter-toggle"
+              size={36}
+              onClick={() => setToggleFilter(!toggleFilter)}
+            />
+            <Tooltip
+              anchorSelect=".filter-toggle"
+              place="right"
+              variant="info"
+              content="Toggle Filter Options"
+            />
+          </div>
+          <Button onClick={() => navigate("/add")}>
+            <BiUserPlus size={32} />
+          </Button>
         </div>
-        <Button onClick={() => navigate("/add")}>
-          <BiUserPlus size={32} />
-        </Button>
+        {toggleFilter && (
+          <Fade>
+            <FilterOptions
+              handleToggleFilter={() => setToggleFilter(!toggleFilter)}
+            />
+          </Fade>
+        )}
+        <TableView
+          handleSort={handleSort}
+          handleRowClick={handleRowClick}
+          tableHeaders={employeeTableHeader}
+          tableData={state.filteredEmployees}
+        />
       </div>
-      {toggleFilter && (
-        <Fade>
-          <FilterOptions
-            handleToggleFilter={() => setToggleFilter(!toggleFilter)}
-          />
-        </Fade>
-      )}
-      <TableView
-        handleRowClick={handleRowClick}
-        tableHeaders={employeeTableHeader}
-        tableData={employees}
-      />
-    </div>
+    </Fade>
   );
 };
 export default EmployeeListing;

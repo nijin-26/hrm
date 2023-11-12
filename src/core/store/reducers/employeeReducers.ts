@@ -1,4 +1,3 @@
-import { employees } from "../../constants";
 import { IAppContextState } from "../../interfaces/AppContextInterface";
 
 import { IContextAction, IEmployeeDetails } from "../../interfaces/Common";
@@ -10,9 +9,8 @@ export const employeeReducer = (
   action: IContextAction
 ) => {
   switch (action.type) {
-    case actionTypes.FETCH_EMPLOYEES: {
-      //TODO: Call API
-      const employeeData = getEmployeeData(employees);
+    case actionTypes.SET_EMPLOYEES: {
+      const employeeData = getEmployeeData(action.payload);
       return employeeData;
     }
     default:
@@ -28,8 +26,9 @@ export const filteredEmployeesReducer = (
   let filteredEmployees = [...employees];
 
   switch (action.type) {
-    case actionTypes.FILTER_EMPLOYEES: {
-      const { name, department, role, skills } = state.filter;
+    case actionTypes.FILTER_SORT_EMPLOYEES: {
+      const { name, department, role, skills, sortBy, sortOrder } =
+        state.filterSort;
 
       if (name !== "")
         filteredEmployees = filteredEmployees.filter((employee) =>
@@ -54,10 +53,16 @@ export const filteredEmployeesReducer = (
         });
       }
 
+      filteredEmployees = filteredEmployees.sort((a, b) => {
+        const aValue = (a as any)[sortBy]?.toLowerCase();
+        const bValue = (b as any)[sortBy]?.toLowerCase();
+
+        if (aValue < bValue) return sortOrder === "asc" ? -1 : 1;
+        if (aValue > bValue) return sortOrder === "asc" ? 1 : -1;
+        return 0;
+      });
+
       return filteredEmployees;
-    }
-    case actionTypes.RESET_FILTERS: {
-      return state.filteredEmployees;
     }
     default:
       return state.filteredEmployees;

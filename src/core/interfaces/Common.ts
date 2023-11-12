@@ -25,6 +25,7 @@ export interface IModal {
 }
 
 export interface IFilterSelect {
+  placeholder: string;
   name: string;
   options: { id: string; name: string }[];
   value: string;
@@ -36,6 +37,8 @@ export interface ISearchSkills {
   placeholder: string;
   listOfSkills: { id: string; name: string }[];
   selectedSkills: { id: string; name: string }[];
+  searchInput: string;
+  handleInput: (value: string) => void;
   handleSelectedSkills: (value: string) => void;
   removeSelectedSkill: (value: string) => void;
 }
@@ -55,11 +58,13 @@ export interface ITableViewProps<T, U> {
   tableHeaders: T[];
   tableData: U[];
   handleRowClick: (e: MouseEvent<HTMLElement>, id: string) => void;
+  handleSort: (column: string) => void;
 }
 
 export interface ITableHeader {
   id: string;
   name: string;
+  isSortable: boolean;
 }
 
 export interface IEmployeeDetails {

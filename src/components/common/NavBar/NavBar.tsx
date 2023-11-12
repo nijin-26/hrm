@@ -25,7 +25,7 @@ const NavBar = () => {
         value: target.value,
       },
     });
-    dispatch({ type: actionTypes.FILTER_EMPLOYEES });
+    dispatch({ type: actionTypes.FILTER_SORT_EMPLOYEES });
   };
 
   return (

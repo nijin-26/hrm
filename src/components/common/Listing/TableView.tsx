@@ -4,6 +4,7 @@ import { ITableViewProps } from "../../../core/interfaces/Common";
 const TableView = <T, U>({
   tableHeaders,
   tableData,
+  handleSort,
   handleRowClick,
 }: ITableViewProps<T, U>) => {
   return (
@@ -12,7 +13,12 @@ const TableView = <T, U>({
         <thead>
           <tr>
             {tableHeaders.map((header: any) => (
-              <th key={header.id}>{header.name}</th>
+              <th
+                onClick={() => header.isSortable && handleSort(header.id)}
+                key={header.id}
+              >
+                {header.name}
+              </th>
             ))}
           </tr>
         </thead>

@@ -13,25 +13,28 @@ import actionTypes from "../../../core/store/actionTypes";
 
 const FilterOptions = ({ handleToggleFilter }: IFilterOptions) => {
   const { state, dispatch } = useAppContext();
-  const { filter } = state;
+  const { filterSort } = state;
 
   const {
     skills,
     selectedSkills,
+    searchInput,
+    handleInput,
     handleSelectedSkills,
     handleRemoveSelectedSkill,
     handleResetSkills,
   } = useSkills();
 
   useEffect(() => {
+    console.log("hi", selectedSkills);
     dispatch({
       type: actionTypes.SET_FILTERS,
       payload: {
-        name: skills,
+        name: "skills",
         value: selectedSkills,
       },
     });
-    dispatch({ type: actionTypes.FILTER_EMPLOYEES });
+    dispatch({ type: actionTypes.FILTER_SORT_EMPLOYEES });
   }, [selectedSkills]);
 
   const handleFilterChange = (e: ChangeEvent) => {
@@ -43,31 +46,37 @@ const FilterOptions = ({ handleToggleFilter }: IFilterOptions) => {
         value: target.value,
       },
     });
-    dispatch({ type: actionTypes.FILTER_EMPLOYEES });
+    dispatch({ type: actionTypes.FILTER_SORT_EMPLOYEES });
   };
 
   const handleClearFilters = () => {
     handleResetSkills();
+    dispatch({ type: actionTypes.RESET_FILTERS });
+    dispatch({ type: actionTypes.FILTER_SORT_EMPLOYEES });
   };
 
   return (
     <FilterOptionsWrapper className="flex">
       <FilterSelect
+        placeholder="Department"
         name="department"
         options={departments}
-        value={filter.department}
+        value={filterSort.department}
         onChange={handleFilterChange}
       />
       <FilterSelect
+        placeholder="Role"
         name="role"
         options={roles}
-        value={filter.role}
+        value={filterSort.role}
         onChange={handleFilterChange}
       />
       <div className="skillWrapper">
         <SearchSkill
           position="inside"
           placeholder="Search by skills"
+          searchInput={searchInput}
+          handleInput={handleInput}
           listOfSkills={skills}
           selectedSkills={selectedSkills}
           handleSelectedSkills={handleSelectedSkills}

@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { ISkills } from "../interfaces/Common";
 
 function useSkills() {
+  const [searchInput, setSearchInput] = useState<string>("");
   const [skills, setSkills] = useState<ISkills[]>([]);
   const [selectedSkills, setSelectedSkills] = useState<ISkills[]>([]);
 
@@ -10,6 +11,8 @@ function useSkills() {
     // TODO: Fetch all skills from Firebase
     setSkills(skillList);
   }, [skillList]);
+
+  const handleInput = (value: string) => setSearchInput(value);
 
   const handleSelectedSkills = (id: string) => {
     const selectedSkill = skills.find((skill) => skill.id === id);
@@ -29,6 +32,7 @@ function useSkills() {
   };
 
   const handleResetSkills = () => {
+    setSearchInput("");
     setSelectedSkills([]);
     setSkills(skillList);
   };
@@ -36,6 +40,8 @@ function useSkills() {
   return {
     skills,
     selectedSkills,
+    searchInput,
+    handleInput,
     handleSelectedSkills,
     handleRemoveSelectedSkill,
     handleResetSkills,

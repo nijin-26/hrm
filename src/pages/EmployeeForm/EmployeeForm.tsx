@@ -19,6 +19,7 @@ import { employeeFormValidationSchema } from "../../core/utils/employeeFormValid
 import { IEmployeeDetails } from "../../core/interfaces/Common";
 import { useAppContext } from "../../core/store/AppContext";
 import { getFormattedDate } from "../../core/utils/formatDate";
+import { Fade } from "react-awesome-reveal";
 
 const EmployeeForm = () => {
   const { state } = useAppContext();
@@ -27,6 +28,8 @@ const EmployeeForm = () => {
   const {
     skills,
     selectedSkills,
+    searchInput,
+    handleInput,
     handleSelectedSkills,
     handleRemoveSelectedSkill,
   } = useSkills();
@@ -74,7 +77,7 @@ const EmployeeForm = () => {
   } as CSSProperties;
 
   return (
-    <>
+    <Fade>
       <h1 className="text-center">{`${
         currentFormType === "edit" ? "Edit" : "Add"
       } Employee`}</h1>
@@ -138,6 +141,8 @@ const EmployeeForm = () => {
                 placeholder="Search skills to add"
                 listOfSkills={skills}
                 selectedSkills={selectedSkills}
+                searchInput={searchInput}
+                handleInput={handleInput}
                 handleSelectedSkills={handleSelectedSkills}
                 removeSelectedSkill={handleRemoveSelectedSkill}
               />
@@ -150,7 +155,7 @@ const EmployeeForm = () => {
           </Form>
         </Formik>
       </div>
-    </>
+    </Fade>
   );
 };
 
