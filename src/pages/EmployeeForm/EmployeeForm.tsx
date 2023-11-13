@@ -6,12 +6,7 @@ import useSkills from "../../core/hooks/useSkills";
 
 import style from "./style.module.scss";
 import Select from "../../components/common/Select/Select";
-import {
-  departments,
-  roles,
-  skillList,
-  workLocation,
-} from "../../core/constants";
+import { departments, roles, workLocation } from "../../core/constants";
 import Button from "../../components/common/Button/Button";
 import { useLocation } from "react-router-dom";
 import { CSSProperties, useTheme } from "styled-components";

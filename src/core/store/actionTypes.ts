@@ -10,6 +10,12 @@ const SET_SORT_ORDER = "SET_SORT_ORDER";
 // Skills
 const SET_SKILLS = "SET_SKILLS";
 
+// Department
+const SET_DEPARTMENTS = "SET_DEPARTMENTS";
+
+// Roles
+const SET_ROLES = "SET_ROLES";
+
 export default {
   SET_EMPLOYEES,
   SET_FILTERED_EMPLOYEES,
@@ -19,4 +25,6 @@ export default {
   SET_SORT_BY,
   SET_SORT_ORDER,
   SET_SKILLS,
+  SET_DEPARTMENTS,
+  SET_ROLES,
 };

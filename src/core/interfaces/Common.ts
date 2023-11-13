@@ -15,7 +15,8 @@ export interface IButton {
 }
 
 export interface IFilterOptions {
-  handleToggleFilter: () => void;
+  departments: IDepartment[];
+  roles: IRoles[];
 }
 
 export interface IModal {
@@ -50,6 +51,16 @@ export interface IImageUpload {
 }
 
 export interface ISkills {
+  id: string;
+  name: string;
+}
+
+export interface IRoles {
+  id: string;
+  name: string;
+}
+
+export interface IDepartment {
   id: string;
   name: string;
 }

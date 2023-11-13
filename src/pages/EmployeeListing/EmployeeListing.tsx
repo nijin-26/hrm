@@ -1,7 +1,12 @@
 import { GoFilter } from "react-icons/go";
 import FilterOptions from "../../components/Employee/FilterOptions/FilterOptions";
 import TableView from "../../components/common/Listing/TableView";
-import { employeeTableHeader, employees } from "../../core/constants";
+import {
+  departments,
+  employeeTableHeader,
+  employees,
+  roles,
+} from "../../core/constants";
 
 import styles from "./style.module.scss";
 import { MouseEvent, useEffect, useState } from "react";
@@ -24,6 +29,10 @@ const EmployeeListing = () => {
     // TODO: Fetch employees
     dispatch({ type: actionType.SET_EMPLOYEES, payload: employees });
     dispatch({ type: actionType.SET_FILTERED_EMPLOYEES, payload: employees });
+
+    //TODO: Fetch Departments & Roles
+    dispatch({ type: actionType.SET_DEPARTMENTS, payload: departments });
+    dispatch({ type: actionType.SET_ROLES, payload: roles });
   }, []);
 
   const handleRowClick = (e: MouseEvent<HTMLElement>, id: string) => {
@@ -70,7 +79,8 @@ const EmployeeListing = () => {
         {toggleFilter && (
           <Fade>
             <FilterOptions
-              handleToggleFilter={() => setToggleFilter(!toggleFilter)}
+              roles={state.roles}
+              departments={state.departments}
             />
           </Fade>
         )}

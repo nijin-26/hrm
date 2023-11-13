@@ -11,7 +11,7 @@ const initialState: IAppContextState = {
   filteredEmployees: [],
   skills: [],
   roles: [],
-  department: [],
+  departments: [],
   filterSort: {
     name: "",
     department: "",

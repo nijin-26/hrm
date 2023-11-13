@@ -2,7 +2,6 @@ import { ChangeEvent, useEffect, useState } from "react";
 import SearchSkill from "../../common/SearchSkill/SearchSkill";
 import FilterSelect from "../../common/FilterSelect/FilterSelect";
 import { FilterOptionsWrapper } from "./FilterOptions.style";
-import { departments, roles } from "../../../core/constants";
 import useSkills from "../../../core/hooks/useSkills";
 
 import { MdFilterListOff } from "react-icons/md";
@@ -11,7 +10,7 @@ import { Tooltip } from "react-tooltip";
 import { useAppContext } from "../../../core/store/AppContext";
 import actionTypes from "../../../core/store/actionTypes";
 
-const FilterOptions = ({ handleToggleFilter }: IFilterOptions) => {
+const FilterOptions = ({ departments, roles }: IFilterOptions) => {
   const { state, dispatch } = useAppContext();
   const { filterSort } = state;
 
@@ -26,6 +25,7 @@ const FilterOptions = ({ handleToggleFilter }: IFilterOptions) => {
   } = useSkills();
 
   useEffect(() => {
+    // Store selected skills in Global Store for filtering employees.
     dispatch({
       type: actionTypes.SET_FILTERS,
       payload: {

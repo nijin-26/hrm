@@ -1,5 +1,5 @@
 import { Dispatch } from "react";
-import { IEmployeeDetails, ISkills } from "./Common";
+import { IDepartment, IEmployeeDetails, IRoles, ISkills } from "./Common";
 
 export interface IFilterSortReducer {
   name: string;
@@ -14,8 +14,8 @@ export interface IAppContextState {
   employees: IEmployeeDetails[];
   filteredEmployees: IEmployeeDetails[];
   skills: ISkills[];
-  roles: string[];
-  department: string[];
+  roles: IRoles[];
+  departments: IDepartment[];
   filterSort: IFilterSortReducer;
 }
 
