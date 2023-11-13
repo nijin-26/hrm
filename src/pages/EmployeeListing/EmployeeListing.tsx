@@ -27,8 +27,10 @@ const EmployeeListing = () => {
 
   useEffect(() => {
     // TODO: Fetch employees
-    dispatch({ type: actionType.SET_EMPLOYEES, payload: employees });
-    dispatch({ type: actionType.SET_FILTERED_EMPLOYEES, payload: employees });
+    if (state.employees.length === 0)
+      dispatch({ type: actionType.SET_EMPLOYEES, payload: employees });
+
+    dispatch({ type: actionType.SET_FILTERED_EMPLOYEES });
 
     //TODO: Fetch Departments & Roles
     dispatch({ type: actionType.SET_DEPARTMENTS, payload: departments });

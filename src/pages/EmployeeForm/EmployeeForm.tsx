@@ -16,10 +16,14 @@ import { useAppContext } from "../../core/store/AppContext";
 import { getFormattedDate } from "../../core/utils/formatDate";
 import { Fade } from "react-awesome-reveal";
 import { ChangeEvent, useState } from "react";
+import moment from "moment";
+import { generateUniqueKey } from "../../core/utils/generateUniqueID";
+import actionTypes from "../../core/store/actionTypes";
 
 const EmployeeForm = () => {
-  const [imageSrc, setImageSrc] = useState<string>("");
-  const { state } = useAppContext();
+  const [imageFile, setImageFile] = useState<File | null>(null);
+
+  const { state, dispatch } = useAppContext();
   const location = useLocation();
   const theme = useTheme();
   const {
@@ -45,7 +49,7 @@ const EmployeeForm = () => {
     skill: [],
   };
 
-  const currentFormType = location.pathname.split("/")[1];
+  const currentFormType = location.pathname.split("/")[1] || "add";
   const employeeId = location.pathname.split("/")[2];
 
   if (currentFormType === "edit" && employeeId) {
@@ -67,18 +71,28 @@ const EmployeeForm = () => {
 
   const handleImageInput = (e: ChangeEvent) => {
     const target = e.target as HTMLInputElement;
-    if (target.files && target.files.length !== 0) {
-      const imageSrc = URL.createObjectURL(target.files[0]);
-      setImageSrc(imageSrc);
-    }
+    if (target.files && target.files.length !== 0)
+      setImageFile(target.files[0]);
   };
 
   const removeSelectedImage = () => {
-    setImageSrc("");
+    setImageFile(null);
   };
 
-  const handleFormSubmit = (values: IEmployeeDetails) => {
-    console.log(values);
+  const handleEmployeeAdd = (values: IEmployeeDetails) => {
+    const employeeDetails = {
+      ...values,
+      id: generateUniqueKey(state.employees),
+      dateOfBirth: moment(values.dateOfBirth, "YYYY-MM-DD").valueOf(),
+      dateOfJoin: moment(values.dateOfJoin, "YYYY-MM-DD").valueOf(),
+      imageURL: imageFile ? URL.createObjectURL(imageFile as File) : "", //TODO: Upload image and get image URL
+      skill: selectedSkills.map((skill) => skill.id),
+    };
+    dispatch({ type: actionTypes.ADD_EMPLOYEE, payload: employeeDetails });
+  };
+
+  const handleEmployeeUpdate = (values: IEmployeeDetails) => {
+    console.log(values, "update meployee");
   };
 
   const formContainerStyle = {
@@ -92,14 +106,18 @@ const EmployeeForm = () => {
       } Employee`}</h1>
       <div className={style.formContainer} style={formContainerStyle}>
         <ImageUpload
-          src={imageSrc}
+          src={imageFile ? URL.createObjectURL(imageFile as File) : ""}
           removeSelectedImage={removeSelectedImage}
           handleImageInput={handleImageInput}
         />
         <Formik
           initialValues={initialEmployeeDetails}
           validationSchema={employeeFormValidationSchema}
-          onSubmit={handleFormSubmit}
+          onSubmit={
+            currentFormType === "edit"
+              ? handleEmployeeUpdate
+              : handleEmployeeAdd
+          }
         >
           <Form style={{ marginTop: "40px" }}>
             <div className={style.inputGroup}>

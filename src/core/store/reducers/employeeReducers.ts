@@ -13,6 +13,18 @@ export const employeeReducer = (
       const employeeData = getEmployeeData(action.payload);
       return employeeData;
     }
+    case actionTypes.ADD_EMPLOYEE: {
+      const updatedEmployee = [...state, action.payload];
+      const employeeData = getEmployeeData(updatedEmployee);
+      console.log(employeeData);
+      return employeeData;
+    }
+    case actionTypes.UPDATE_EMPLOYEE: {
+      return state;
+    }
+    case actionTypes.DELETE_EMPLOYEE: {
+      return state;
+    }
     default:
       return state;
   }

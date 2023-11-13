@@ -14,10 +14,6 @@ const TableView = <T, U>({
   const { state } = useAppContext();
   const { sortBy, sortOrder } = state.filterSort;
 
-  useEffect(() => {
-    console.log(sortBy, sortOrder, "table view");
-  }, []);
-
   const handleCurrentSortIcon = () => {
     if (sortOrder === "asc") return <TiArrowSortedDown size={24} />;
     else return <TiArrowSortedUp size={24} />;
