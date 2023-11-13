@@ -1,9 +1,7 @@
 import { TableWrapper } from "./listing.styles";
 import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
-import { AiOutlineSortAscending } from "react-icons/ai";
 import { ITableViewProps } from "../../../core/interfaces/Common";
 import { useAppContext } from "../../../core/store/AppContext";
-import { useEffect } from "react";
 
 const TableView = <T, U>({
   tableHeaders,
@@ -47,6 +45,11 @@ const TableView = <T, U>({
               ))}
             </tr>
           ))}
+          {tableData.length === 0 && (
+            <tr className="not-found">
+              <td colSpan={tableHeaders.length}>Employee not found</td>
+            </tr>
+          )}
         </tbody>
       </table>
     </TableWrapper>

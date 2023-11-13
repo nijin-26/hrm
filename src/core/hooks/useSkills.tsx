@@ -1,23 +1,35 @@
 import { skillList } from "../constants";
 import { useState, useEffect } from "react";
 import { ISkills } from "../interfaces/Common";
+import { useAppContext } from "../store/AppContext";
 
 function useSkills() {
   const [searchInput, setSearchInput] = useState<string>("");
   const [skills, setSkills] = useState<ISkills[]>([]);
   const [selectedSkills, setSelectedSkills] = useState<ISkills[]>([]);
 
+  const { state } = useAppContext();
+
   useEffect(() => {
     // TODO: Fetch all skills from Firebase
-    setSkills(skillList);
-  }, [skillList]);
+    setSkills([...state.skills]);
+
+    return () => handleResetSkills();
+  }, []);
 
   const handleInput = (value: string) => setSearchInput(value);
 
-  const handleSelectedSkills = (id: string) => {
-    const selectedSkill = skills.find((skill) => skill.id === id);
-    const updatedListOfSkills = skills.filter((skill) => skill.id !== id);
-    setSelectedSkills((prev) => [...prev, selectedSkill] as ISkills[]);
+  const handleSelectedSkills = (ids: string | string[]) => {
+    const idArray = Array.isArray(ids) ? ids : [ids];
+
+    const selectedSkillsToAdd = state.skills.filter((skill) =>
+      idArray.includes(skill.id)
+    );
+    const updatedListOfSkills = state.skills.filter(
+      (skill) => !idArray.includes(skill.id)
+    );
+
+    setSelectedSkills((prev) => [...prev, ...selectedSkillsToAdd]);
     setSkills(updatedListOfSkills);
   };
 

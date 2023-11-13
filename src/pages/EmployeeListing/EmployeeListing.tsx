@@ -6,6 +6,7 @@ import {
   employeeTableHeader,
   employees,
   roles,
+  skillList,
 } from "../../core/constants";
 
 import styles from "./style.module.scss";
@@ -35,6 +36,7 @@ const EmployeeListing = () => {
     //TODO: Fetch Departments & Roles
     dispatch({ type: actionType.SET_DEPARTMENTS, payload: departments });
     dispatch({ type: actionType.SET_ROLES, payload: roles });
+    dispatch({ type: actionType.SET_SKILLS, payload: skillList });
   }, []);
 
   const handleRowClick = (e: MouseEvent<HTMLElement>, id: string) => {

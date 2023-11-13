@@ -13,7 +13,6 @@ import styled, { CSSProperties, useTheme } from "styled-components";
 import placeholder from "../../assets/placeholder-image.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { departments, employees, roles, skillList } from "../../core/constants";
 import { IEmployeeDetails } from "../../core/interfaces/Common";
 import { getFormattedDate } from "../../core/utils/formatDate";
 import { useAppContext } from "../../core/store/AppContext";
@@ -37,13 +36,13 @@ const EmployeeView = () => {
 
   let department =
     selectedEmployee &&
-    departments.find(
+    state.departments.find(
       (department) => department.id === selectedEmployee?.department
     );
 
   let role =
     selectedEmployee &&
-    roles.find((role) => role.id === selectedEmployee?.role);
+    state.roles.find((role) => role.id === selectedEmployee?.role);
 
   const employeeDetailsStyle = {
     color: theme.fontColor,
@@ -139,7 +138,7 @@ const EmployeeView = () => {
         <h4>Skills</h4>
         <SelectedSkillsContainer>
           {selectedEmployee?.skill?.map((skillId) => {
-            const skill = skillList.find((skill) => skill.id === skillId);
+            const skill = state.skills.find((skill) => skill.id === skillId);
             return (
               skill && (
                 <span key={skill.id} className="selectedSkillTag">

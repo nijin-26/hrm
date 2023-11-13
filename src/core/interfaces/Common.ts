@@ -89,6 +89,6 @@ export interface IEmployeeDetails {
   imageURL?: string;
   department?: string;
   role?: string;
-  skill?: string[];
+  skill: string[];
   actions?: JsxElement | ReactNode;
 }

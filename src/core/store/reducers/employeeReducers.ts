@@ -16,11 +16,14 @@ export const employeeReducer = (
     case actionTypes.ADD_EMPLOYEE: {
       const updatedEmployee = [...state, action.payload];
       const employeeData = getEmployeeData(updatedEmployee);
-      console.log(employeeData);
       return employeeData;
     }
     case actionTypes.UPDATE_EMPLOYEE: {
-      return state;
+      const updatedEmployees = state.map((employee) => {
+        if (employee.id === action.payload.id) return { ...action.payload };
+        else return employee;
+      });
+      return getEmployeeData(updatedEmployees);
     }
     case actionTypes.DELETE_EMPLOYEE: {
       return state;

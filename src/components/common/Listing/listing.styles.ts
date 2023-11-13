@@ -30,6 +30,12 @@ export const TableWrapper = styled.div`
     cursor: pointer;
   }
 
+  tr.not-found {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+  }
+
   tr:hover {
     background-color: ${(props) => props.theme.secondary};
     color: ${(props) => props.theme.primary};
