@@ -6,6 +6,7 @@ const Button = ({
   type = "button",
   btnType = "primary",
   children,
+  disabled,
   onClick,
 }: IButton) => {
   return (
@@ -14,6 +15,7 @@ const Button = ({
       btnType={btnType}
       type={type}
       onClick={onClick}
+      disabled={disabled}
     >
       {children}
     </StyledButton>

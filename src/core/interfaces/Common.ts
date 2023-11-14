@@ -9,9 +9,10 @@ export interface IContextAction {
 export interface IButton {
   className?: string;
   type?: "button" | "submit" | "reset";
-  btnType?: "primary" | "secondary";
+  btnType?: "primary" | "secondary" | "disabled";
   children: ReactNode;
   onClick?: () => void;
+  disabled?: boolean;
 }
 
 export interface IFilterOptions {
