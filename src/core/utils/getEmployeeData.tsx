@@ -16,7 +16,7 @@ export const getEmployeeData = (
           <span id="edit">
             <BiEdit />
           </span>
-          <span id="remove">
+          <span id="delete">
             <BiUserMinus />
           </span>
         </div>

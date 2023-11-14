@@ -26,7 +26,10 @@ export const employeeReducer = (
       return getEmployeeData(updatedEmployees);
     }
     case actionTypes.DELETE_EMPLOYEE: {
-      return state;
+      const updatedEmployees = state.filter(
+        (employee) => employee.id !== action.payload
+      );
+      return updatedEmployees;
     }
     default:
       return state;

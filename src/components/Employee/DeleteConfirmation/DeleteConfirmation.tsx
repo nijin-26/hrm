@@ -11,8 +11,8 @@ const DeleteConfirmation = ({
   handleEmployeeDelete,
 }: {
   employeeId: string;
-  handleModalClose?: () => {};
-  handleEmployeeDelete?: () => {};
+  handleModalClose: () => void;
+  handleEmployeeDelete: (id: string) => void;
 }) => {
   const [confirmationId, setConfirmationId] = useState("");
   const isValid = confirmationId !== employeeId;
@@ -23,7 +23,8 @@ const DeleteConfirmation = ({
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    // Add logic for form submission here
+    handleEmployeeDelete(confirmationId);
+    setConfirmationId("");
   };
 
   return (
@@ -46,7 +47,6 @@ const DeleteConfirmation = ({
           type="submit"
           btnType={isValid ? "disabled" : "primary"}
           disabled={isValid}
-          onClick={handleEmployeeDelete}
         >
           Delete
         </Button>

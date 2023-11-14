@@ -18,9 +18,13 @@ import { Fade } from "react-awesome-reveal";
 import { Tooltip } from "react-tooltip";
 import { useAppContext } from "../../core/store/AppContext";
 import actionType from "../../core/store/actionTypes";
+import DeleteConfirmation from "../../components/Employee/DeleteConfirmation/DeleteConfirmation";
+import Modal from "../../components/common/Modal/Modal";
 
 const EmployeeListing = () => {
+  const [employeeId, setEmployeeId] = useState<string>("");
   const [toggleFilter, setToggleFilter] = useState(true);
+  const [toggleDeleteModal, setToggleDeleteModal] = useState<boolean>(false);
   const { state, dispatch } = useAppContext();
   const { sortBy, sortOrder } = state.filterSort;
 
@@ -42,6 +46,10 @@ const EmployeeListing = () => {
   const handleRowClick = (e: MouseEvent<HTMLElement>, id: string) => {
     const target = e.target as HTMLElement;
     if (target.closest("#edit")) navigate(`/edit/${id}`);
+    if (target.closest("#delete")) {
+      setToggleDeleteModal(true);
+      setEmployeeId(id);
+    }
     if (target.tagName === "TD") navigate(`/view/${id}`);
   };
 
@@ -57,6 +65,15 @@ const EmployeeListing = () => {
     }
     dispatch({ type: actionType.FILTER_SORT_EMPLOYEES });
   };
+
+  const handleEmployeeDelete = (id: string) => {
+    dispatch({ type: actionType.DELETE_EMPLOYEE, payload: id });
+    setToggleDeleteModal(false);
+    setEmployeeId("");
+    dispatch({ type: actionType.FILTER_SORT_EMPLOYEES });
+  };
+
+  const handleModalClose = () => setToggleDeleteModal(false);
 
   return (
     <Fade>
@@ -94,6 +111,13 @@ const EmployeeListing = () => {
           tableHeaders={employeeTableHeader}
           tableData={state.filteredEmployees}
         />
+        <Modal isOpen={toggleDeleteModal} handleModalClose={handleModalClose}>
+          <DeleteConfirmation
+            handleModalClose={handleModalClose}
+            handleEmployeeDelete={handleEmployeeDelete}
+            employeeId={employeeId}
+          />
+        </Modal>
       </div>
     </Fade>
   );
