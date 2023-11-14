@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/hrm/static/css/main.e38a93f7.css",
-    "main.js": "/hrm/static/js/main.8d0ab5f4.js",
+    "main.js": "/hrm/static/js/main.e599d08e.js",
     "static/media/placeholder-image.png": "/hrm/static/media/placeholder-image.65f9347f9da59256b8cb.png",
     "static/media/logo.png": "/hrm/static/media/logo.c62bc16b94c77b51cfd5.png",
     "index.html": "/hrm/index.html",
     "main.e38a93f7.css.map": "/hrm/static/css/main.e38a93f7.css.map",
-    "main.8d0ab5f4.js.map": "/hrm/static/js/main.8d0ab5f4.js.map"
+    "main.e599d08e.js.map": "/hrm/static/js/main.e599d08e.js.map"
   },
   "entrypoints": [
     "static/css/main.e38a93f7.css",
-    "static/js/main.8d0ab5f4.js"
+    "static/js/main.e599d08e.js"
   ]
 }
