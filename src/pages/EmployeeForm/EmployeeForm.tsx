@@ -10,46 +10,120 @@ import { departments, roles, workLocation } from "../../core/constants";
 import Button from "../../components/common/Button/Button";
 import { useLocation } from "react-router-dom";
 import { CSSProperties, useTheme } from "styled-components";
+import { employeeFormValidationSchema } from "../../core/utils/employeeFormValidationSchema";
+import { IEmployeeDetails, ISkills } from "../../core/interfaces/Common";
+import { useAppContext } from "../../core/store/AppContext";
+import { getFormattedDate } from "../../core/utils/formatDate";
+import { Fade } from "react-awesome-reveal";
+import { ChangeEvent, useEffect, useState } from "react";
+import moment from "moment";
+import { generateUniqueKey } from "../../core/utils/generateUniqueID";
+import actionTypes from "../../core/store/actionTypes";
 
 const EmployeeForm = () => {
+  const [initialEmployeeDetails, setInitialEmployeeDetails] =
+    useState<IEmployeeDetails>({
+      id: "",
+      fullName: "",
+      dateOfBirth: "",
+      dateOfJoin: "",
+      email: "",
+      mobile: "",
+      workLocation: "",
+      imageURL: "",
+      department: "",
+      role: "",
+      skill: [],
+    });
+  const [imageFile, setImageFile] = useState<File | null>(null);
+
+  const { state, dispatch } = useAppContext();
   const location = useLocation();
   const theme = useTheme();
-  console.log(theme);
-  const employeeDetails = {
-    id: "",
-    fullName: "",
-    dateOfBirth: 0,
-    dateOfJoin: 0,
-    email: "",
-    mobile: "",
-    workLocation: "",
-    imageURL: "",
-    department: "",
-    role: "",
-    skill: [],
-  };
-
   const {
     skills,
     selectedSkills,
+    searchInput,
+    handleInput,
     handleSelectedSkills,
     handleRemoveSelectedSkill,
   } = useSkills();
 
-  const currentFormType = location.pathname.split("/")[1];
+  const currentFormType = location.pathname.split("/")[1] || "add";
+  const employeeId = location.pathname.split("/")[2];
+
+  useEffect(() => {
+    if (currentFormType === "edit" && employeeId) {
+      const selectedEmp: IEmployeeDetails | undefined = state.employees.find(
+        (employee) => employee.id === employeeId
+      );
+
+      if (selectedEmp) {
+        const selectedEmpDetails = {
+          ...selectedEmp,
+          dateOfBirth: getFormattedDate(selectedEmp.dateOfBirth as string)[1],
+          dateOfJoin: getFormattedDate(selectedEmp.dateOfJoin as string)[1],
+        };
+        setInitialEmployeeDetails(selectedEmpDetails);
+
+        // * Faced too many rerendering issue below. Somehow fixed it.
+        if (selectedEmp.skill !== undefined)
+          handleSelectedSkills(selectedEmp.skill);
+      }
+    }
+  }, []);
+
+  const handleImageInput = (e: ChangeEvent) => {
+    const target = e.target as HTMLInputElement;
+    if (target.files && target.files.length !== 0)
+      setImageFile(target.files[0]);
+  };
+
+  const removeSelectedImage = () => {
+    setImageFile(null);
+  };
+
+  const handleFormSubmit = (values: IEmployeeDetails) => {
+    const employeeDetails = {
+      ...values,
+      id: values.id ? values.id : generateUniqueKey(state.employees),
+      dateOfBirth: moment(values.dateOfBirth, "YYYY-MM-DD").valueOf(),
+      dateOfJoin: moment(values.dateOfJoin, "YYYY-MM-DD").valueOf(),
+      imageURL: imageFile
+        ? URL.createObjectURL(imageFile as File)
+        : values.imageURL, //TODO: Upload image and get image URL
+      skill: selectedSkills.map((skill) => skill.id),
+    };
+
+    currentFormType === "edit"
+      ? dispatch({
+          type: actionTypes.UPDATE_EMPLOYEE,
+          payload: employeeDetails,
+        })
+      : dispatch({ type: actionTypes.ADD_EMPLOYEE, payload: employeeDetails });
+  };
 
   const formContainerStyle = {
     backgroundColor: theme.bgColor,
   } as CSSProperties;
 
   return (
-    <>
+    <Fade>
       <h1 className="text-center">{`${
         currentFormType === "edit" ? "Edit" : "Add"
       } Employee`}</h1>
       <div className={style.formContainer} style={formContainerStyle}>
-        <ImageUpload />
-        <Formik initialValues={employeeDetails} onSubmit={() => {}}>
+        <ImageUpload
+          src={imageFile ? URL.createObjectURL(imageFile as File) : ""}
+          removeSelectedImage={removeSelectedImage}
+          handleImageInput={handleImageInput}
+        />
+        <Formik
+          enableReinitialize
+          initialValues={initialEmployeeDetails}
+          validationSchema={employeeFormValidationSchema}
+          onSubmit={handleFormSubmit}
+        >
           <Form style={{ marginTop: "40px" }}>
             <div className={style.inputGroup}>
               <Input
@@ -103,6 +177,8 @@ const EmployeeForm = () => {
                 placeholder="Search skills to add"
                 listOfSkills={skills}
                 selectedSkills={selectedSkills}
+                searchInput={searchInput}
+                handleInput={handleInput}
                 handleSelectedSkills={handleSelectedSkills}
                 removeSelectedSkill={handleRemoveSelectedSkill}
               />
@@ -115,7 +191,7 @@ const EmployeeForm = () => {
           </Form>
         </Formik>
       </div>
-    </>
+    </Fade>
   );
 };
 

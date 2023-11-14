@@ -10,15 +10,11 @@
   .inputGroup {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     gap: 30px;
     margin: 20px 0;
     width: 100%;
     font-size: 14px;
-
-    & input {
-      width: 85%;
-    }
   }
 
   .formButtons {

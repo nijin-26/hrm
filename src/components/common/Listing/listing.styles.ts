@@ -11,6 +11,12 @@ export const TableWrapper = styled.div`
     width: 100%;
   }
 
+  th > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   table,
   th,
   td {
@@ -22,6 +28,12 @@ export const TableWrapper = styled.div`
   tr {
     transition: 0.4s ease-in;
     cursor: pointer;
+  }
+
+  tr.not-found {
+    color: red;
+    font-weight: bold;
+    text-align: center;
   }
 
   tr:hover {

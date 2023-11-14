@@ -1,6 +1,9 @@
 import styled from "styled-components";
 
 export const Nav = styled.nav`
+  position: sticky;
+  top: 0;
+  z-index: 101;
   width: 100%;
   background-color: ${(props) => props.theme.primary};
 
