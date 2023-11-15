@@ -71,6 +71,7 @@ export interface ITableViewProps<T, U> {
   tableData: U[];
   handleRowClick: (e: MouseEvent<HTMLElement>, id: string) => void;
   handleSort: (column: string) => void;
+  loading: boolean;
 }
 
 export interface ITableHeader {

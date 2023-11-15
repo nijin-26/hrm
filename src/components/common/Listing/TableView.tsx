@@ -2,12 +2,14 @@ import { TableWrapper } from "./listing.styles";
 import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
 import { ITableViewProps } from "../../../core/interfaces/Common";
 import { useAppContext } from "../../../core/store/AppContext";
+import { Loader } from "../Loader/Loader";
 
 const TableView = <T, U>({
   tableHeaders,
   tableData,
   handleSort,
   handleRowClick,
+  loading,
 }: ITableViewProps<T, U>) => {
   const { state } = useAppContext();
   const { sortBy, sortOrder } = state.filterSort;
@@ -38,13 +40,24 @@ const TableView = <T, U>({
           </tr>
         </thead>
         <tbody>
-          {tableData.map((rowData: any) => (
-            <tr key={rowData.id} onClick={(e) => handleRowClick(e, rowData.id)}>
-              {tableHeaders.map((header: any) => (
-                <td key={header.id}>{rowData[header.id]}</td>
-              ))}
+          {loading ? (
+            <tr className="not-found">
+              <td colSpan={tableHeaders.length}>
+                <Loader />
+              </td>
             </tr>
-          ))}
+          ) : (
+            tableData.map((rowData: any) => (
+              <tr
+                key={rowData.id}
+                onClick={(e) => handleRowClick(e, rowData.id)}
+              >
+                {tableHeaders.map((header: any) => (
+                  <td key={header.id}>{rowData[header.id]}</td>
+                ))}
+              </tr>
+            ))
+          )}
           {tableData.length === 0 && (
             <tr className="not-found">
               <td colSpan={tableHeaders.length}>Employee not found</td>

@@ -1,13 +1,7 @@
 import { GoFilter } from "react-icons/go";
 import FilterOptions from "../../components/Employee/FilterOptions/FilterOptions";
 import TableView from "../../components/common/Listing/TableView";
-import {
-  departments,
-  employeeTableHeader,
-  employees,
-  roles,
-  skillList,
-} from "../../core/constants";
+import { employeeTableHeader } from "../../core/constants";
 
 import styles from "./style.module.scss";
 import { MouseEvent, useEffect, useState } from "react";
@@ -20,27 +14,38 @@ import { useAppContext } from "../../core/store/AppContext";
 import actionType from "../../core/store/actionTypes";
 import DeleteConfirmation from "../../components/Employee/DeleteConfirmation/DeleteConfirmation";
 import Modal from "../../components/common/Modal/Modal";
+import { getData } from "../../core/api";
 
 const EmployeeListing = () => {
   const [employeeId, setEmployeeId] = useState<string>("");
   const [toggleFilter, setToggleFilter] = useState(true);
   const [toggleDeleteModal, setToggleDeleteModal] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+
   const { state, dispatch } = useAppContext();
   const { sortBy, sortOrder } = state.filterSort;
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    // TODO: Fetch employees
-    if (state.employees.length === 0)
-      dispatch({ type: actionType.SET_EMPLOYEES, payload: employees });
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await getData("/.json");
+        if (response && response.employee) {
+          setLoading(false);
+          dispatch({
+            type: actionType.SET_ALL_DATA,
+            payload: response,
+          });
+        } else console.log("Response not found");
+      } catch (error) {
+        setLoading(false);
+        console.error("Error fetching data:", error);
+      }
+    };
 
-    dispatch({ type: actionType.SET_FILTERED_EMPLOYEES });
-
-    //TODO: Fetch Departments & Roles
-    dispatch({ type: actionType.SET_DEPARTMENTS, payload: departments });
-    dispatch({ type: actionType.SET_ROLES, payload: roles });
-    dispatch({ type: actionType.SET_SKILLS, payload: skillList });
+    fetchData();
   }, []);
 
   const handleRowClick = (e: MouseEvent<HTMLElement>, id: string) => {
@@ -105,12 +110,15 @@ const EmployeeListing = () => {
             />
           </Fade>
         )}
+
         <TableView
           handleSort={handleSort}
           handleRowClick={handleRowClick}
           tableHeaders={employeeTableHeader}
           tableData={state.filteredEmployees}
+          loading={loading}
         />
+
         <Modal isOpen={toggleDeleteModal} handleModalClose={handleModalClose}>
           <DeleteConfirmation
             handleModalClose={handleModalClose}
