@@ -54,8 +54,8 @@ export const updateData = (
 export const deleteData = (
   url: string,
   config?: AxiosRequestConfig
-): Promise<AxiosResponse<FirebaseData>> => {
-  return API.delete<FirebaseData>(url, config);
+): Promise<FirebaseData> => {
+  return API.delete(url, config);
 };
 
 export default API;

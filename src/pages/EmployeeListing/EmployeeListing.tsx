@@ -14,7 +14,7 @@ import { useAppContext } from "../../core/store/AppContext";
 import actionType from "../../core/store/actionTypes";
 import DeleteConfirmation from "../../components/Employee/DeleteConfirmation/DeleteConfirmation";
 import Modal from "../../components/common/Modal/Modal";
-import { getData } from "../../core/api";
+import { deleteData, getData } from "../../core/api";
 
 const EmployeeListing = () => {
   const [employeeId, setEmployeeId] = useState<string>("");
@@ -71,11 +71,16 @@ const EmployeeListing = () => {
     dispatch({ type: actionType.FILTER_SORT_EMPLOYEES });
   };
 
-  const handleEmployeeDelete = (id: string) => {
-    dispatch({ type: actionType.DELETE_EMPLOYEE, payload: id });
-    setToggleDeleteModal(false);
-    setEmployeeId("");
-    dispatch({ type: actionType.FILTER_SORT_EMPLOYEES });
+  const handleEmployeeDelete = async (id: string) => {
+    try {
+      await deleteData(`/employee/${id}.json`);
+      dispatch({ type: actionType.DELETE_EMPLOYEE, payload: id });
+      setToggleDeleteModal(false);
+      setEmployeeId("");
+      dispatch({ type: actionType.FILTER_SORT_EMPLOYEES });
+    } catch (error) {
+      console.log(error, "Error on deleting the employee");
+    }
   };
 
   const handleModalClose = () => setToggleDeleteModal(false);
