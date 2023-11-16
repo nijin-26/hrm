@@ -1,3 +1,12 @@
+// React Hooks
+import { useEffect, useState } from "react";
+
+// External Libraries
+import { Fade } from "react-awesome-reveal";
+import { useLocation, useNavigate } from "react-router-dom";
+import styled, { CSSProperties, useTheme } from "styled-components";
+
+// React Icons
 import {
   AiOutlineMail,
   AiOutlineMobile,
@@ -6,17 +15,20 @@ import {
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import { LiaBirthdayCakeSolid } from "react-icons/lia";
 
+// Styles
 import styles from "./style.module.scss";
 
-import styled, { CSSProperties, useTheme } from "styled-components";
-
+// Assets
 import placeholder from "../../assets/placeholder-image.png";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+
+// Interfaces
 import { IEmployeeDetails } from "../../core/interfaces/Common";
+
+// Utility Functions
 import { getFormattedDate } from "../../core/utils/formatDate";
+
+// App Context
 import { useAppContext } from "../../core/store/AppContext";
-import { Fade } from "react-awesome-reveal";
 
 const EmployeeView = () => {
   const { state } = useAppContext();

@@ -1,23 +1,35 @@
+// External Libraries
 import { Form, Formik } from "formik";
+import { useLocation, useNavigate } from "react-router-dom";
+import { CSSProperties, useTheme } from "styled-components";
+import { Fade } from "react-awesome-reveal";
+import { ChangeEvent, useEffect, useState } from "react";
+import moment from "moment";
+
+// Styling & Constants
+import style from "./style.module.scss";
+import { workLocation } from "../../core/constants";
+
+// Components
+import Select from "../../components/common/Select/Select";
+import Button from "../../components/common/Button/Button";
 import ImageUpload from "../../components/common/ImageUpload/ImageUpload";
 import Input from "../../components/common/Input/Input";
 import SearchSkill from "../../components/common/SearchSkill/SearchSkill";
 import useSkills from "../../core/hooks/useSkills";
 
-import style from "./style.module.scss";
-import Select from "../../components/common/Select/Select";
-import { departments, roles, workLocation } from "../../core/constants";
-import Button from "../../components/common/Button/Button";
-import { useLocation, useNavigate } from "react-router-dom";
-import { CSSProperties, useTheme } from "styled-components";
+// Validation and Schema
 import { employeeFormValidationSchema } from "../../core/utils/employeeFormValidationSchema";
+
+// Interfaces
 import { IEmployeeDetails } from "../../core/interfaces/Common";
-import { useAppContext } from "../../core/store/AppContext";
+
+// Utility Functions
 import { getFormattedDate } from "../../core/utils/formatDate";
-import { Fade } from "react-awesome-reveal";
-import { ChangeEvent, useEffect, useState } from "react";
-import moment from "moment";
 import { generateUniqueKey } from "../../core/utils/generateUniqueID";
+
+// Store and API
+import { useAppContext } from "../../core/store/AppContext";
 import actionTypes from "../../core/store/actionTypes";
 import { postEmployeeData, updateEmployeeData } from "../../core/api";
 
@@ -202,13 +214,13 @@ const EmployeeForm = () => {
                 label="Department"
                 name="department"
                 placeholder="Select Department"
-                datas={departments}
+                datas={state.departments}
               />
               <Select
                 label="Role"
                 name="role"
                 placeholder="Select Role"
-                datas={roles}
+                datas={state.roles}
               />
             </div>
             <div className={style.skillInputWrapper}>

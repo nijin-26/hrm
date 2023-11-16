@@ -1,19 +1,29 @@
-import { GoFilter } from "react-icons/go";
+// Components
 import FilterOptions from "../../components/Employee/FilterOptions/FilterOptions";
 import TableView from "../../components/common/Listing/TableView";
-import { employeeTableHeader } from "../../core/constants";
-
-import styles from "./style.module.scss";
-import { MouseEvent, useEffect, useState } from "react";
 import Button from "../../components/common/Button/Button";
-import { BiUserPlus } from "react-icons/bi";
-import { useNavigate } from "react-router-dom";
-import { Fade } from "react-awesome-reveal";
-import { Tooltip } from "react-tooltip";
-import { useAppContext } from "../../core/store/AppContext";
-import actionType from "../../core/store/actionTypes";
 import DeleteConfirmation from "../../components/Employee/DeleteConfirmation/DeleteConfirmation";
 import Modal from "../../components/common/Modal/Modal";
+
+// External Libraries
+import { Tooltip } from "react-tooltip";
+import { Fade } from "react-awesome-reveal";
+import { useNavigate } from "react-router-dom";
+
+// Constants/Data
+import { employeeTableHeader } from "../../core/constants";
+
+// Styles & Icons
+import styles from "./style.module.scss";
+import { GoFilter } from "react-icons/go";
+import { BiUserPlus } from "react-icons/bi";
+
+// React Hooks
+import { MouseEvent, useEffect, useState } from "react";
+
+// Store and API
+import { useAppContext } from "../../core/store/AppContext";
+import actionType from "../../core/store/actionTypes";
 import { deleteData, getEmployeeData } from "../../core/api";
 
 const EmployeeListing = () => {
