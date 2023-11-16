@@ -1,26 +1,12 @@
-import axios, {
-  AxiosInstance,
-  AxiosRequestConfig,
-  AxiosResponse,
-  InternalAxiosRequestConfig,
-} from "axios";
-import { onRequest, onRequestError } from "./requestInterceptor";
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import { onResponse, onResponseError } from "./responseInterceptor";
 import { FirebaseData } from "../interfaces/APIDataInterface";
 
-const API = axios.create({
+const API: AxiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_ENDPOINT,
   timeout: 120000,
 });
 
-API.interceptors.request.use(
-  onRequest as unknown as (
-    value: InternalAxiosRequestConfig<any>
-  ) =>
-    | InternalAxiosRequestConfig<any>
-    | Promise<InternalAxiosRequestConfig<any>>,
-  onRequestError
-);
 API.interceptors.response.use(
   onResponse as unknown as (
     value: AxiosResponse<any, any>
@@ -28,26 +14,36 @@ API.interceptors.response.use(
   onResponseError
 );
 
-export const getData = (
+export const getEmployeeData = (
   url: string,
   config?: AxiosRequestConfig
 ): Promise<FirebaseData> => {
   return API.get(url, config);
 };
 
-export const postData = (
+// export const postData = (
+//   url: string,
+//   payload: object,
+//   config?: AxiosRequestConfig
+// ) => {
+//   return API.post<FirebaseData>(url, payload, config);
+// };
+
+// * Used PUT method for posting a employee because direct posting is like pushing to firebase db, which generates a unique id, but here I need the 4 digit id I generated.
+// ? Reference: https://firebase.google.com/docs/reference/rest/database
+export const postEmployeeData = (
   url: string,
   payload: object,
   config?: AxiosRequestConfig
-): Promise<AxiosResponse<FirebaseData>> => {
-  return API.post<FirebaseData>(url, payload, config);
+) => {
+  return API.put<FirebaseData>(url, payload, config);
 };
 
-export const updateData = (
+export const updateEmployeeData = (
   url: string,
   payload: object,
   config?: AxiosRequestConfig
-): Promise<AxiosResponse<FirebaseData>> => {
+) => {
   return API.put<FirebaseData>(url, payload, config);
 };
 

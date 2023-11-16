@@ -8,10 +8,10 @@ import style from "./style.module.scss";
 import Select from "../../components/common/Select/Select";
 import { departments, roles, workLocation } from "../../core/constants";
 import Button from "../../components/common/Button/Button";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { CSSProperties, useTheme } from "styled-components";
 import { employeeFormValidationSchema } from "../../core/utils/employeeFormValidationSchema";
-import { IEmployeeDetails, ISkills } from "../../core/interfaces/Common";
+import { IEmployeeDetails } from "../../core/interfaces/Common";
 import { useAppContext } from "../../core/store/AppContext";
 import { getFormattedDate } from "../../core/utils/formatDate";
 import { Fade } from "react-awesome-reveal";
@@ -19,6 +19,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import moment from "moment";
 import { generateUniqueKey } from "../../core/utils/generateUniqueID";
 import actionTypes from "../../core/store/actionTypes";
+import { postEmployeeData, updateEmployeeData } from "../../core/api";
 
 const EmployeeForm = () => {
   const [initialEmployeeDetails, setInitialEmployeeDetails] =
@@ -39,6 +40,7 @@ const EmployeeForm = () => {
 
   const { state, dispatch } = useAppContext();
   const location = useLocation();
+  const navigate = useNavigate();
   const theme = useTheme();
   const {
     skills,
@@ -83,6 +85,46 @@ const EmployeeForm = () => {
     setImageFile(null);
   };
 
+  const addEmployee = async (employeeData: IEmployeeDetails) => {
+    try {
+      const empId = employeeData.id;
+      delete employeeData.id;
+
+      const response = await postEmployeeData(
+        `/employee/${empId}.json`,
+        employeeData
+      );
+      if (response) {
+        console.log("Employee Added Successfully");
+        dispatch({ type: actionTypes.ADD_EMPLOYEE, payload: employeeData });
+      }
+    } catch (error) {
+      console.log(error, "Error on adding the employee in firebase");
+    }
+  };
+
+  const updateEmployee = async (employeeData: IEmployeeDetails) => {
+    try {
+      const empId: string = employeeData.id as string;
+      delete employeeData.id;
+
+      const response = await updateEmployeeData(
+        `/employee/${empId}.json`,
+        employeeData
+      );
+
+      if (response) {
+        console.log("Update Successfully", response);
+        dispatch({
+          type: actionTypes.UPDATE_EMPLOYEE,
+          payload: employeeData,
+        });
+      }
+    } catch (error: any) {
+      console.log(error, "Error on updating the employee in firebase");
+    }
+  };
+
   const handleFormSubmit = (values: IEmployeeDetails) => {
     const employeeDetails = {
       ...values,
@@ -94,13 +136,11 @@ const EmployeeForm = () => {
         : values.imageURL, //TODO: Upload image and get image URL
       skill: selectedSkills.map((skill) => skill.id),
     };
+    delete employeeDetails.actions;
 
     currentFormType === "edit"
-      ? dispatch({
-          type: actionTypes.UPDATE_EMPLOYEE,
-          payload: employeeDetails,
-        })
-      : dispatch({ type: actionTypes.ADD_EMPLOYEE, payload: employeeDetails });
+      ? updateEmployee(employeeDetails)
+      : addEmployee(employeeDetails);
   };
 
   const formContainerStyle = {
@@ -185,7 +225,9 @@ const EmployeeForm = () => {
             </div>
 
             <div className={style.formButtons}>
-              <Button btnType="secondary">Cancel</Button>
+              <Button btnType="secondary" onClick={() => navigate("/")}>
+                Cancel
+              </Button>
               <Button type="submit">Submit</Button>
             </div>
           </Form>

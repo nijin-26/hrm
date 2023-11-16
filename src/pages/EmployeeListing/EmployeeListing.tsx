@@ -14,7 +14,7 @@ import { useAppContext } from "../../core/store/AppContext";
 import actionType from "../../core/store/actionTypes";
 import DeleteConfirmation from "../../components/Employee/DeleteConfirmation/DeleteConfirmation";
 import Modal from "../../components/common/Modal/Modal";
-import { deleteData, getData } from "../../core/api";
+import { deleteData, getEmployeeData } from "../../core/api";
 
 const EmployeeListing = () => {
   const [employeeId, setEmployeeId] = useState<string>("");
@@ -31,7 +31,7 @@ const EmployeeListing = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await getData("/.json");
+        const response = await getEmployeeData("/.json");
         if (response && response.employee) {
           setLoading(false);
           dispatch({

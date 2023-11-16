@@ -81,7 +81,7 @@ export interface ITableHeader {
 }
 
 export interface IEmployeeDetails {
-  id: string;
+  id?: string;
   fullName?: string;
   dateOfBirth?: number | string;
   dateOfJoin?: number | string;
