@@ -29,6 +29,8 @@ import { getFormattedDate } from "../../core/utils/formatDate";
 
 // App Context
 import { useAppContext } from "../../core/store/AppContext";
+import { toast } from "react-toastify";
+import { getEmployeeById } from "../../core/api";
 
 const EmployeeView = () => {
   const { state } = useAppContext();
@@ -37,13 +39,32 @@ const EmployeeView = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const employeeId = location.pathname.split("/")[2];
+
   useEffect(() => {
-    const employeeId = location.pathname.split("/")[2];
-    const selected = state.employees.find(
+    const fetchEmployee = async () => {
+      try {
+        console.log("try called");
+        const response: unknown = await getEmployeeById(
+          `/employee/${employeeId}.json`
+        );
+        if (response) setSelectedEmployee(response as IEmployeeDetails);
+        else {
+          toast.error("Employee not found");
+          navigate("/");
+        }
+      } catch (error) {
+        toast.error("Error getting employee details.");
+        console.log(error);
+      }
+    };
+
+    let selected = state.employees.find(
       (employee) => employee.id === employeeId
     );
+
     if (selected) setSelectedEmployee(selected as IEmployeeDetails);
-    else navigate("/"); // TODO: Toast message - Employee Not found
+    else fetchEmployee();
   }, []);
 
   let department =

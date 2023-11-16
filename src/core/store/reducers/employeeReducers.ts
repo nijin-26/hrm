@@ -14,13 +14,18 @@ export const employeeReducer = (
       return employeeData;
     }
     case actionTypes.ADD_EMPLOYEE: {
-      const updatedEmployee = [...state, action.payload];
+      const updatedEmployee = [
+        ...state,
+        { ...action.payload.data, id: action.payload.id },
+      ];
       const employeeData = getEmployeeData(updatedEmployee);
       return employeeData;
     }
     case actionTypes.UPDATE_EMPLOYEE: {
+      console.log(action.payload, "payload");
       const updatedEmployees = state.map((employee) => {
-        if (employee.id === action.payload.id) return { ...action.payload };
+        if (employee.id === action.payload.id)
+          return { ...action.payload.data, id: action.payload.id };
         else return employee;
       });
       return getEmployeeData(updatedEmployees);

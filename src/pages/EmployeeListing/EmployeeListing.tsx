@@ -25,6 +25,7 @@ import { MouseEvent, useEffect, useState } from "react";
 import { useAppContext } from "../../core/store/AppContext";
 import actionType from "../../core/store/actionTypes";
 import { deleteData, getEmployeeData } from "../../core/api";
+import { toast } from "react-toastify";
 
 const EmployeeListing = () => {
   const [employeeId, setEmployeeId] = useState<string>("");
@@ -48,6 +49,7 @@ const EmployeeListing = () => {
             type: actionType.SET_ALL_DATA,
             payload: response,
           });
+          dispatch({ type: actionType.FILTER_SORT_EMPLOYEES });
         } else console.log("Response not found");
       } catch (error) {
         setLoading(false);
@@ -85,11 +87,12 @@ const EmployeeListing = () => {
     try {
       await deleteData(`/employee/${id}.json`);
       dispatch({ type: actionType.DELETE_EMPLOYEE, payload: id });
+      toast.success("Employee deleted successfully.");
       setToggleDeleteModal(false);
       setEmployeeId("");
       dispatch({ type: actionType.FILTER_SORT_EMPLOYEES });
     } catch (error) {
-      console.log(error, "Error on deleting the employee");
+      toast.error("Error in deleting employee. Try Again");
     }
   };
 

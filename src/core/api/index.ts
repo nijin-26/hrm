@@ -21,6 +21,13 @@ export const getEmployeeData = (
   return API.get(url, config);
 };
 
+export const getEmployeeById = (
+  url: string,
+  config?: AxiosRequestConfig
+): Promise<FirebaseData> => {
+  return API.get(url, config);
+};
+
 // export const postData = (
 //   url: string,
 //   payload: object,

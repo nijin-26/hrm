@@ -32,6 +32,7 @@ import { generateUniqueKey } from "../../core/utils/generateUniqueID";
 import { useAppContext } from "../../core/store/AppContext";
 import actionTypes from "../../core/store/actionTypes";
 import { postEmployeeData, updateEmployeeData } from "../../core/api";
+import { toast } from "react-toastify";
 
 const EmployeeForm = () => {
   const [initialEmployeeDetails, setInitialEmployeeDetails] =
@@ -107,11 +108,18 @@ const EmployeeForm = () => {
         employeeData
       );
       if (response) {
-        console.log("Employee Added Successfully");
-        dispatch({ type: actionTypes.ADD_EMPLOYEE, payload: employeeData });
+        toast.success("Employee Added Successfully");
+        dispatch({
+          type: actionTypes.ADD_EMPLOYEE,
+          payload: {
+            id: empId,
+            data: employeeData,
+          },
+        });
+        navigate("/");
       }
     } catch (error) {
-      console.log(error, "Error on adding the employee in firebase");
+      toast.error("Error adding employee");
     }
   };
 
@@ -126,14 +134,18 @@ const EmployeeForm = () => {
       );
 
       if (response) {
-        console.log("Update Successfully", response);
+        toast.success("Employee Updated Successfully");
         dispatch({
           type: actionTypes.UPDATE_EMPLOYEE,
-          payload: employeeData,
+          payload: {
+            id: empId,
+            data: employeeData,
+          },
         });
+        navigate(`/view/${empId}`);
       }
     } catch (error: any) {
-      console.log(error, "Error on updating the employee in firebase");
+      toast.error("Error updating employee. Try again");
     }
   };
 
