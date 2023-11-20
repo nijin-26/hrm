@@ -1,28 +1,23 @@
-import { Dispatch, MouseEvent, MouseEventHandler, ReactNode } from "react";
-
-export interface IContextState {
-  theme: "light" | "dark" | string;
-}
-
-export interface IAppContext {
-  state: IContextState;
-  dispatch: Dispatch<any>;
-}
+import { ChangeEvent, MouseEvent, ReactNode } from "react";
+import { JsxElement } from "typescript";
 
 export interface IContextAction {
   type: string;
   payload?: any;
 }
+
 export interface IButton {
   className?: string;
   type?: "button" | "submit" | "reset";
-  btnType?: "primary" | "secondary";
+  btnType?: "primary" | "secondary" | "disabled";
   children: ReactNode;
   onClick?: () => void;
+  disabled?: boolean;
 }
 
 export interface IFilterOptions {
-  handleToggleFilter: () => void;
+  departments: IDepartment[];
+  roles: IRoles[];
 }
 
 export interface IModal {
@@ -32,6 +27,8 @@ export interface IModal {
 }
 
 export interface IFilterSelect {
+  placeholder: string;
+  name: string;
   options: { id: string; name: string }[];
   value: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
@@ -42,17 +39,29 @@ export interface ISearchSkills {
   placeholder: string;
   listOfSkills: { id: string; name: string }[];
   selectedSkills: { id: string; name: string }[];
+  searchInput: string;
+  handleInput: (value: string) => void;
   handleSelectedSkills: (value: string) => void;
   removeSelectedSkill: (value: string) => void;
 }
 
 export interface IImageUpload {
-  src?: string;
-  value?: string;
-  onChange?: () => void;
+  src: string | undefined;
+  handleImageInput: (e: ChangeEvent) => void;
+  removeSelectedImage: () => void;
 }
 
 export interface ISkills {
+  id: string;
+  name: string;
+}
+
+export interface IRoles {
+  id: string;
+  name: string;
+}
+
+export interface IDepartment {
   id: string;
   name: string;
 }
@@ -61,24 +70,26 @@ export interface ITableViewProps<T, U> {
   tableHeaders: T[];
   tableData: U[];
   handleRowClick: (e: MouseEvent<HTMLElement>, id: string) => void;
+  handleSort: (column: string) => void;
 }
 
 export interface ITableHeader {
   id: string;
   name: string;
+  isSortable: boolean;
 }
 
 export interface IEmployeeDetails {
   id: string;
   fullName?: string;
-  dateOfBirth?: number;
-  dateOfJoin?: number;
+  dateOfBirth?: number | string;
+  dateOfJoin?: number | string;
   email?: string;
   mobile?: string;
   workLocation?: string;
   imageURL?: string;
   department?: string;
   role?: string;
-  skill?: string[];
-  [key: string]: any;
+  skill: string[];
+  actions?: JsxElement | ReactNode;
 }

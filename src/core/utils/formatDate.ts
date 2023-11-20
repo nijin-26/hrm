@@ -1,8 +1,13 @@
-export const getFormattedDate = (timestamp: number) => {
-  const date = new Date(timestamp);
-  const day = date.getDate();
-  const month = date.toLocaleString("default", { month: "long" });
-  const year = date.getFullYear();
+import moment from "moment";
 
-  return [`${day} ${month} ${year}`, date.toISOString().slice(0, 10)];
+export const getFormattedDate = (timestamp: number | string) => {
+  const date = moment(timestamp);
+
+  // console.log(date, timestamp, date.format("DD/MM/YYYY"), "hello");
+
+  return [
+    date.format("DD MMMM YYYY"),
+    date.format("YYYY-MM-DD"),
+    // date.format("MM-DD-YYYY"),
+  ];
 };

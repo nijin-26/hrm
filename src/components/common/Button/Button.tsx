@@ -1,11 +1,12 @@
 import { StyledButton } from "./Button.styles";
-import { IButton } from "../../../core/interfaces/interfaces";
+import { IButton } from "../../../core/interfaces/Common";
 
 const Button = ({
   className,
   type = "button",
   btnType = "primary",
   children,
+  disabled,
   onClick,
 }: IButton) => {
   return (
@@ -14,6 +15,7 @@ const Button = ({
       btnType={btnType}
       type={type}
       onClick={onClick}
+      disabled={disabled}
     >
       {children}
     </StyledButton>

@@ -1,48 +1,81 @@
-import { useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import SearchSkill from "../../common/SearchSkill/SearchSkill";
 import FilterSelect from "../../common/FilterSelect/FilterSelect";
 import { FilterOptionsWrapper } from "./FilterOptions.style";
-import { departments, roles } from "../../../core/constants";
 import useSkills from "../../../core/hooks/useSkills";
 
 import { MdFilterListOff } from "react-icons/md";
-import { IFilterOptions } from "../../../core/interfaces/interfaces";
+import { IFilterOptions } from "../../../core/interfaces/Common";
 import { Tooltip } from "react-tooltip";
+import { useAppContext } from "../../../core/store/AppContext";
+import actionTypes from "../../../core/store/actionTypes";
 
-const FilterOptions = ({ handleToggleFilter }: IFilterOptions) => {
-  const [selectedDepartment, setSelectedDepartment] = useState("");
-  const [selectedRole, setSelectedRole] = useState("");
+const FilterOptions = ({ departments, roles }: IFilterOptions) => {
+  const { state, dispatch } = useAppContext();
+  const { filterSort } = state;
 
   const {
     skills,
     selectedSkills,
+    searchInput,
+    handleInput,
     handleSelectedSkills,
     handleRemoveSelectedSkill,
     handleResetSkills,
   } = useSkills();
 
+  useEffect(() => {
+    // Store selected skills in Global Store for filtering employees.
+    dispatch({
+      type: actionTypes.SET_FILTERS,
+      payload: {
+        name: "skills",
+        value: selectedSkills,
+      },
+    });
+    dispatch({ type: actionTypes.FILTER_SORT_EMPLOYEES });
+  }, [selectedSkills]);
+
+  const handleFilterChange = (e: ChangeEvent) => {
+    const target = e.target as HTMLSelectElement;
+    dispatch({
+      type: actionTypes.SET_FILTERS,
+      payload: {
+        name: target.name,
+        value: target.value,
+      },
+    });
+    dispatch({ type: actionTypes.FILTER_SORT_EMPLOYEES });
+  };
+
   const handleClearFilters = () => {
     handleResetSkills();
-    setSelectedDepartment("");
-    setSelectedRole("");
+    dispatch({ type: actionTypes.RESET_FILTERS });
+    dispatch({ type: actionTypes.FILTER_SORT_EMPLOYEES });
   };
 
   return (
     <FilterOptionsWrapper className="flex">
       <FilterSelect
+        placeholder="Department"
+        name="department"
         options={departments}
-        value={selectedDepartment}
-        onChange={(e) => setSelectedDepartment(e.target.value)}
+        value={filterSort.department}
+        onChange={handleFilterChange}
       />
       <FilterSelect
+        placeholder="Role"
+        name="role"
         options={roles}
-        value={selectedRole}
-        onChange={(e) => setSelectedRole(e.target.value)}
+        value={filterSort.role}
+        onChange={handleFilterChange}
       />
       <div className="skillWrapper">
         <SearchSkill
           position="inside"
           placeholder="Search by skills"
+          searchInput={searchInput}
+          handleInput={handleInput}
           listOfSkills={skills}
           selectedSkills={selectedSkills}
           handleSelectedSkills={handleSelectedSkills}

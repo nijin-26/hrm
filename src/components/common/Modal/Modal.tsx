@@ -1,6 +1,6 @@
 import { ModalContainer, Overlay } from "./Modal.styles";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { IModal } from "../../../core/interfaces/interfaces";
+import { IModal } from "../../../core/interfaces/Common";
 import { CSSProperties } from "styled-components";
 import { ReactNode } from "react";
 

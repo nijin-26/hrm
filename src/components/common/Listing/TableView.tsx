@@ -1,18 +1,39 @@
 import { TableWrapper } from "./listing.styles";
-import { ITableViewProps } from "../../../core/interfaces/interfaces";
+import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
+import { ITableViewProps } from "../../../core/interfaces/Common";
+import { useAppContext } from "../../../core/store/AppContext";
 
 const TableView = <T, U>({
   tableHeaders,
   tableData,
+  handleSort,
   handleRowClick,
 }: ITableViewProps<T, U>) => {
+  const { state } = useAppContext();
+  const { sortBy, sortOrder } = state.filterSort;
+
+  const handleCurrentSortIcon = () => {
+    if (sortOrder === "asc") return <TiArrowSortedDown size={24} />;
+    else return <TiArrowSortedUp size={24} />;
+  };
+
   return (
     <TableWrapper>
       <table>
         <thead>
           <tr>
             {tableHeaders.map((header: any) => (
-              <th key={header.id}>{header.name}</th>
+              <th
+                onClick={() => header.isSortable && handleSort(header.id)}
+                key={header.id}
+              >
+                <div>
+                  <span>{header.name}</span>
+                  {header.isSortable && sortOrder && sortBy === header.id ? (
+                    <span>{handleCurrentSortIcon()}</span>
+                  ) : null}
+                </div>
+              </th>
             ))}
           </tr>
         </thead>
@@ -24,6 +45,11 @@ const TableView = <T, U>({
               ))}
             </tr>
           ))}
+          {tableData.length === 0 && (
+            <tr className="not-found">
+              <td colSpan={tableHeaders.length}>Employee not found</td>
+            </tr>
+          )}
         </tbody>
       </table>
     </TableWrapper>

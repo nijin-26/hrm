@@ -37,4 +37,12 @@ export const StyledButton = styled.button<{
             color: ${props.theme.primary};
         }
   `}
+
+${(props) =>
+    props.btnType === "disabled" &&
+    `
+        background-color: #ccc;
+        color: #fff;
+        cursor: not-allowed;
+  `}
 `;

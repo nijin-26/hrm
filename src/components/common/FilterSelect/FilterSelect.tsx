@@ -1,11 +1,13 @@
-import { IFilterSelect } from "../../../core/interfaces/interfaces";
+import { IFilterSelect } from "../../../core/interfaces/Common";
 import { FilterSelectWrapper } from "./FilterSelect.style";
 import { CSSProperties, useTheme } from "styled-components";
 
 const FilterSelect = ({
+  placeholder,
   options,
   value,
   onChange,
+  name,
   ...props
 }: IFilterSelect) => {
   const theme = useTheme();
@@ -16,7 +18,16 @@ const FilterSelect = ({
 
   return (
     <FilterSelectWrapper style={selectThemeStyle}>
-      <select value={value} onChange={onChange} {...props}>
+      <select
+        autoComplete="off"
+        value={value}
+        name={name}
+        onChange={onChange}
+        {...props}
+      >
+        <option value="" selected>
+          {placeholder}
+        </option>
         {options.map((option) => (
           <option key={option.id} value={option.id}>
             {option.name}

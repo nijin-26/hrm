@@ -19,7 +19,7 @@ export const GlobalStyle = createGlobalStyle`
 
   input,
   select {
-    width: 100%;
+    /* width: 100%; */
     padding: 12px 14px;
     border-radius: 8px;
     border: 1px solid ${(props) => props.theme.primary};
