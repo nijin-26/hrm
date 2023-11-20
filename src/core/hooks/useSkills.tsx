@@ -15,7 +15,7 @@ function useSkills() {
     setSkills([...state.skills]);
 
     return () => handleResetSkills();
-  }, []);
+  }, [state.skills]);
 
   const handleInput = (value: string) => setSearchInput(value);
 
