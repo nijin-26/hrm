@@ -1,5 +1,5 @@
 // External Libraries
-import { Form, Formik } from "formik";
+import { Form, Formik, prepareDataForValidation } from "formik";
 import { useLocation, useNavigate } from "react-router-dom";
 import { CSSProperties, useTheme } from "styled-components";
 import { Fade } from "react-awesome-reveal";
@@ -50,7 +50,7 @@ const EmployeeForm = () => {
       role: "",
       skill: [],
     });
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageFile, setImageFile] = useState<File | string | null>(null);
 
   const { state, dispatch } = useAppContext();
   const location = useLocation();
@@ -80,7 +80,6 @@ const EmployeeForm = () => {
           dateOfBirth: getFormattedDate(selectedEmp.dateOfBirth as string)[1],
           dateOfJoin: getFormattedDate(selectedEmp.dateOfJoin as string)[1],
         };
-        console.log(selectedEmpDetails, "selected emp details");
         setInitialEmployeeDetails(selectedEmpDetails);
 
         // * Faced too many rerendering issue below. Somehow fixed it.
@@ -98,6 +97,10 @@ const EmployeeForm = () => {
 
   const removeSelectedImage = () => {
     setImageFile(null);
+
+    setInitialEmployeeDetails((prev) => {
+      return { ...prev, imageURL: "" } as IEmployeeDetails;
+    });
   };
 
   const addEmployee = async (employeeData: IEmployeeDetails) => {
