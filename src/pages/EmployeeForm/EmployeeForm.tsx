@@ -33,6 +33,7 @@ import { useAppContext } from "../../core/store/AppContext";
 import actionTypes from "../../core/store/actionTypes";
 import { postEmployeeData, updateEmployeeData } from "../../core/api";
 import { toast } from "react-toastify";
+import { uploadImage } from "../../core/firebase/uploadImage";
 
 const EmployeeForm = () => {
   const [initialEmployeeDetails, setInitialEmployeeDetails] =
@@ -79,6 +80,7 @@ const EmployeeForm = () => {
           dateOfBirth: getFormattedDate(selectedEmp.dateOfBirth as string)[1],
           dateOfJoin: getFormattedDate(selectedEmp.dateOfJoin as string)[1],
         };
+        console.log(selectedEmpDetails, "selected emp details");
         setInitialEmployeeDetails(selectedEmpDetails);
 
         // * Faced too many rerendering issue below. Somehow fixed it.
@@ -149,22 +151,26 @@ const EmployeeForm = () => {
     }
   };
 
-  const handleFormSubmit = (values: IEmployeeDetails) => {
-    const employeeDetails = {
-      ...values,
-      id: values.id ? values.id : generateUniqueKey(state.employees),
-      dateOfBirth: moment(values.dateOfBirth, "YYYY-MM-DD").valueOf(),
-      dateOfJoin: moment(values.dateOfJoin, "YYYY-MM-DD").valueOf(),
-      imageURL: imageFile
-        ? URL.createObjectURL(imageFile as File)
-        : values.imageURL, //TODO: Upload image and get image URL
-      skill: selectedSkills.map((skill) => skill.id),
-    };
-    delete employeeDetails.actions;
+  const handleFormSubmit = async (values: IEmployeeDetails) => {
+    try {
+      const employeeDetails = {
+        ...values,
+        id: values.id ? values.id : generateUniqueKey(state.employees),
+        dateOfBirth: moment(values.dateOfBirth, "YYYY-MM-DD").valueOf(),
+        dateOfJoin: moment(values.dateOfJoin, "YYYY-MM-DD").valueOf(),
+        imageURL: imageFile
+          ? await uploadImage(imageFile as File)
+          : values.imageURL, //TODO: Upload image and get image URL
+        skill: selectedSkills.map((skill) => skill.id),
+      };
+      delete employeeDetails.actions;
 
-    currentFormType === "edit"
-      ? updateEmployee(employeeDetails)
-      : addEmployee(employeeDetails);
+      currentFormType === "edit"
+        ? updateEmployee(employeeDetails)
+        : addEmployee(employeeDetails);
+    } catch (error) {
+      console.log(error, "Error uploading Image");
+    }
   };
 
   const formContainerStyle = {
@@ -178,7 +184,11 @@ const EmployeeForm = () => {
       } Employee`}</h1>
       <div className={style.formContainer} style={formContainerStyle}>
         <ImageUpload
-          src={imageFile ? URL.createObjectURL(imageFile as File) : ""}
+          src={
+            imageFile
+              ? URL.createObjectURL(imageFile as File)
+              : initialEmployeeDetails.imageURL
+          }
           removeSelectedImage={removeSelectedImage}
           handleImageInput={handleImageInput}
         />

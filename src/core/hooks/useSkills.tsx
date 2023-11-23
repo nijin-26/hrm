@@ -11,7 +11,6 @@ function useSkills() {
   const { state } = useAppContext();
 
   useEffect(() => {
-    // TODO: Fetch all skills from Firebase
     setSkills([...state.skills]);
 
     return () => handleResetSkills();

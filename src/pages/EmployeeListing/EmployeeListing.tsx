@@ -31,34 +31,11 @@ const EmployeeListing = () => {
   const [employeeId, setEmployeeId] = useState<string>("");
   const [toggleFilter, setToggleFilter] = useState(true);
   const [toggleDeleteModal, setToggleDeleteModal] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
 
-  const { state, dispatch } = useAppContext();
+  const { loading, state, dispatch } = useAppContext();
   const { sortBy, sortOrder } = state.filterSort;
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const response = await getEmployeeData("/.json");
-        if (response && response.employee) {
-          setLoading(false);
-          dispatch({
-            type: actionType.SET_ALL_DATA,
-            payload: response,
-          });
-          dispatch({ type: actionType.FILTER_SORT_EMPLOYEES });
-        } else console.log("Response not found");
-      } catch (error) {
-        setLoading(false);
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   const handleRowClick = (e: MouseEvent<HTMLElement>, id: string) => {
     const target = e.target as HTMLElement;

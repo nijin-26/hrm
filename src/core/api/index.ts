@@ -3,7 +3,7 @@ import { onResponse, onResponseError } from "./responseInterceptor";
 import { FirebaseData } from "../interfaces/APIDataInterface";
 
 const API: AxiosInstance = axios.create({
-  baseURL: process.env.REACT_APP_API_ENDPOINT,
+  baseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
   timeout: 120000,
 });
 
