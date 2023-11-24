@@ -26,16 +26,26 @@ import { useAppContext } from "../../core/store/AppContext";
 import actionType from "../../core/store/actionTypes";
 import { deleteData, getEmployeeData } from "../../core/api";
 import { toast } from "react-toastify";
+import Pagination from "../../components/common/Pagination/Pagination";
 
 const EmployeeListing = () => {
   const [employeeId, setEmployeeId] = useState<string>("");
   const [toggleFilter, setToggleFilter] = useState(true);
   const [toggleDeleteModal, setToggleDeleteModal] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [employeesPerPage, setemployeesPerPage] = useState(5);
 
   const { loading, state, dispatch } = useAppContext();
   const { sortBy, sortOrder } = state.filterSort;
 
   const navigate = useNavigate();
+
+  const lastPostIndex = currentPage * employeesPerPage;
+  const firstPostIndex = lastPostIndex - employeesPerPage;
+  const currentListOfEmployees = state.filteredEmployees.slice(
+    firstPostIndex,
+    lastPostIndex
+  );
 
   const handleRowClick = (e: MouseEvent<HTMLElement>, id: string) => {
     const target = e.target as HTMLElement;
@@ -110,8 +120,15 @@ const EmployeeListing = () => {
           handleSort={handleSort}
           handleRowClick={handleRowClick}
           tableHeaders={employeeTableHeader}
-          tableData={state.filteredEmployees}
+          tableData={currentListOfEmployees}
           loading={loading}
+        />
+
+        <Pagination
+          currentPage={currentPage}
+          totalPosts={state.filteredEmployees.length}
+          postsPerPage={employeesPerPage}
+          setCurrentPage={(num) => setCurrentPage(num)}
         />
 
         <Modal isOpen={toggleDeleteModal} handleModalClose={handleModalClose}>

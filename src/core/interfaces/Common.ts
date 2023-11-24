@@ -94,3 +94,10 @@ export interface IEmployeeDetails {
   skill: string[];
   actions?: JsxElement | ReactNode;
 }
+
+export interface IPaginationProps {
+  totalPosts: number;
+  postsPerPage: number;
+  setCurrentPage: (page: number) => void;
+  currentPage: number;
+}
