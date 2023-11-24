@@ -40,6 +40,16 @@ const EmployeeListing = () => {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const handleKeyDown = (e: any) => {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey) {
+        if (e.key === "f" || e.key === "F") setToggleFilter((prev) => !prev);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   const lastPostIndex = currentPage * employeesPerPage;
   const firstPostIndex = lastPostIndex - employeesPerPage;
   const currentListOfEmployees = state.filteredEmployees.slice(
