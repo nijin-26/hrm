@@ -2,13 +2,22 @@ import styled from "styled-components";
 
 export const TableWrapper = styled.div`
   margin: 30px auto;
-  width: 100%;
+  min-width: 100%;
   text-align: left;
   border-radius: 10px;
   border: 1px solid ${(props) => props.theme.fontColor};
+  overflow: auto;
 
   table {
     width: 100%;
+    text-align: left;
+    table-layout: fixed;
+  }
+
+  @media screen and (max-width: 768px) {
+    table {
+      table-layout: auto;
+    }
   }
 
   th > div {
@@ -23,6 +32,7 @@ export const TableWrapper = styled.div`
     padding: 16px;
     table-layout: auto;
     border-collapse: collapse;
+    word-wrap: break-word;
   }
 
   tr {
