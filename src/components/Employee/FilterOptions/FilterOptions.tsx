@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import SearchSkill from "../../common/SearchSkill/SearchSkill";
 import FilterSelect from "../../common/FilterSelect/FilterSelect";
-import { FilterOptionsWrapper } from "./FilterOptions.style";
+import { FilterOptionsWrapper } from "./FilterOptions.styles";
 import useSkills from "../../../core/hooks/useSkills";
 
 import { MdFilterListOff } from "react-icons/md";
@@ -70,6 +70,7 @@ const FilterOptions = ({ departments, roles }: IFilterOptions) => {
         value={filterSort.role}
         onChange={handleFilterChange}
       />
+
       <div className="skillWrapper">
         <SearchSkill
           position="inside"
@@ -81,19 +82,18 @@ const FilterOptions = ({ departments, roles }: IFilterOptions) => {
           handleSelectedSkills={handleSelectedSkills}
           removeSelectedSkill={handleRemoveSelectedSkill}
         />
+        <MdFilterListOff
+          className="clear-filter"
+          size={36}
+          onClick={handleClearFilters}
+        />
+        <Tooltip
+          anchorSelect=".clear-filter"
+          content="Clear All Filters"
+          place="right"
+          variant="info"
+        />
       </div>
-
-      <MdFilterListOff
-        className="clear-filter"
-        size={36}
-        onClick={handleClearFilters}
-      />
-      <Tooltip
-        anchorSelect=".clear-filter"
-        content="Clear All Filters"
-        place="right"
-        variant="info"
-      />
     </FilterOptionsWrapper>
   );
 };

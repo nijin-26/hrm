@@ -15,6 +15,7 @@ export const GlobalStyle = createGlobalStyle`
     margin: 0 auto;
     padding: 0 16px;
     max-width: 1200px;
+    overflow: hidden;
   }
 
   input,

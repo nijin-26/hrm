@@ -29,6 +29,15 @@ export const Nav = styled.nav`
     width: 100%;
     font-size: 18px;
   }
+
+  @media screen and (max-width: 420px) {
+    & .search-employee-container .search-icon {
+      font-size: 20px;
+    }
+    & .search-employee-container input {
+      font-size: 14px;
+    }
+  }
 `;
 
 export const ThemeToggle = styled.div`
