@@ -33,7 +33,10 @@
 }
 
 @media screen and (max-width: 420px) {
-  .inputGroup {
-    gap: 0px;
+  .formContainer {
+    .inputGroup {
+      gap: 8px;
+      margin: 10px 0;
+    }
   }
 }
