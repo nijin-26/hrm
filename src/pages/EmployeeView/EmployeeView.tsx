@@ -30,10 +30,16 @@ import { getFormattedDate } from "../../core/utils/formatDate";
 // App Context
 import { useAppContext } from "../../core/store/AppContext";
 import { toast } from "react-toastify";
-import { getEmployeeById } from "../../core/api";
+import { deleteData, getEmployeeById } from "../../core/api";
+import { BiEdit, BiUserMinus } from "react-icons/bi";
+import Modal from "../../components/common/Modal/Modal";
+import DeleteConfirmation from "../../components/Employee/DeleteConfirmation/DeleteConfirmation";
+import actionTypes from "../../core/store/actionTypes";
 
 const EmployeeView = () => {
-  const { state } = useAppContext();
+  const [toggleDeleteModal, setToggleDeleteModal] = useState<boolean>(false);
+
+  const { state, dispatch } = useAppContext();
   const [selectedEmployee, setSelectedEmployee] = useState<IEmployeeDetails>();
   const theme = useTheme();
   const location = useLocation();
@@ -66,6 +72,19 @@ const EmployeeView = () => {
     if (selected) setSelectedEmployee(selected as IEmployeeDetails);
     else fetchEmployee();
   }, []);
+
+  const handleEmployeeDelete = async () => {
+    try {
+      await deleteData(`/employee/${employeeId}.json`);
+      dispatch({ type: actionTypes.DELETE_EMPLOYEE, payload: employeeId });
+      toast.success("Employee deleted successfully.");
+      setToggleDeleteModal(false);
+      dispatch({ type: actionTypes.FILTER_SORT_EMPLOYEES });
+      navigate("/");
+    } catch (error) {
+      toast.error("Error in deleting employee. Try Again");
+    }
+  };
 
   let department =
     selectedEmployee &&
@@ -108,6 +127,14 @@ const EmployeeView = () => {
 
   return (
     <Fade>
+      <div className={styles.buttonContainer}>
+        <span onClick={() => navigate(`/edit/${employeeId}`)}>
+          <BiEdit />
+        </span>
+        <span onClick={() => setToggleDeleteModal(true)}>
+          <BiUserMinus />
+        </span>
+      </div>
       <section className={styles.viewEmployeeContainer}>
         <div className={styles.employeeDetails} style={employeeDetailsStyle}>
           <div className={styles.leftSide}>
@@ -181,6 +208,16 @@ const EmployeeView = () => {
             );
           })}
         </SelectedSkillsContainer>
+        <Modal
+          isOpen={toggleDeleteModal}
+          handleModalClose={() => setToggleDeleteModal(false)}
+        >
+          <DeleteConfirmation
+            handleModalClose={() => setToggleDeleteModal(false)}
+            handleEmployeeDelete={handleEmployeeDelete}
+            employeeId={employeeId}
+          />
+        </Modal>
       </section>
     </Fade>
   );
