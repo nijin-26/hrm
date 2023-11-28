@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { ButtonContainer } from "./style";
 import { IoIosArrowUp } from "react-icons/io";
+import { useLocation } from "react-router-dom";
 
 const ScrollToTop: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const { pathname } = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,6 +20,8 @@ const ScrollToTop: React.FC = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  useEffect(() => scrollToTop(), [pathname]);
 
   const scrollToTop = () => {
     window.scrollTo({

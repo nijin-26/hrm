@@ -163,7 +163,7 @@ const EmployeeForm = () => {
         dateOfJoin: moment(values.dateOfJoin, "YYYY-MM-DD").valueOf(),
         imageURL: imageFile
           ? await uploadImage(imageFile as File)
-          : values.imageURL, //TODO: Upload image and get image URL
+          : values.imageURL,
         skill: selectedSkills.map((skill) => skill.id),
       };
       delete employeeDetails.actions;
@@ -172,6 +172,7 @@ const EmployeeForm = () => {
         ? updateEmployee(employeeDetails)
         : addEmployee(employeeDetails);
     } catch (error) {
+      toast.error("Error Uploading Image. Try Again.");
       console.log(error, "Error uploading Image");
     }
   };

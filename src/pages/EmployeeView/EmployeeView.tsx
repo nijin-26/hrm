@@ -50,7 +50,6 @@ const EmployeeView = () => {
   useEffect(() => {
     const fetchEmployee = async () => {
       try {
-        console.log("try called");
         const response: unknown = await getEmployeeById(
           `/employee/${employeeId}.json`
         );

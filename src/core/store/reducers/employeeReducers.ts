@@ -22,7 +22,6 @@ export const employeeReducer = (
       return employeeData;
     }
     case actionTypes.UPDATE_EMPLOYEE: {
-      console.log(action.payload, "payload");
       const updatedEmployees = state.map((employee) => {
         if (employee.id === action.payload.id)
           return { ...action.payload.data, id: action.payload.id };
