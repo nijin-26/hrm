@@ -81,7 +81,7 @@ export const DropDownContent = styled.div`
   top: 48px;
   left: 0;
   right: 0;
-  max-height: 180px;
+  max-height: 110px;
   overflow: auto;
   border-radius: none;
 

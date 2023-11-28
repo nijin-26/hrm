@@ -43,7 +43,7 @@ export function useAppContext() {
 
 function AppContextProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(false);
-  const [state, dispatch] = useReducer(rootReducer, initialState);
+    const [state, dispatch] = useReducer(rootReducer, initialState);
 
   useEffect(() => {
     const fetchData = async () => {
