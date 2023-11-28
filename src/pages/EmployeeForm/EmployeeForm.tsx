@@ -200,6 +200,7 @@ const EmployeeForm = () => {
           enableReinitialize
           initialValues={initialEmployeeDetails}
           validationSchema={employeeFormValidationSchema}
+          validateOnChange={false}
           onSubmit={handleFormSubmit}
         >
           <Form style={{ marginTop: "40px" }}>
@@ -216,7 +217,7 @@ const EmployeeForm = () => {
               <Input
                 label="Email ID"
                 name="email"
-                type="email"
+                type="text"
                 placeholder="Enter email address"
               />
               <Input
