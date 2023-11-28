@@ -50,7 +50,11 @@ const EmployeeListing = () => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  const lastPostIndex = currentPage * employeesPerPage;
+  const lastPostIndex = Math.min(
+    currentPage * employeesPerPage,
+    state.filteredEmployees.length
+  );
+
   const firstPostIndex = lastPostIndex - employeesPerPage;
   const currentListOfEmployees = state.filteredEmployees.slice(
     firstPostIndex,
