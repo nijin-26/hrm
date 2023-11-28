@@ -106,6 +106,7 @@ const EmployeeView = () => {
 
   const SelectedSkillsContainer = styled.div`
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 10px;
     margin-bottom: 30px;

@@ -3,6 +3,7 @@ import { GlobalStyle } from "../../core/styles/global";
 import { Outlet } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ScrollToTop from "../common/ScrollToTopButton/ScrollToTopButton";
 const Layout = () => {
   return (
     <div>
@@ -21,6 +22,7 @@ const Layout = () => {
       <main className="container">
         <Outlet />
       </main>
+      <ScrollToTop />
     </div>
   );
 };
