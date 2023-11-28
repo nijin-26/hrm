@@ -19,6 +19,7 @@ export const FilterSelectWrapper = styled.div`
     height: 100%;
     padding: 4px 8px;
     flex: 1;
+    width: 200px;
   }
 
   @media screen and (max-width: 768px) {

@@ -27,6 +27,28 @@ const SearchSkill = ({
     }
   };
 
+  const renderSkills = () => {
+    const filteredSkills = listOfSkills.filter((skill) =>
+      skill.name.toLowerCase().includes(searchInput.toLowerCase())
+    );
+
+    if (filteredSkills.length === 0) {
+      return <li style={{ color: "red" }}>Not Found</li>;
+    }
+
+    return filteredSkills.map((skill) => (
+      <li
+        key={skill.id}
+        onClick={() => {
+          handleSelectedSkills(skill.id);
+          setShowList(false);
+        }}
+      >
+        {skill.name}
+      </li>
+    ));
+  };
+
   return (
     <>
       <SkillSearchContainer>
@@ -57,24 +79,11 @@ const SearchSkill = ({
         </div>
         {showList && (
           <DropDownContent>
-            <ul>
-              {listOfSkills.map(
-                (skill) =>
-                  skill.name
-                    .toLowerCase()
-                    .includes(searchInput.toLowerCase()) && (
-                    <li
-                      key={skill.id}
-                      onClick={() => {
-                        handleSelectedSkills(skill.id);
-                        setShowList(false);
-                      }}
-                    >
-                      {skill.name}
-                    </li>
-                  )
-              )}
-            </ul>
+            {listOfSkills.length ? (
+              <ul>{renderSkills()}</ul>
+            ) : (
+              <p style={{ color: "red", fontWeight: 600 }}>Skill not found</p>
+            )}
           </DropDownContent>
         )}
       </SkillSearchContainer>

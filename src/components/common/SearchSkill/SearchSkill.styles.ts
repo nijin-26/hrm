@@ -76,6 +76,7 @@ export const DropDownContent = styled.div`
   border: 2px solid ${(props) => props.theme.secondary};
   border-radius: 8px;
   position: absolute;
+  top: 48px;
   left: 0;
   right: 0;
   max-height: 180px;
