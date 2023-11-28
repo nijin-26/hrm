@@ -25,10 +25,6 @@ export const FilterOptionsWrapper = styled.div`
   }
 
   @media screen and (max-width: 768px) {
-    height: 100px;
-  }
-
-  @media screen and (max-width: 420px) {
     height: 160px;
   }
 `;

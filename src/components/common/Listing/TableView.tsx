@@ -1,5 +1,9 @@
 import { TableWrapper } from "./listing.styles";
-import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
+import {
+  TiArrowSortedDown,
+  TiArrowSortedUp,
+  TiArrowUnsorted,
+} from "react-icons/ti";
 import { ITableViewProps } from "../../../core/interfaces/Common";
 import { useAppContext } from "../../../core/store/AppContext";
 import { Loader } from "../Loader/Loader";
@@ -31,9 +35,16 @@ const TableView = <T, U>({
               >
                 <div>
                   <span>{header.name}</span>
-                  {header.isSortable && sortOrder && sortBy === header.id ? (
+                  {header.isSortable && sortOrder && sortBy == header.id ? (
                     <span>{handleCurrentSortIcon()}</span>
-                  ) : null}
+                  ) : (
+                    header.isSortable &&
+                    sortBy !== header.id && (
+                      <span>
+                        <TiArrowUnsorted />
+                      </span>
+                    )
+                  )}
                 </div>
               </th>
             ))}

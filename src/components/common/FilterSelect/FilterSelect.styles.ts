@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const FilterSelectWrapper = styled.div`
   position: relative;
+  height: 50px;
 
   &::after {
     content: "⌄";
@@ -20,9 +21,5 @@ export const FilterSelectWrapper = styled.div`
     padding: 4px 8px;
     flex: 1;
     width: 200px;
-  }
-
-  @media screen and (max-width: 768px) {
-    height: 50px;
   }
 `;

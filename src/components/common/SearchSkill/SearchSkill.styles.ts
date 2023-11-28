@@ -7,6 +7,8 @@ export const SkillSearchContainer = styled.div`
   flex-grow: 1;
   border: 1px solid #000;
   border-radius: 8px;
+  display: flex;
+  align-items: center;
 
   & > div {
     display: flex;
