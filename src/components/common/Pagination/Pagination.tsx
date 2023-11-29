@@ -37,7 +37,7 @@ const Pagination = ({
       </PaginationNumbers>
       <PaginationButton
         onClick={() => setCurrentPage(currentPage + 1)}
-        disabled={currentPage === pages.length}
+        disabled={currentPage === pages.length || pages.length === 0}
       >
         Next
       </PaginationButton>

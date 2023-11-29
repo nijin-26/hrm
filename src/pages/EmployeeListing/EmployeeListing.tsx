@@ -33,7 +33,9 @@ const EmployeeListing = () => {
   const [toggleFilter, setToggleFilter] = useState(true);
   const [toggleDeleteModal, setToggleDeleteModal] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [userSelectedPage, setUserSelectedPage] = useState(1);
   const [employeesPerPage, setemployeesPerPage] = useState(5);
+  const [employeesLength, setEmployeesLength] = useState(0);
 
   const { loading, state, dispatch } = useAppContext();
   const { sortBy, sortOrder } = state.filterSort;
@@ -50,6 +52,17 @@ const EmployeeListing = () => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  useEffect(() => {
+    if (state.filteredEmployees.length !== employeesLength) {
+      if (state.filteredEmployees.length === state.employees.length) {
+        setCurrentPage(userSelectedPage);
+      } else {
+        setCurrentPage(1);
+      }
+      setEmployeesLength(state.filteredEmployees.length);
+    }
+  }, [state.filteredEmployees, employeesLength, userSelectedPage]);
+
   const lastPostIndex = Math.min(
     currentPage * employeesPerPage,
     state.filteredEmployees.length
@@ -60,6 +73,11 @@ const EmployeeListing = () => {
     firstPostIndex,
     lastPostIndex
   );
+
+  const handlePageChange = (num: number) => {
+    setCurrentPage(num);
+    setUserSelectedPage(num);
+  };
 
   const handleRowClick = (e: MouseEvent<HTMLElement>, id: string) => {
     const target = e.target as HTMLElement;
@@ -142,7 +160,7 @@ const EmployeeListing = () => {
           currentPage={currentPage}
           totalPosts={state.filteredEmployees.length}
           postsPerPage={employeesPerPage}
-          setCurrentPage={(num) => setCurrentPage(num)}
+          setCurrentPage={(num) => handlePageChange(num)}
         />
 
         <Modal isOpen={toggleDeleteModal} handleModalClose={handleModalClose}>
