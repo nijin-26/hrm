@@ -13,7 +13,8 @@ import actionTypes from "../../../core/store/actionTypes";
 const NavBar = () => {
   const searchNameRef = useRef<HTMLInputElement | null>(null);
   const { tState, tDispatch } = useThemeContext();
-  const { dispatch } = useAppContext();
+  const { state, dispatch } = useAppContext();
+  const { filterSort } = state;
 
   const { pathname } = useLocation();
 
@@ -55,6 +56,7 @@ const NavBar = () => {
           style={pathname !== "/" ? { visibility: "hidden" } : {}}
         >
           <input
+            value={filterSort.name}
             ref={searchNameRef}
             onChange={handleInputChange}
             className="search-employee-input"
