@@ -4,17 +4,21 @@ import {
   TiArrowSortedUp,
   TiArrowUnsorted,
 } from "react-icons/ti";
-import { ITableViewProps } from "../../../core/interfaces/Common";
+import {
+  ITableHeader,
+  ITableViewProps,
+  TableDataType,
+} from "../../../core/interfaces/Common";
 import { useAppContext } from "../../../core/store/AppContext";
 import { Loader } from "../Loader/Loader";
 
-const TableView = <T, U>({
+const TableView = ({
   tableHeaders,
   tableData,
   handleSort,
   handleRowClick,
   loading,
-}: ITableViewProps<T, U>) => {
+}: ITableViewProps) => {
   const { state } = useAppContext();
   const { sortBy, sortOrder } = state.filterSort;
 
@@ -28,7 +32,7 @@ const TableView = <T, U>({
       <table>
         <thead>
           <tr>
-            {tableHeaders.map((header: any) => (
+            {tableHeaders.map((header) => (
               <th
                 onClick={() => header.isSortable && handleSort(header.id)}
                 key={header.id}
@@ -58,13 +62,15 @@ const TableView = <T, U>({
               </td>
             </tr>
           ) : (
-            tableData.map((rowData: any) => (
+            tableData.map((rowData) => (
               <tr
                 key={rowData.id}
                 onClick={(e) => handleRowClick(e, rowData.id)}
               >
-                {tableHeaders.map((header: any) => (
-                  <td key={header.id}>{rowData[header.id]}</td>
+                {tableHeaders.map((header) => (
+                  <td key={header.id}>
+                    {rowData[header.id as keyof TableDataType] as string}
+                  </td>
                 ))}
               </tr>
             ))

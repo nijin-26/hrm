@@ -63,9 +63,9 @@ export interface IDepartment {
   name: string;
 }
 
-export interface ITableViewProps<T, U> {
-  tableHeaders: T[];
-  tableData: U[];
+export interface ITableViewProps {
+  tableHeaders: ITableHeader[];
+  tableData: TableDataType[];
   handleRowClick: (e: MouseEvent<HTMLElement>, id: string) => void;
   handleSort: (column: string) => void;
   loading: boolean;
@@ -77,8 +77,10 @@ export interface ITableHeader {
   isSortable: boolean;
 }
 
+export type TableDataType = IEmployeeDetails; // Union other type that the table could recieve
+
 export interface IEmployeeDetails {
-  id?: string;
+  id: string;
   fullName?: string;
   dateOfBirth?: number | string;
   dateOfJoin?: number | string;
