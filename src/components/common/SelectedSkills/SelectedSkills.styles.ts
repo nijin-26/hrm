@@ -4,7 +4,6 @@ export const SelectedSkillsContainer = styled.div`
   padding: 6px 0;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   height: 100%;
   min-width: 360px;
   max-width: 50%;
