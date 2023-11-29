@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const TableWrapper = styled.div`
-  margin: 30px auto;
+  margin: 20px auto;
   min-width: 100%;
   text-align: left;
   border-radius: 10px;

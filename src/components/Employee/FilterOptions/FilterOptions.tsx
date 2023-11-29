@@ -9,6 +9,7 @@ import { IFilterOptions } from "../../../core/interfaces/Common";
 import { Tooltip } from "react-tooltip";
 import { useAppContext } from "../../../core/store/AppContext";
 import actionTypes from "../../../core/store/actionTypes";
+import SelectedSkills from "../../common/SelectedSkills/SelectedSkills";
 
 const FilterOptions = ({ departments, roles }: IFilterOptions) => {
   const { state, dispatch } = useAppContext();
@@ -55,46 +56,49 @@ const FilterOptions = ({ departments, roles }: IFilterOptions) => {
   };
 
   return (
-    <FilterOptionsWrapper className="flex">
-      <FilterSelect
-        placeholder="Department"
-        name="department"
-        options={departments}
-        value={filterSort.department}
-        onChange={handleFilterChange}
-      />
-      <FilterSelect
-        placeholder="Role"
-        name="role"
-        options={roles}
-        value={filterSort.role}
-        onChange={handleFilterChange}
-      />
+    <div>
+      <FilterOptionsWrapper className="flex">
+        <FilterSelect
+          placeholder="Department"
+          name="department"
+          options={departments}
+          value={filterSort.department}
+          onChange={handleFilterChange}
+        />
+        <FilterSelect
+          placeholder="Role"
+          name="role"
+          options={roles}
+          value={filterSort.role}
+          onChange={handleFilterChange}
+        />
 
-      <div className="skillWrapper">
-        <SearchSkill
-          position="inside"
-          placeholder="Search by skills"
-          searchInput={searchInput}
-          handleInput={handleInput}
-          listOfSkills={skills}
-          selectedSkills={selectedSkills}
-          handleSelectedSkills={handleSelectedSkills}
-          removeSelectedSkill={handleRemoveSelectedSkill}
-        />
-        <MdFilterListOff
-          className="clear-filter"
-          size={36}
-          onClick={handleClearFilters}
-        />
-        <Tooltip
-          anchorSelect=".clear-filter"
-          content="Clear All Filters"
-          place="right"
-          variant="info"
-        />
-      </div>
-    </FilterOptionsWrapper>
+        <div className="skillWrapper">
+          <SearchSkill
+            placeholder="Search by skills"
+            searchInput={searchInput}
+            handleInput={handleInput}
+            listOfSkills={skills}
+            handleSelectedSkills={handleSelectedSkills}
+          />
+          <MdFilterListOff
+            className="clear-filter"
+            size={36}
+            onClick={handleClearFilters}
+          />
+          <Tooltip
+            anchorSelect=".clear-filter"
+            content="Clear All Filters"
+            place="right"
+            variant="info"
+          />
+        </div>
+      </FilterOptionsWrapper>
+      <SelectedSkills
+        selectedSkills={selectedSkills}
+        removeSelectedSkill={handleRemoveSelectedSkill}
+      />
+    </div>
   );
 };
 

@@ -34,6 +34,7 @@ import actionTypes from "../../core/store/actionTypes";
 import { postEmployeeData, updateEmployeeData } from "../../core/api";
 import { toast } from "react-toastify";
 import { uploadImage } from "../../core/firebase/uploadImage";
+import SelectedSkills from "../../components/common/SelectedSkills/SelectedSkills";
 
 const EmployeeForm = () => {
   const [initialEmployeeDetails, setInitialEmployeeDetails] =
@@ -252,13 +253,14 @@ const EmployeeForm = () => {
             </div>
             <div className={style.skillInputWrapper}>
               <SearchSkill
-                position="outside"
                 placeholder="Search skills to add"
                 listOfSkills={skills}
-                selectedSkills={selectedSkills}
                 searchInput={searchInput}
                 handleInput={handleInput}
                 handleSelectedSkills={handleSelectedSkills}
+              />
+              <SelectedSkills
+                selectedSkills={selectedSkills}
                 removeSelectedSkill={handleRemoveSelectedSkill}
               />
             </div>

@@ -60,7 +60,7 @@ const EmployeeView = () => {
         }
       } catch (error) {
         toast.error("Error getting employee details.");
-        console.log(error);
+        console.log(error, "Error getting employee details");
       }
     };
 

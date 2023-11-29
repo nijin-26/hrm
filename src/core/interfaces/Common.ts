@@ -35,14 +35,11 @@ export interface IFilterSelect {
 }
 
 export interface ISearchSkills {
-  position: "inside" | "outside";
   placeholder: string;
   listOfSkills: { id: string; name: string }[];
-  selectedSkills: { id: string; name: string }[];
   searchInput: string;
   handleInput: (value: string) => void;
   handleSelectedSkills: (value: string) => void;
-  removeSelectedSkill: (value: string) => void;
 }
 
 export interface IImageUpload {
