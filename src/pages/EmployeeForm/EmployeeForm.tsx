@@ -107,7 +107,7 @@ const EmployeeForm = () => {
   const addEmployee = async (employeeData: IEmployeeDetails) => {
     try {
       const empId = employeeData.id;
-      delete employeeData.id;
+      // delete employeeData.id;
 
       const response = await postEmployeeData(
         `/employee/${empId}.json`,
@@ -132,7 +132,7 @@ const EmployeeForm = () => {
   const updateEmployee = async (employeeData: IEmployeeDetails) => {
     try {
       const empId: string = employeeData.id as string;
-      delete employeeData.id;
+      // delete employeeData.id;
 
       const response = await updateEmployeeData(
         `/employee/${empId}.json`,
