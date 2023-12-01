@@ -26,15 +26,19 @@ export function useThemeContext() {
 const themeReducer = (state: IThemeContextState, action: IContextAction) => {
   switch (action.type) {
     case "TOGGLE_DARK_LIGHT":
-      if (state.colorMode === "light") {
-        localStorage.setItem("theme", "dark");
-        return { ...state, colorMode: "dark", theme: themes["dark"] };
-      } else {
-        localStorage.setItem("theme", "light");
-        return { ...state, colorMode: "light", theme: themes["light"] };
-      }
+      return toggleDarkLightTheme(state);
     default:
       return state;
+  }
+};
+
+const toggleDarkLightTheme = (state: IThemeContextState) => {
+  if (state.colorMode === "light") {
+    localStorage.setItem("theme", "dark");
+    return { ...state, colorMode: "dark", theme: themes["dark"] };
+  } else {
+    localStorage.setItem("theme", "light");
+    return { ...state, colorMode: "light", theme: themes["light"] };
   }
 };
 

@@ -5,6 +5,10 @@ import { useEffect, useState } from "react";
 import { Fade } from "react-awesome-reveal";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled, { CSSProperties, useTheme } from "styled-components";
+import { toast } from "react-toastify";
+
+import Modal from "../../components/common/Modal/Modal";
+import DeleteConfirmation from "../../components/Employee/DeleteConfirmation/DeleteConfirmation";
 
 // React Icons
 import {
@@ -14,6 +18,7 @@ import {
 } from "react-icons/ai";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import { LiaBirthdayCakeSolid } from "react-icons/lia";
+import { BiEdit, BiUserMinus } from "react-icons/bi";
 
 // Styles
 import styles from "./style.module.scss";
@@ -29,53 +34,67 @@ import { getFormattedDate } from "../../core/utils/formatDate";
 
 // App Context
 import { useAppContext } from "../../core/store/AppContext";
-import { toast } from "react-toastify";
 import { deleteData, getEmployeeById } from "../../core/api";
-import { BiEdit, BiUserMinus } from "react-icons/bi";
-import Modal from "../../components/common/Modal/Modal";
-import DeleteConfirmation from "../../components/Employee/DeleteConfirmation/DeleteConfirmation";
 import actionTypes from "../../core/store/actionTypes";
 
 const EmployeeView = () => {
+  // State
   const [toggleDeleteModal, setToggleDeleteModal] = useState<boolean>(false);
 
+  // Context and Hooks
   const { state, dispatch } = useAppContext();
   const [selectedEmployee, setSelectedEmployee] = useState<IEmployeeDetails>();
   const theme = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Extract employeeId from the URL
   const employeeId = location.pathname.split("/")[2];
 
+  // Fetch employee details on component mount
   useEffect(() => {
     const fetchEmployee = async () => {
       try {
         const response: unknown = await getEmployeeById(
           `/employee/${employeeId}.json`
         );
-        if (response) setSelectedEmployee(response as IEmployeeDetails);
-        else {
+
+        // If employee details are found, update the state
+        if (response) {
+          setSelectedEmployee(response as IEmployeeDetails);
+        } else {
           toast.error("Employee not found");
           navigate("/");
         }
       } catch (error) {
+        // Handle errors during employee details fetch
         toast.error("Error getting employee details.");
         console.log(error, "Error getting employee details");
       }
     };
 
+    // Check if employee is already available in the global state
     let selected = state.employees.find(
       (employee) => employee.id === employeeId
     );
 
-    if (selected) setSelectedEmployee(selected as IEmployeeDetails);
-    else fetchEmployee();
-  }, []);
+    // If found, update the local state; otherwise, fetch from the API
+    if (selected) {
+      setSelectedEmployee(selected as IEmployeeDetails);
+    } else {
+      fetchEmployee();
+    }
+  }, [employeeId, state.employees, navigate]);
 
+  // Delete employee
   const handleEmployeeDelete = async () => {
     try {
       await deleteData(`/employee/${employeeId}.json`);
+
+      // Update global state to remove the deleted employee
       dispatch({ type: actionTypes.DELETE_EMPLOYEE, payload: employeeId });
+
+      // Show success toast and update UI
       toast.success("Employee deleted successfully.");
       setToggleDeleteModal(false);
       dispatch({ type: actionTypes.FILTER_SORT_EMPLOYEES });
@@ -85,6 +104,7 @@ const EmployeeView = () => {
     }
   };
 
+  // Extract department and role details based on selected employee
   let department =
     selectedEmployee &&
     state.departments.find(
@@ -95,14 +115,16 @@ const EmployeeView = () => {
     selectedEmployee &&
     state.roles.find((role) => role.id === selectedEmployee?.role);
 
-  const employeeDetailsStyle = {
+  // Styling for employee details and links
+  const employeeDetailsStyle: CSSProperties = {
     color: theme.fontColor,
-  } as CSSProperties;
+  };
 
-  const linkStyle = {
+  const linkStyle: CSSProperties = {
     color: theme.fontColor,
-  } as CSSProperties;
+  };
 
+  // Styled component for selected skills container
   const SelectedSkillsContainer = styled.div`
     display: flex;
     flex-wrap: wrap;
@@ -114,10 +136,12 @@ const EmployeeView = () => {
     .selectedSkillTag {
       border-radius: 50px;
       padding: 10px;
+
       &:nth-child(even) {
         background-color: ${(props) => props.theme.primary};
         color: ${(props) => props.theme.secondary};
       }
+
       &:nth-child(odd) {
         background-color: ${(props) => props.theme.secondary};
         color: ${(props) => props.theme.primary};

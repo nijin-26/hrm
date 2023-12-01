@@ -1,4 +1,3 @@
-import { skillList } from "../constants";
 import { useState, useEffect } from "react";
 import { ISkills } from "../interfaces/Common";
 import { useAppContext } from "../store/AppContext";
@@ -50,7 +49,7 @@ function useSkills() {
   const handleResetSkills = () => {
     setSearchInput("");
     setSelectedSkills([]);
-    setSkills(skillList);
+    setSkills(state.skills);
   };
 
   return {

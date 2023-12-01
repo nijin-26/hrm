@@ -8,7 +8,7 @@ import moment from "moment";
 
 // Styling & Constants
 import style from "./style.module.scss";
-import { workLocation } from "../../core/constants";
+import { workLocation } from "../../core/utils/constants";
 
 // Components
 import Select from "../../components/common/Select/Select";
@@ -70,24 +70,38 @@ const EmployeeForm = () => {
   const employeeId = location.pathname.split("/")[2];
 
   useEffect(() => {
-    if (currentFormType === "edit" && employeeId) {
-      const selectedEmp: IEmployeeDetails | undefined = state.employees.find(
-        (employee) => employee.id === employeeId
-      );
+    const loadEmployeeDetails = () => {
+      if (currentFormType === "edit" && employeeId) {
+        const selectedEmployee = findEmployeeById(employeeId);
 
-      if (selectedEmp) {
-        const selectedEmpDetails = {
-          ...selectedEmp,
-          dateOfBirth: getFormattedDate(selectedEmp.dateOfBirth as string)[1],
-          dateOfJoin: getFormattedDate(selectedEmp.dateOfJoin as string)[1],
-        };
-        setInitialEmployeeDetails(selectedEmpDetails);
+        if (selectedEmployee) {
+          const formattedEmployeeDetails =
+            formatEmployeeDetails(selectedEmployee);
 
-        // * Faced too many rerendering issue below. Somehow fixed it.
-        if (selectedEmp.skill !== undefined)
-          handleSelectedSkills(selectedEmp.skill);
+          setInitialEmployeeDetails(formattedEmployeeDetails);
+
+          if (selectedEmployee.skill !== undefined) {
+            handleSelectedSkills(selectedEmployee.skill);
+          }
+        }
       }
-    }
+    };
+
+    const findEmployeeById = (id: string): IEmployeeDetails | undefined => {
+      return state.employees.find((employee) => employee.id === id);
+    };
+
+    const formatEmployeeDetails = (
+      employee: IEmployeeDetails
+    ): IEmployeeDetails => {
+      return {
+        ...employee,
+        dateOfBirth: getFormattedDate(employee.dateOfBirth as string)[1],
+        dateOfJoin: getFormattedDate(employee.dateOfJoin as string)[1],
+      };
+    };
+
+    loadEmployeeDetails();
   }, []);
 
   const handleImageInput = (e: ChangeEvent) => {
@@ -107,12 +121,12 @@ const EmployeeForm = () => {
   const addEmployee = async (employeeData: IEmployeeDetails) => {
     try {
       const empId = employeeData.id;
-      // delete employeeData.id;
-
+  
       const response = await postEmployeeData(
         `/employee/${empId}.json`,
         employeeData
       );
+  
       if (response) {
         toast.success("Employee Added Successfully");
         dispatch({
@@ -128,17 +142,16 @@ const EmployeeForm = () => {
       toast.error("Error adding employee");
     }
   };
-
+  
   const updateEmployee = async (employeeData: IEmployeeDetails) => {
     try {
       const empId: string = employeeData.id as string;
-      // delete employeeData.id;
-
+  
       const response = await updateEmployeeData(
         `/employee/${empId}.json`,
         employeeData
       );
-
+  
       if (response) {
         toast.success("Employee Updated Successfully");
         dispatch({
@@ -154,7 +167,7 @@ const EmployeeForm = () => {
       toast.error("Error updating employee. Try again");
     }
   };
-
+  
   const handleFormSubmit = async (values: IEmployeeDetails) => {
     try {
       const employeeDetails = {
@@ -167,17 +180,21 @@ const EmployeeForm = () => {
           : values.imageURL,
         skill: selectedSkills.map((skill) => skill.id),
       };
+  
+      // Remove unnecessary field
       delete employeeDetails.actions;
-
-      currentFormType === "edit"
-        ? updateEmployee(employeeDetails)
-        : addEmployee(employeeDetails);
+  
+      if (currentFormType === "edit") 
+        updateEmployee(employeeDetails);
+       else 
+        addEmployee(employeeDetails);
+      
     } catch (error) {
       toast.error("Error Uploading Image. Try Again.");
       console.log(error, "Error uploading Image");
     }
   };
-
+  
   const formContainerStyle = {
     backgroundColor: theme.bgColor,
   } as CSSProperties;

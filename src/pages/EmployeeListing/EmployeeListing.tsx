@@ -4,14 +4,16 @@ import TableView from "../../components/common/Listing/TableView";
 import Button from "../../components/common/Button/Button";
 import DeleteConfirmation from "../../components/Employee/DeleteConfirmation/DeleteConfirmation";
 import Modal from "../../components/common/Modal/Modal";
+import Pagination from "../../components/common/Pagination/Pagination";
 
 // External Libraries
 import { Tooltip } from "react-tooltip";
 import { Fade } from "react-awesome-reveal";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 // Constants/Data
-import { employeeTableHeader } from "../../core/constants";
+import { employeeTableHeader } from "../../core/utils/constants";
 
 // Styles & Icons
 import styles from "./style.module.scss";
@@ -24,24 +26,24 @@ import { MouseEvent, useEffect, useState } from "react";
 // Store and API
 import { useAppContext } from "../../core/store/AppContext";
 import actionType from "../../core/store/actionTypes";
-import { deleteData, getEmployeeData } from "../../core/api";
-import { toast } from "react-toastify";
-import Pagination from "../../components/common/Pagination/Pagination";
+import { deleteData } from "../../core/api";
 
 const EmployeeListing = () => {
+  // State
   const [employeeId, setEmployeeId] = useState<string>("");
   const [toggleFilter, setToggleFilter] = useState(true);
   const [toggleDeleteModal, setToggleDeleteModal] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [userSelectedPage, setUserSelectedPage] = useState(1);
-  const [employeesPerPage, setemployeesPerPage] = useState(5);
+  const [employeesPerPage, setEmployeesPerPage] = useState(5);
   const [employeesLength, setEmployeesLength] = useState(0);
 
+  // Context and navigation
   const { loading, state, dispatch } = useAppContext();
   const { sortBy, sortOrder } = state.filterSort;
-
   const navigate = useNavigate();
 
+  // <<<<<< Event listeners for shortcuts >>>>>>>>>>>>
   useEffect(() => {
     const handleKeyDown = (e: any) => {
       if ((e.ctrlKey || e.metaKey) && e.shiftKey) {
@@ -52,6 +54,7 @@ const EmployeeListing = () => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  // <<<<<<<< Pagination logic >>>>>>>>>>>>>>>>
   useEffect(() => {
     if (state.filteredEmployees.length !== employeesLength) {
       if (state.filteredEmployees.length === state.employees.length) {
@@ -74,6 +77,7 @@ const EmployeeListing = () => {
     lastPostIndex
   );
 
+  // Event handlers
   const handlePageChange = (num: number) => {
     setCurrentPage(num);
     setUserSelectedPage(num);
