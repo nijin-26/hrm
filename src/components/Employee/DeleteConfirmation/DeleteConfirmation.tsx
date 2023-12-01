@@ -2,7 +2,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import {
   CofirmationForm,
   ModalBtnsContainer,
-} from "./DeleteConfirmation.style";
+} from "./DeleteConfirmation.styles";
 import Button from "../../common/Button/Button";
 
 const DeleteConfirmation = ({
@@ -43,16 +43,18 @@ const DeleteConfirmation = ({
           value={confirmationId}
           onChange={handleConfirmationIdChange}
         />
-        <Button
-          type="submit"
-          btnType={isValid ? "disabled" : "primary"}
-          disabled={isValid}
-        >
-          Delete
-        </Button>
-        <Button btnType="secondary" type="button" onClick={handleModalClose}>
-          Cancel
-        </Button>
+        <div>
+          <Button
+            type="submit"
+            btnType={isValid ? "disabled" : "primary"}
+            disabled={isValid}
+          >
+            Delete
+          </Button>
+          <Button btnType="secondary" type="button" onClick={handleModalClose}>
+            Cancel
+          </Button>
+        </div>
       </ModalBtnsContainer>
     </CofirmationForm>
   );

@@ -21,7 +21,7 @@ export const ModalContainer = styled.div<{ isOpen: Boolean }>`
   padding: 16px;
   position: fixed;
   max-height: 80vh;
-  width: 600px;
+  max-width: 600px;
   background-color: ${(props) => props.theme.bgColor};
   border: 1px solid #ccc;
   border-radius: 6px;

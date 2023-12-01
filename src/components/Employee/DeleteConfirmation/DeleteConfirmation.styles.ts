@@ -8,15 +8,25 @@ export const CofirmationForm = styled.form`
     font-weight: 500;
     line-height: 1.8;
   }
-
-  & input {
-    width: 80%;
-    margin: 0;
-  }
 `;
 
 export const ModalBtnsContainer = styled.div`
   margin-top: 20px;
-  justify-content: flex-end;
+  flex-direction: row;
   gap: 20px;
+
+  & input {
+    margin: 0;
+    flex: 1;
+  }
+
+  & div {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  @media screen and (max-width: 900px) {
+    flex-direction: column;
+  }
 `;
