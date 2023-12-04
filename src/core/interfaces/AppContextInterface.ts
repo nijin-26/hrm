@@ -20,6 +20,7 @@ export interface IAppContextState {
 }
 
 export interface IAppContext {
+  loading: boolean;
   state: IAppContextState;
   dispatch: Dispatch<any>;
 }

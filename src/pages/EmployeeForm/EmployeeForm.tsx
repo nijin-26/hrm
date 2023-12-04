@@ -1,24 +1,40 @@
-import { Form, Formik } from "formik";
+// External Libraries
+import { Form, Formik, prepareDataForValidation } from "formik";
+import { useLocation, useNavigate } from "react-router-dom";
+import { CSSProperties, useTheme } from "styled-components";
+import { Fade } from "react-awesome-reveal";
+import { ChangeEvent, useEffect, useState } from "react";
+import moment from "moment";
+
+// Styling & Constants
+import style from "./style.module.scss";
+import { workLocation } from "../../core/utils/constants";
+
+// Components
+import Select from "../../components/common/Select/Select";
+import Button from "../../components/common/Button/Button";
 import ImageUpload from "../../components/common/ImageUpload/ImageUpload";
 import Input from "../../components/common/Input/Input";
 import SearchSkill from "../../components/common/SearchSkill/SearchSkill";
 import useSkills from "../../core/hooks/useSkills";
 
-import style from "./style.module.scss";
-import Select from "../../components/common/Select/Select";
-import { departments, roles, workLocation } from "../../core/constants";
-import Button from "../../components/common/Button/Button";
-import { useLocation } from "react-router-dom";
-import { CSSProperties, useTheme } from "styled-components";
+// Validation and Schema
 import { employeeFormValidationSchema } from "../../core/utils/employeeFormValidationSchema";
-import { IEmployeeDetails, ISkills } from "../../core/interfaces/Common";
-import { useAppContext } from "../../core/store/AppContext";
+
+// Interfaces
+import { IEmployeeDetails } from "../../core/interfaces/Common";
+
+// Utility Functions
 import { getFormattedDate } from "../../core/utils/formatDate";
-import { Fade } from "react-awesome-reveal";
-import { ChangeEvent, useEffect, useState } from "react";
-import moment from "moment";
 import { generateUniqueKey } from "../../core/utils/generateUniqueID";
+
+// Store and API
+import { useAppContext } from "../../core/store/AppContext";
 import actionTypes from "../../core/store/actionTypes";
+import { postEmployeeData, updateEmployeeData } from "../../core/api";
+import { toast } from "react-toastify";
+import { uploadImage } from "../../core/firebase/uploadImage";
+import SelectedSkills from "../../components/common/SelectedSkills/SelectedSkills";
 
 const EmployeeForm = () => {
   const [initialEmployeeDetails, setInitialEmployeeDetails] =
@@ -35,10 +51,11 @@ const EmployeeForm = () => {
       role: "",
       skill: [],
     });
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageFile, setImageFile] = useState<File | string | null>(null);
 
   const { state, dispatch } = useAppContext();
   const location = useLocation();
+  const navigate = useNavigate();
   const theme = useTheme();
   const {
     skills,
@@ -53,24 +70,38 @@ const EmployeeForm = () => {
   const employeeId = location.pathname.split("/")[2];
 
   useEffect(() => {
-    if (currentFormType === "edit" && employeeId) {
-      const selectedEmp: IEmployeeDetails | undefined = state.employees.find(
-        (employee) => employee.id === employeeId
-      );
+    const loadEmployeeDetails = () => {
+      if (currentFormType === "edit" && employeeId) {
+        const selectedEmployee = findEmployeeById(employeeId);
 
-      if (selectedEmp) {
-        const selectedEmpDetails = {
-          ...selectedEmp,
-          dateOfBirth: getFormattedDate(selectedEmp.dateOfBirth as string)[1],
-          dateOfJoin: getFormattedDate(selectedEmp.dateOfJoin as string)[1],
-        };
-        setInitialEmployeeDetails(selectedEmpDetails);
+        if (selectedEmployee) {
+          const formattedEmployeeDetails =
+            formatEmployeeDetails(selectedEmployee);
 
-        // * Faced too many rerendering issue below. Somehow fixed it.
-        if (selectedEmp.skill !== undefined)
-          handleSelectedSkills(selectedEmp.skill);
+          setInitialEmployeeDetails(formattedEmployeeDetails);
+
+          if (selectedEmployee.skill !== undefined) {
+            handleSelectedSkills(selectedEmployee.skill);
+          }
+        }
       }
-    }
+    };
+
+    const findEmployeeById = (id: string): IEmployeeDetails | undefined => {
+      return state.employees.find((employee) => employee.id === id);
+    };
+
+    const formatEmployeeDetails = (
+      employee: IEmployeeDetails
+    ): IEmployeeDetails => {
+      return {
+        ...employee,
+        dateOfBirth: getFormattedDate(employee.dateOfBirth as string)[1],
+        dateOfJoin: getFormattedDate(employee.dateOfJoin as string)[1],
+      };
+    };
+
+    loadEmployeeDetails();
   }, []);
 
   const handleImageInput = (e: ChangeEvent) => {
@@ -81,28 +112,89 @@ const EmployeeForm = () => {
 
   const removeSelectedImage = () => {
     setImageFile(null);
+
+    setInitialEmployeeDetails((prev) => {
+      return { ...prev, imageURL: "" } as IEmployeeDetails;
+    });
   };
 
-  const handleFormSubmit = (values: IEmployeeDetails) => {
-    const employeeDetails = {
-      ...values,
-      id: values.id ? values.id : generateUniqueKey(state.employees),
-      dateOfBirth: moment(values.dateOfBirth, "YYYY-MM-DD").valueOf(),
-      dateOfJoin: moment(values.dateOfJoin, "YYYY-MM-DD").valueOf(),
-      imageURL: imageFile
-        ? URL.createObjectURL(imageFile as File)
-        : values.imageURL, //TODO: Upload image and get image URL
-      skill: selectedSkills.map((skill) => skill.id),
-    };
-
-    currentFormType === "edit"
-      ? dispatch({
+  const addEmployee = async (employeeData: IEmployeeDetails) => {
+    try {
+      const empId = employeeData.id;
+  
+      const response = await postEmployeeData(
+        `/employee/${empId}.json`,
+        employeeData
+      );
+  
+      if (response) {
+        toast.success("Employee Added Successfully");
+        dispatch({
+          type: actionTypes.ADD_EMPLOYEE,
+          payload: {
+            id: empId,
+            data: employeeData,
+          },
+        });
+        navigate("/");
+      }
+    } catch (error) {
+      toast.error("Error adding employee");
+    }
+  };
+  
+  const updateEmployee = async (employeeData: IEmployeeDetails) => {
+    try {
+      const empId: string = employeeData.id as string;
+  
+      const response = await updateEmployeeData(
+        `/employee/${empId}.json`,
+        employeeData
+      );
+  
+      if (response) {
+        toast.success("Employee Updated Successfully");
+        dispatch({
           type: actionTypes.UPDATE_EMPLOYEE,
-          payload: employeeDetails,
-        })
-      : dispatch({ type: actionTypes.ADD_EMPLOYEE, payload: employeeDetails });
+          payload: {
+            id: empId,
+            data: employeeData,
+          },
+        });
+        navigate(`/view/${empId}`);
+      }
+    } catch (error: any) {
+      toast.error("Error updating employee. Try again");
+    }
   };
-
+  
+  const handleFormSubmit = async (values: IEmployeeDetails) => {
+    try {
+      const employeeDetails = {
+        ...values,
+        id: values.id ? values.id : generateUniqueKey(state.employees),
+        dateOfBirth: moment(values.dateOfBirth, "YYYY-MM-DD").valueOf(),
+        dateOfJoin: moment(values.dateOfJoin, "YYYY-MM-DD").valueOf(),
+        imageURL: imageFile
+          ? await uploadImage(imageFile as File)
+          : values.imageURL,
+        skill: selectedSkills.map((skill) => skill.id),
+      };
+  
+      // Remove unnecessary field
+      delete employeeDetails.actions;
+  
+      if (currentFormType === "edit") 
+        updateEmployee(employeeDetails);
+       else 
+        addEmployee(employeeDetails);
+      
+    } catch (error) {
+      toast.error("Error Uploading Image. Try Again.");
+      console.log(error, "Error uploading Image");
+    }
+  };
+  
   const formContainerStyle = {
     backgroundColor: theme.bgColor,
   } as CSSProperties;
@@ -114,7 +206,11 @@ const EmployeeForm = () => {
       } Employee`}</h1>
       <div className={style.formContainer} style={formContainerStyle}>
         <ImageUpload
-          src={imageFile ? URL.createObjectURL(imageFile as File) : ""}
+          src={
+            imageFile
+              ? URL.createObjectURL(imageFile as File)
+              : initialEmployeeDetails.imageURL
+          }
           removeSelectedImage={removeSelectedImage}
           handleImageInput={handleImageInput}
         />
@@ -122,6 +218,7 @@ const EmployeeForm = () => {
           enableReinitialize
           initialValues={initialEmployeeDetails}
           validationSchema={employeeFormValidationSchema}
+          validateOnChange={false}
           onSubmit={handleFormSubmit}
         >
           <Form style={{ marginTop: "40px" }}>
@@ -138,7 +235,7 @@ const EmployeeForm = () => {
               <Input
                 label="Email ID"
                 name="email"
-                type="email"
+                type="text"
                 placeholder="Enter email address"
               />
               <Input
@@ -162,30 +259,33 @@ const EmployeeForm = () => {
                 label="Department"
                 name="department"
                 placeholder="Select Department"
-                datas={departments}
+                datas={state.departments}
               />
               <Select
                 label="Role"
                 name="role"
                 placeholder="Select Role"
-                datas={roles}
+                datas={state.roles}
               />
             </div>
             <div className={style.skillInputWrapper}>
               <SearchSkill
-                position="outside"
                 placeholder="Search skills to add"
                 listOfSkills={skills}
-                selectedSkills={selectedSkills}
                 searchInput={searchInput}
                 handleInput={handleInput}
                 handleSelectedSkills={handleSelectedSkills}
+              />
+              <SelectedSkills
+                selectedSkills={selectedSkills}
                 removeSelectedSkill={handleRemoveSelectedSkill}
               />
             </div>
 
             <div className={style.formButtons}>
-              <Button btnType="secondary">Cancel</Button>
+              <Button btnType="secondary" onClick={() => navigate("/")}>
+                Cancel
+              </Button>
               <Button type="submit">Submit</Button>
             </div>
           </Form>

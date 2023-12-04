@@ -1,4 +1,3 @@
-import { skillList } from "../constants";
 import { useState, useEffect } from "react";
 import { ISkills } from "../interfaces/Common";
 import { useAppContext } from "../store/AppContext";
@@ -11,22 +10,26 @@ function useSkills() {
   const { state } = useAppContext();
 
   useEffect(() => {
-    // TODO: Fetch all skills from Firebase
     setSkills([...state.skills]);
 
     return () => handleResetSkills();
-  }, []);
+  }, [state.skills]);
 
   const handleInput = (value: string) => setSearchInput(value);
-
   const handleSelectedSkills = (ids: string | string[]) => {
     const idArray = Array.isArray(ids) ? ids : [ids];
 
-    const selectedSkillsToAdd = state.skills.filter((skill) =>
-      idArray.includes(skill.id)
+    // Filter skills that are not already in selectedSkills
+    const selectedSkillsToAdd = state.skills.filter(
+      (skill) =>
+        idArray.includes(skill.id) &&
+        !selectedSkills.some((selectedSkill) => selectedSkill.id === skill.id)
     );
+
     const updatedListOfSkills = state.skills.filter(
-      (skill) => !idArray.includes(skill.id)
+      (skill) =>
+        !idArray.includes(skill.id) &&
+        !selectedSkills.some((selectedSkill) => selectedSkill.id === skill.id)
     );
 
     setSelectedSkills((prev) => [...prev, ...selectedSkillsToAdd]);
@@ -46,7 +49,7 @@ function useSkills() {
   const handleResetSkills = () => {
     setSearchInput("");
     setSelectedSkills([]);
-    setSkills(skillList);
+    setSkills(state.skills);
   };
 
   return {

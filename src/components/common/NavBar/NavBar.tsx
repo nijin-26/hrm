@@ -7,14 +7,31 @@ import { Nav, ThemeToggle } from "./NavBar.styles";
 import { Link, useLocation } from "react-router-dom";
 import { useThemeContext } from "../../../core/theme/ThemeContext";
 import { useAppContext } from "../../../core/store/AppContext";
-import { ChangeEvent } from "react";
+import { ChangeEvent, KeyboardEvent, useEffect, useRef } from "react";
 import actionTypes from "../../../core/store/actionTypes";
 
 const NavBar = () => {
+  const searchNameRef = useRef<HTMLInputElement | null>(null);
   const { tState, tDispatch } = useThemeContext();
-  const { dispatch } = useAppContext();
+  const { state, dispatch } = useAppContext();
+  const { filterSort } = state;
 
   const { pathname } = useLocation();
+
+  useEffect(() => {
+    const handleKeyDown = (e: any) => {
+      if (e.key === "/") {
+        e.preventDefault();
+        searchNameRef.current?.focus();
+      } else if (e.key === "Escape") searchNameRef.current?.blur();
+      else if ((e.ctrlKey || e.metaKey) && e.shiftKey) {
+        if (e.key === "l" || e.key === "L")
+          tDispatch({ type: "TOGGLE_DARK_LIGHT" });
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   const handleInputChange = (e: ChangeEvent) => {
     const target = e.target as HTMLInputElement;
@@ -39,6 +56,8 @@ const NavBar = () => {
           style={pathname !== "/" ? { visibility: "hidden" } : {}}
         >
           <input
+            value={filterSort.name}
+            ref={searchNameRef}
             onChange={handleInputChange}
             className="search-employee-input"
             name="name"

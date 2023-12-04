@@ -35,14 +35,11 @@ export interface IFilterSelect {
 }
 
 export interface ISearchSkills {
-  position: "inside" | "outside";
   placeholder: string;
   listOfSkills: { id: string; name: string }[];
-  selectedSkills: { id: string; name: string }[];
   searchInput: string;
   handleInput: (value: string) => void;
   handleSelectedSkills: (value: string) => void;
-  removeSelectedSkill: (value: string) => void;
 }
 
 export interface IImageUpload {
@@ -66,11 +63,12 @@ export interface IDepartment {
   name: string;
 }
 
-export interface ITableViewProps<T, U> {
-  tableHeaders: T[];
-  tableData: U[];
+export interface ITableViewProps {
+  tableHeaders: ITableHeader[];
+  tableData: TableDataType[];
   handleRowClick: (e: MouseEvent<HTMLElement>, id: string) => void;
   handleSort: (column: string) => void;
+  loading: boolean;
 }
 
 export interface ITableHeader {
@@ -78,6 +76,8 @@ export interface ITableHeader {
   name: string;
   isSortable: boolean;
 }
+
+export type TableDataType = IEmployeeDetails; // Union other type that the table could recieve
 
 export interface IEmployeeDetails {
   id: string;
@@ -92,4 +92,11 @@ export interface IEmployeeDetails {
   role?: string;
   skill: string[];
   actions?: JsxElement | ReactNode;
+}
+
+export interface IPaginationProps {
+  totalPosts: number;
+  postsPerPage: number;
+  setCurrentPage: (page: number) => void;
+  currentPage: number;
 }

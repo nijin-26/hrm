@@ -1,5 +1,5 @@
 import { IFilterSelect } from "../../../core/interfaces/Common";
-import { FilterSelectWrapper } from "./FilterSelect.style";
+import { FilterSelectWrapper } from "./FilterSelect.styles";
 import { CSSProperties, useTheme } from "styled-components";
 
 const FilterSelect = ({

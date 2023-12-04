@@ -1,3 +1,16 @@
+// React Hooks
+import { useEffect, useState } from "react";
+
+// External Libraries
+import { Fade } from "react-awesome-reveal";
+import { useLocation, useNavigate } from "react-router-dom";
+import styled, { CSSProperties, useTheme } from "styled-components";
+import { toast } from "react-toastify";
+
+import Modal from "../../components/common/Modal/Modal";
+import DeleteConfirmation from "../../components/Employee/DeleteConfirmation/DeleteConfirmation";
+
+// React Icons
 import {
   AiOutlineMail,
   AiOutlineMobile,
@@ -5,35 +18,93 @@ import {
 } from "react-icons/ai";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import { LiaBirthdayCakeSolid } from "react-icons/lia";
+import { BiEdit, BiUserMinus } from "react-icons/bi";
 
+// Styles
 import styles from "./style.module.scss";
 
-import styled, { CSSProperties, useTheme } from "styled-components";
-
+// Assets
 import placeholder from "../../assets/placeholder-image.png";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+
+// Interfaces
 import { IEmployeeDetails } from "../../core/interfaces/Common";
+
+// Utility Functions
 import { getFormattedDate } from "../../core/utils/formatDate";
+
+// App Context
 import { useAppContext } from "../../core/store/AppContext";
-import { Fade } from "react-awesome-reveal";
+import { deleteData, getEmployeeById } from "../../core/api";
+import actionTypes from "../../core/store/actionTypes";
 
 const EmployeeView = () => {
-  const { state } = useAppContext();
+  // State
+  const [toggleDeleteModal, setToggleDeleteModal] = useState<boolean>(false);
+
+  // Context and Hooks
+  const { state, dispatch } = useAppContext();
   const [selectedEmployee, setSelectedEmployee] = useState<IEmployeeDetails>();
   const theme = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Extract employeeId from the URL
+  const employeeId = location.pathname.split("/")[2];
+
+  // Fetch employee details on component mount
   useEffect(() => {
-    const employeeId = location.pathname.split("/")[2];
-    const selected = state.employees.find(
+    const fetchEmployee = async () => {
+      try {
+        const response: unknown = await getEmployeeById(
+          `/employee/${employeeId}.json`
+        );
+
+        // If employee details are found, update the state
+        if (response) {
+          setSelectedEmployee(response as IEmployeeDetails);
+        } else {
+          toast.error("Employee not found");
+          navigate("/");
+        }
+      } catch (error) {
+        // Handle errors during employee details fetch
+        toast.error("Error getting employee details.");
+        console.log(error, "Error getting employee details");
+      }
+    };
+
+    // Check if employee is already available in the global state
+    let selected = state.employees.find(
       (employee) => employee.id === employeeId
     );
-    if (selected) setSelectedEmployee(selected as IEmployeeDetails);
-    else navigate("/"); // TODO: Toast message - Employee Not found
-  }, []);
 
+    // If found, update the local state; otherwise, fetch from the API
+    if (selected) {
+      setSelectedEmployee(selected as IEmployeeDetails);
+    } else {
+      fetchEmployee();
+    }
+  }, [employeeId, state.employees, navigate]);
+
+  // Delete employee
+  const handleEmployeeDelete = async () => {
+    try {
+      await deleteData(`/employee/${employeeId}.json`);
+
+      // Update global state to remove the deleted employee
+      dispatch({ type: actionTypes.DELETE_EMPLOYEE, payload: employeeId });
+
+      // Show success toast and update UI
+      toast.success("Employee deleted successfully.");
+      setToggleDeleteModal(false);
+      dispatch({ type: actionTypes.FILTER_SORT_EMPLOYEES });
+      navigate("/");
+    } catch (error) {
+      toast.error("Error in deleting employee. Try Again");
+    }
+  };
+
+  // Extract department and role details based on selected employee
   let department =
     selectedEmployee &&
     state.departments.find(
@@ -44,16 +115,19 @@ const EmployeeView = () => {
     selectedEmployee &&
     state.roles.find((role) => role.id === selectedEmployee?.role);
 
-  const employeeDetailsStyle = {
+  // Styling for employee details and links
+  const employeeDetailsStyle: CSSProperties = {
     color: theme.fontColor,
-  } as CSSProperties;
+  };
 
-  const linkStyle = {
+  const linkStyle: CSSProperties = {
     color: theme.fontColor,
-  } as CSSProperties;
+  };
 
+  // Styled component for selected skills container
   const SelectedSkillsContainer = styled.div`
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 10px;
     margin-bottom: 30px;
@@ -62,10 +136,12 @@ const EmployeeView = () => {
     .selectedSkillTag {
       border-radius: 50px;
       padding: 10px;
+
       &:nth-child(even) {
         background-color: ${(props) => props.theme.primary};
         color: ${(props) => props.theme.secondary};
       }
+
       &:nth-child(odd) {
         background-color: ${(props) => props.theme.secondary};
         color: ${(props) => props.theme.primary};
@@ -75,6 +151,14 @@ const EmployeeView = () => {
 
   return (
     <Fade>
+      <div className={styles.buttonContainer}>
+        <span onClick={() => navigate(`/edit/${employeeId}`)}>
+          <BiEdit />
+        </span>
+        <span onClick={() => setToggleDeleteModal(true)}>
+          <BiUserMinus />
+        </span>
+      </div>
       <section className={styles.viewEmployeeContainer}>
         <div className={styles.employeeDetails} style={employeeDetailsStyle}>
           <div className={styles.leftSide}>
@@ -148,6 +232,16 @@ const EmployeeView = () => {
             );
           })}
         </SelectedSkillsContainer>
+        <Modal
+          isOpen={toggleDeleteModal}
+          handleModalClose={() => setToggleDeleteModal(false)}
+        >
+          <DeleteConfirmation
+            handleModalClose={() => setToggleDeleteModal(false)}
+            handleEmployeeDelete={handleEmployeeDelete}
+            employeeId={employeeId}
+          />
+        </Modal>
       </section>
     </Fade>
   );

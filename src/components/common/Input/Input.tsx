@@ -1,8 +1,16 @@
 import { useField } from "formik";
 import { InputWrapper } from "./Input.style";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 const Input = ({ label, ...props }: any) => {
   const [field, meta] = useField(props);
+
+  useEffect(() => {
+    if (meta.touched && meta.error) {
+      toast.error(meta.error);
+    }
+  }, [meta.error]);
 
   return (
     <InputWrapper>

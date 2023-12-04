@@ -7,57 +7,12 @@ export const SkillSearchContainer = styled.div`
   flex-grow: 1;
   border: 1px solid #000;
   border-radius: 8px;
+  display: flex;
+  align-items: center;
 
   & > div {
     display: flex;
     padding: 2px 4px;
-  }
-`;
-
-export const SelectedSkills = styled.div`
-  padding: 6px 0;
-  display: flex;
-  height: 100%;
-  max-width: 230px;
-  font-size: 12px;
-  gap: 4px;
-  color: var(--font-color);
-  overflow-x: auto;
-  scrollbar-width: thin;
-
-  &.outside {
-    margin: 8px 0;
-    max-width: unset;
-    overflow: hidden;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-  }
-`;
-
-export const SelectedSkillTag = styled.p`
-  height: 100%;
-  display: flex;
-  margin: 0;
-  justify-content: space-evenly;
-  align-items: center;
-  white-space: nowrap;
-  gap: 6px;
-  border-radius: 50px;
-  padding: 8px;
-
-  &:nth-child(even) {
-    background-color: ${(props) => props.theme.primary};
-    color: ${(props) => props.theme.secondary};
-  }
-
-  &:nth-child(odd) {
-    background-color: ${(props) => props.theme.secondary};
-    color: ${(props) => props.theme.primary};
-  }
-
-  & > .remove-skill-btn {
-    cursor: pointer;
   }
 `;
 
@@ -76,9 +31,10 @@ export const DropDownContent = styled.div`
   border: 2px solid ${(props) => props.theme.secondary};
   border-radius: 8px;
   position: absolute;
+  top: 48px;
   left: 0;
   right: 0;
-  max-height: 180px;
+  max-height: 110px;
   overflow: auto;
   border-radius: none;
 

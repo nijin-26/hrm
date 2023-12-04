@@ -1,16 +1,18 @@
 .formContainer {
   min-height: 70vh;
-  width: 600px;
+  max-width: 600px;
   margin: 20px auto;
   padding: 10px 16px;
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 8px;
+  overflow: hidden;
 
   .inputGroup {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    flex-wrap: wrap;
     gap: 30px;
     margin: 20px 0;
     width: 100%;
@@ -29,4 +31,13 @@
 .skillInputWrapper {
   max-width: 60%;
   margin: 0 auto;
+}
+
+@media screen and (max-width: 420px) {
+  .formContainer {
+    .inputGroup {
+      gap: 8px;
+      margin: 10px 0;
+    }
+  }
 }
