@@ -6,9 +6,9 @@ import Logo from "../../../assets/logo.png";
 import { Nav, ThemeToggle } from "./NavBar.styles";
 import { Link, useLocation } from "react-router-dom";
 import { useThemeContext } from "../../../core/theme/ThemeContext";
-import { useAppContext } from "../../../core/store/AppContext";
+import { useAppContext } from "../../../core/context/AppContext";
 import { ChangeEvent, KeyboardEvent, useEffect, useRef } from "react";
-import actionTypes from "../../../core/store/actionTypes";
+import actionTypes from "../../../core/context/actionTypes";
 
 const NavBar = () => {
   const searchNameRef = useRef<HTMLInputElement | null>(null);

@@ -1,15 +1,10 @@
 import { IContextAction, ISkills } from "../../interfaces/Common";
 import actionTypes from "../actionTypes";
 
-const initialSkills: ISkills[] = [];
-
-export const skillsReducer = (
-  state = initialSkills,
-  action: IContextAction
-): ISkills[] => {
+export const skillsReducer = (state: ISkills[], action: IContextAction) => {
   switch (action.type) {
     case actionTypes.SET_SKILLS: {
-      return action.payload;
+      return action.payload; // TODO: Fetch from API
     }
     default:
       return state;

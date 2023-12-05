@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { ISkills } from "../interfaces/Common";
-import { useAppContext } from "../store/AppContext";
+import { useAppContext } from "../context/AppContext";
 
 function useSkills() {
   const [searchInput, setSearchInput] = useState<string>("");

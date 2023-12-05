@@ -29,8 +29,8 @@ import { getFormattedDate } from "../../core/utils/formatDate";
 import { generateUniqueKey } from "../../core/utils/generateUniqueID";
 
 // Store and API
-import { useAppContext } from "../../core/store/AppContext";
-import actionTypes from "../../core/store/actionTypes";
+import { useAppContext } from "../../core/context/AppContext";
+import actionTypes from "../../core/context/actionTypes";
 import { postEmployeeData, updateEmployeeData } from "../../core/api";
 import { toast } from "react-toastify";
 import { uploadImage } from "../../core/firebase/uploadImage";
@@ -121,12 +121,12 @@ const EmployeeForm = () => {
   const addEmployee = async (employeeData: IEmployeeDetails) => {
     try {
       const empId = employeeData.id;
-  
+
       const response = await postEmployeeData(
         `/employee/${empId}.json`,
         employeeData
       );
-  
+
       if (response) {
         toast.success("Employee Added Successfully");
         dispatch({
@@ -142,16 +142,16 @@ const EmployeeForm = () => {
       toast.error("Error adding employee");
     }
   };
-  
+
   const updateEmployee = async (employeeData: IEmployeeDetails) => {
     try {
       const empId: string = employeeData.id as string;
-  
+
       const response = await updateEmployeeData(
         `/employee/${empId}.json`,
         employeeData
       );
-  
+
       if (response) {
         toast.success("Employee Updated Successfully");
         dispatch({
@@ -167,7 +167,7 @@ const EmployeeForm = () => {
       toast.error("Error updating employee. Try again");
     }
   };
-  
+
   const handleFormSubmit = async (values: IEmployeeDetails) => {
     try {
       const employeeDetails = {
@@ -180,21 +180,18 @@ const EmployeeForm = () => {
           : values.imageURL,
         skill: selectedSkills.map((skill) => skill.id),
       };
-  
+
       // Remove unnecessary field
       delete employeeDetails.actions;
-  
-      if (currentFormType === "edit") 
-        updateEmployee(employeeDetails);
-       else 
-        addEmployee(employeeDetails);
-      
+
+      if (currentFormType === "edit") updateEmployee(employeeDetails);
+      else addEmployee(employeeDetails);
     } catch (error) {
       toast.error("Error Uploading Image. Try Again.");
       console.log(error, "Error uploading Image");
     }
   };
-  
+
   const formContainerStyle = {
     backgroundColor: theme.bgColor,
   } as CSSProperties;

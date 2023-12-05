@@ -33,9 +33,9 @@ import { IEmployeeDetails } from "../../core/interfaces/Common";
 import { getFormattedDate } from "../../core/utils/formatDate";
 
 // App Context
-import { useAppContext } from "../../core/store/AppContext";
+import { useAppContext } from "../../core/context/AppContext";
 import { deleteData, getEmployeeById } from "../../core/api";
-import actionTypes from "../../core/store/actionTypes";
+import actionTypes from "../../core/context/actionTypes";
 
 const EmployeeView = () => {
   // State

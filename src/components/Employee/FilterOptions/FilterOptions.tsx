@@ -7,8 +7,8 @@ import useSkills from "../../../core/hooks/useSkills";
 import { MdFilterListOff } from "react-icons/md";
 import { IFilterOptions } from "../../../core/interfaces/Common";
 import { Tooltip } from "react-tooltip";
-import { useAppContext } from "../../../core/store/AppContext";
-import actionTypes from "../../../core/store/actionTypes";
+import { useAppContext } from "../../../core/context/AppContext";
+import actionTypes from "../../../core/context/actionTypes";
 import SelectedSkills from "../../common/SelectedSkills/SelectedSkills";
 
 const FilterOptions = ({ departments, roles }: IFilterOptions) => {
