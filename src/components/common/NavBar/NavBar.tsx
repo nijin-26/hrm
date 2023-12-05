@@ -6,15 +6,18 @@ import Logo from "../../../assets/logo.png";
 import { Nav, ThemeToggle } from "./NavBar.styles";
 import { Link, useLocation } from "react-router-dom";
 import { useThemeContext } from "../../../core/theme/ThemeContext";
-import { useAppContext } from "../../../core/context/AppContext";
-import { ChangeEvent, KeyboardEvent, useEffect, useRef } from "react";
+import { ChangeEvent, useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { IAppContextState } from "../../../core/interfaces/AppContextInterface";
+import { Dispatch } from "redux";
 import actionTypes from "../../../core/context/actionTypes";
 
 const NavBar = () => {
   const searchNameRef = useRef<HTMLInputElement | null>(null);
   const { tState, tDispatch } = useThemeContext();
-  const { state, dispatch } = useAppContext();
-  const { filterSort } = state;
+
+  const filterSort = useSelector((state: IAppContextState) => state.filterSort);
+  const dispatch = useDispatch<Dispatch>();
 
   const { pathname } = useLocation();
 
@@ -35,6 +38,7 @@ const NavBar = () => {
 
   const handleInputChange = (e: ChangeEvent) => {
     const target = e.target as HTMLInputElement;
+    console.log(target.value);
     dispatch({
       type: actionTypes.SET_FILTERS,
       payload: {
@@ -42,7 +46,6 @@ const NavBar = () => {
         value: target.value,
       },
     });
-    dispatch({ type: actionTypes.FILTER_SORT_EMPLOYEES });
   };
 
   return (
