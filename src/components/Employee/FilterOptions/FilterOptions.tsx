@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect } from "react";
 import SearchSkill from "../../common/SearchSkill/SearchSkill";
 import FilterSelect from "../../common/FilterSelect/FilterSelect";
 import { FilterOptionsWrapper } from "./FilterOptions.styles";
@@ -7,12 +7,17 @@ import useSkills from "../../../core/hooks/useSkills";
 import { MdFilterListOff } from "react-icons/md";
 import { IFilterOptions } from "../../../core/interfaces/Common";
 import { Tooltip } from "react-tooltip";
-import { useAppContext } from "../../../core/context/AppContext";
-import actionTypes from "../../../core/context/actionTypes";
 import SelectedSkills from "../../common/SelectedSkills/SelectedSkills";
 
+// Store
+import { IAppContextState } from "../../../core/interfaces/AppContextInterface";
+import actionTypes from "../../../core/context/actionTypes";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
+
 const FilterOptions = ({ departments, roles }: IFilterOptions) => {
-  const { state, dispatch } = useAppContext();
+  const state = useSelector((state: IAppContextState) => state);
+  const dispatch = useDispatch<Dispatch>();
   const { filterSort } = state;
 
   const {
@@ -34,7 +39,6 @@ const FilterOptions = ({ departments, roles }: IFilterOptions) => {
         value: selectedSkills,
       },
     });
-    dispatch({ type: actionTypes.FILTER_SORT_EMPLOYEES });
   }, [selectedSkills]);
 
   const handleFilterChange = (e: ChangeEvent) => {
@@ -46,13 +50,11 @@ const FilterOptions = ({ departments, roles }: IFilterOptions) => {
         value: target.value,
       },
     });
-    dispatch({ type: actionTypes.FILTER_SORT_EMPLOYEES });
   };
 
   const handleClearFilters = () => {
     handleResetSkills();
     dispatch({ type: actionTypes.RESET_FILTERS });
-    dispatch({ type: actionTypes.FILTER_SORT_EMPLOYEES });
   };
 
   return (
