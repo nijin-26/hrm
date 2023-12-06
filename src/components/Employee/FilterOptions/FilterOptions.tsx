@@ -57,6 +57,15 @@ const FilterOptions = ({ departments, roles }: IFilterOptions) => {
     dispatch({ type: actionTypes.RESET_FILTERS });
   };
 
+  const isClearFilterVisible = () => {
+    return (
+      filterSort.name !== "" ||
+      filterSort.department !== "" ||
+      filterSort.role !== "" ||
+      !!filterSort.skills.length
+    );
+  };
+
   return (
     <div>
       <FilterOptionsWrapper className="flex">
@@ -83,17 +92,21 @@ const FilterOptions = ({ departments, roles }: IFilterOptions) => {
             listOfSkills={skills}
             handleSelectedSkills={handleSelectedSkills}
           />
-          <MdFilterListOff
-            className="clear-filter"
-            size={36}
-            onClick={handleClearFilters}
-          />
-          <Tooltip
-            anchorSelect=".clear-filter"
-            content="Clear All Filters"
-            place="right"
-            variant="info"
-          />
+          {isClearFilterVisible() && (
+            <>
+              <MdFilterListOff
+                className="clear-filter"
+                size={36}
+                onClick={handleClearFilters}
+              />
+              <Tooltip
+                anchorSelect=".clear-filter"
+                content="Clear All Filters"
+                place="right"
+                variant="info"
+              />
+            </>
+          )}
         </div>
       </FilterOptionsWrapper>
       <SelectedSkills
