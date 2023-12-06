@@ -10,7 +10,7 @@ import { ChangeEvent, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IAppContextState } from "../../../core/interfaces/AppContextInterface";
 import { Dispatch } from "redux";
-import actionTypes from "../../../core/context/actionTypes";
+import actionTypes from "../../../core/store/actionTypes";
 
 const NavBar = () => {
   const searchNameRef = useRef<HTMLInputElement | null>(null);

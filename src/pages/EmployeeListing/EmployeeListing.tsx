@@ -24,7 +24,7 @@ import { BiUserPlus } from "react-icons/bi";
 import { MouseEvent, useEffect, useState } from "react";
 
 // Store and API
-import actionType from "../../core/context/actionTypes";
+import actionType from "../../core/store/actionTypes";
 import { deleteData, getEmployeeData } from "../../core/api";
 import { useDispatch, useSelector } from "react-redux";
 import { IAppContextState } from "../../core/interfaces/AppContextInterface";

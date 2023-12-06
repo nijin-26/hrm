@@ -29,12 +29,16 @@ import { getFormattedDate } from "../../core/utils/formatDate";
 import { generateUniqueKey } from "../../core/utils/generateUniqueID";
 
 // Store and API
-import { useAppContext } from "../../core/context/AppContext";
-import actionTypes from "../../core/context/actionTypes";
+import actionTypes from "../../core/store/actionTypes";
 import { postEmployeeData, updateEmployeeData } from "../../core/api";
 import { toast } from "react-toastify";
 import { uploadImage } from "../../core/firebase/uploadImage";
 import SelectedSkills from "../../components/common/SelectedSkills/SelectedSkills";
+
+// Redux Store
+import { useDispatch, useSelector } from "react-redux";
+import { IAppContextState } from "../../core/interfaces/AppContextInterface";
+import { Dispatch } from "redux";
 
 const EmployeeForm = () => {
   const [initialEmployeeDetails, setInitialEmployeeDetails] =
@@ -53,7 +57,9 @@ const EmployeeForm = () => {
     });
   const [imageFile, setImageFile] = useState<File | string | null>(null);
 
-  const { state, dispatch } = useAppContext();
+  const state = useSelector((state: IAppContextState) => state);
+  const dispatch = useDispatch<Dispatch>();
+
   const location = useLocation();
   const navigate = useNavigate();
   const theme = useTheme();
@@ -71,18 +77,16 @@ const EmployeeForm = () => {
 
   useEffect(() => {
     const loadEmployeeDetails = () => {
-      if (currentFormType === "edit" && employeeId) {
-        const selectedEmployee = findEmployeeById(employeeId);
+      const selectedEmployee = findEmployeeById(employeeId);
 
-        if (selectedEmployee) {
-          const formattedEmployeeDetails =
-            formatEmployeeDetails(selectedEmployee);
+      if (selectedEmployee) {
+        const formattedEmployeeDetails =
+          formatEmployeeDetails(selectedEmployee);
 
-          setInitialEmployeeDetails(formattedEmployeeDetails);
+        setInitialEmployeeDetails(formattedEmployeeDetails);
 
-          if (selectedEmployee.skill !== undefined) {
-            handleSelectedSkills(selectedEmployee.skill);
-          }
+        if (selectedEmployee.skill !== undefined) {
+          handleSelectedSkills(selectedEmployee.skill);
         }
       }
     };
@@ -101,7 +105,7 @@ const EmployeeForm = () => {
       };
     };
 
-    loadEmployeeDetails();
+    if (currentFormType === "edit" && employeeId) loadEmployeeDetails();
   }, []);
 
   const handleImageInput = (e: ChangeEvent) => {

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { ISkills } from "../interfaces/Common";
-import { useAppContext } from "../context/AppContext";
 import { useSelector } from "react-redux";
 import { IAppContextState } from "../interfaces/AppContextInterface";
 

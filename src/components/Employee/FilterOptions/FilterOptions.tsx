@@ -11,7 +11,7 @@ import SelectedSkills from "../../common/SelectedSkills/SelectedSkills";
 
 // Store
 import { IAppContextState } from "../../../core/interfaces/AppContextInterface";
-import actionTypes from "../../../core/context/actionTypes";
+import actionTypes from "../../../core/store/actionTypes";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 
