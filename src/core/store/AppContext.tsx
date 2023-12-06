@@ -43,7 +43,7 @@ export function useAppContext() {
 
 function AppContextProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(false);
-    const [state, dispatch] = useReducer(rootReducer, initialState);
+  const [state, dispatch] = useReducer(rootReducer, initialState);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,7 +57,7 @@ function AppContextProvider({ children }: { children: ReactNode }) {
             payload: response,
           });
           dispatch({ type: actionTypes.FILTER_SORT_EMPLOYEES });
-        } else console.log("Response not found");
+        } else console.log("Response");
       } catch (error) {
         setLoading(false);
         console.error("Error fetching data:", error);
