@@ -1,6 +1,5 @@
 {
   "name": "hrm",
-  "homepage": "https://nijin-26.github.io/hrm",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
