@@ -114,11 +114,16 @@ const EmployeeListing = () => {
   useEffect(() => {
     if (state.filteredEmployees.length !== employeesLength) {
       if (state.filteredEmployees.length === state.employees.length) {
-        setCurrentPage(userSelectedPage);
+        setCurrentPage(Math.max(1, userSelectedPage));
       } else {
         setCurrentPage(1);
       }
       setEmployeesLength(state.filteredEmployees.length);
+    }
+
+    // Check if currentListOfEmployees has zero length and currentPage is greater than 1
+    if (currentListOfEmployees.length === 0 && currentPage > 1) {
+      handlePageChange(currentPage - 1);
     }
   }, [state.filteredEmployees, employeesLength, userSelectedPage]);
 
@@ -126,8 +131,8 @@ const EmployeeListing = () => {
     currentPage * employeesPerPage,
     state.filteredEmployees.length
   );
+  const firstPostIndex = (currentPage - 1) * employeesPerPage;
 
-  const firstPostIndex = lastPostIndex - employeesPerPage;
   const currentListOfEmployees = state.filteredEmployees.slice(
     firstPostIndex,
     lastPostIndex
@@ -165,8 +170,12 @@ const EmployeeListing = () => {
   const handleEmployeeDelete = async (id: string) => {
     try {
       await deleteData(`/employee/${id}.json`);
+      if (currentListOfEmployees.length === 1 && currentPage > 1) {
+        handlePageChange(currentPage - 1);
+      }
       dispatch({ type: actionType.DELETE_EMPLOYEE, payload: id });
       toast.success("Employee deleted successfully.");
+
       setToggleDeleteModal(false);
       setEmployeeId("");
     } catch (error) {
