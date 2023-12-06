@@ -169,7 +169,6 @@ const EmployeeListing = () => {
       toast.success("Employee deleted successfully.");
       setToggleDeleteModal(false);
       setEmployeeId("");
-      dispatch({ type: actionType.FILTER_SORT_EMPLOYEES });
     } catch (error) {
       toast.error("Error in deleting employee. Try Again");
     }
