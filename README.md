@@ -75,9 +75,35 @@ npm install
 
 ## 4. Configuration <a name="configuration"></a>
 
-### 4.1 Firebase Configuration with Environment Variables
+### 4.1 Folder Structure
+```
+/src
+  	/assets       # Images
+  	/components
+   		 /common      # Reusable components
+   		 /Employee    # Employee-specific components
+    		/Layout      # App layout component
+  	/core
+    		/api         # API functions
+    		/firebase    # Firebase configuration and image upload
+    		/hooks       # Custom hooks, e.g., useSkills
+    		/interfaces  # TypeScript interfaces
+   		 /routing     # App routing management
+    		/store       # Redux store and reducers
+    		/styles      # Global styles
+    		/theme       # Theme context
+    		/utils       # Utility functions
+  	/pages
+    		/EmployeeForm     # Employee form for addition or editing
+    		/EmployeeListing  # List and filter employees
+   	 	/EmployeeView     # Detailed view of an employee
+  	- App.tsx
+  	- index.tsx
+```
+
+### 4.2 Firebase Configuration with Environment Variables
 1. Create a Firebase project and obtain the necessary API keys.
-2. Replace the placeholder values in the project's configuration file (`src/firebase/config.js`) with your Firebase credentials or 
+2. Replace the placeholder values in the project's configuration file (`src/core/firebase/config.js`) with your Firebase credentials or 
 3. Create a `.env` file in the root of the project with following variables.
 ```
 	REACT_APP_FIREBASE_API_KEY=
