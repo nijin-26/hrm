@@ -15,6 +15,8 @@
 
 ## 1. Introduction <a name="introduction"></a>
 
+![Device Mockup](https://firebasestorage.googleapis.com/v0/b/hrm-app-6cb10.appspot.com/o/device%20mockup.png?alt=media&token=5fe53fd5-446a-4136-b0e0-e0d3da3d93f0)
+
 The HR Management App is a robust ReactJS application with Typescript designed for HR professionals to efficiently manage employee data. The app includes features such as employee addition, updating, deletion, and comprehensive listing. It leverages Firebase's Realtime Database for data storage and retrieval, ensuring  reliable data management.
 
 ## 2. Features <a name="features"></a>
@@ -24,39 +26,33 @@ The HR Management App is a robust ReactJS application with Typescript designed f
 - **Add Employee:** Easily add new employee details, including full name, date of birth, date of join, email, mobile, profile image, work location, department, role, and skills.
 
 - **Update Employee:** Modify existing employee information seamlessly.
-
 - **Delete Employee:** Remove outdated or irrelevant employee records from the database.
-
 - **Listing Employees:** View a comprehensive list of all employees with essential details.
-
 - **Upload Image:** Associate employee images with their profiles for easy identification.
+- **Pagination:** Navigate through large sets of employee data with user-friendly pagination controls.
 
 ### 2.2 Data Filtering & Sorting
 
 - **Filter by Department & Role:** Quickly filter employees based on their department & designated role.
-
 - **Filter by Name:** Search for employees by their full name.
-
 - **Filter by Skills:** Effortlessly find employees with specific skills or combinations of skills.
-
 - **Sorting:** Sort the list based on name, email and joined date.
 
 ### 2.4 Global State Management
 
 - **Redux Integration:** Utilizes Redux for efficient global state management.
 
-### 2.5 External Packages
+### 2.5 Theme Customization
+
+-   **Dark/Light Theme Toggle:** Enjoy a personalized user experience with the ability to switch between dark and light themes seamlessly.
+
+### 2.6 External Packages 
 
 - **axios:** Facilitates HTTP requests for seamless communication with the Firebase Realtime Database REST API.
-
 - **firebase:** Connects to Firebase's storage for image storage.
-
 - **formik and yup:** Streamlines form creation and validation.
-
 - **react-icons:** Provides a variety of icons to enhance the user interface.
-
 - **react-toastify:** Enables easy implementation of notification messages.
-
 - **sass and styled-components:** Enhances styling capabilities for a visually appealing interface.
 	- Styled component is used for all the reusable components and SCSS is used for page components.
 
