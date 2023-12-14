@@ -11,6 +11,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { IAppContextState } from "../../../core/interfaces/AppContextInterface";
 import { Dispatch } from "redux";
 import actionTypes from "../../../core/store/actionTypes";
+import Button from "../Button/Button";
+import { signupUserWithEmail } from "../../../core/api/authAPI";
 
 const NavBar = () => {
   const searchNameRef = useRef<HTMLInputElement | null>(null);
@@ -48,6 +50,11 @@ const NavBar = () => {
     });
   };
 
+  const handleSignup = async () => {
+    const response = await signupUserWithEmail();
+    console.log(response);
+  };
+
   return (
     <Nav>
       <div className="header-container container flex align-center">
@@ -69,6 +76,9 @@ const NavBar = () => {
           />
           <BiSearchAlt2 className="search-icon" fontSize={28} />
         </div>
+        <Button btnType="secondary" onClick={handleSignup}>
+          SIgnup
+        </Button>
         <ThemeToggle onClick={() => tDispatch({ type: "TOGGLE_DARK_LIGHT" })}>
           {tState.colorMode === "light" ? (
             <BsMoonStars color="#fff" fontSize={32} />

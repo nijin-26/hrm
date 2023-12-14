@@ -4,14 +4,19 @@ import EmployeeForm from "../../pages/EmployeeForm/EmployeeForm";
 import EmployeeView from "../../pages/EmployeeView/EmployeeView";
 import ErrorPage from "./ErrorPage";
 import Layout from "../../components/Layout/Layout";
+import Login from "../../pages/Auth/Login/Login";
 
-export const routes = createHashRouter(
+export const routes = createBrowserRouter(
   [
     {
       path: "",
       element: <Layout />,
       errorElement: <ErrorPage />,
       children: [
+        {
+          path: "login",
+          element: <Login />,
+        },
         {
           path: "/",
           element: <EmployeeListing />,
