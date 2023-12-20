@@ -1,19 +1,22 @@
-import * as Yup from "yup";
-
 import styles from "./Login.module.scss";
 import { Formik, Form } from "formik";
 import Input from "../../../components/common/Input/Input";
 import Button from "../../../components/common/Button/Button";
 import { loginFormValidationSchema } from "../../../core/utils/loginFormValidationSchema";
 
+import useAuth from "../../../core/hooks/useAuth";
+
 const Login = () => {
+  const { loading, login } = useAuth();
+
   const initialValues = {
-    name: "",
+    email: "",
     password: "",
   };
 
-  const handleLogin = (values: { name: string; password: string }) => {
-    console.log(values, "values");
+  const handleLogin = async (values: { email: string; password: string }) => {
+    console.log("handle login is called");
+    login(values.email, values.password);
   };
 
   return (
@@ -22,13 +25,14 @@ const Login = () => {
       <Formik
         initialValues={initialValues}
         validateOnChange={false}
-        validationSchema={loginFormValidationSchema}
+        // validationSchema={loginFormValidationSchema}
+
         onSubmit={handleLogin}
       >
         <Form className={styles.formContainer}>
           <Input
             label="User Name"
-            name="name"
+            name="email"
             type="text"
             placeholder="Enter user name"
           />
@@ -39,7 +43,9 @@ const Login = () => {
             placeholder="Enter Password"
           />
           <div className={styles.button}>
-            <Button type="submit">Login</Button>
+            <Button type="submit" disabled={loading}>
+              Login
+            </Button>
           </div>
         </Form>
       </Formik>

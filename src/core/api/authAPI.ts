@@ -11,10 +11,18 @@ const API: AxiosInstance = axios.create({
   timeout: 120000,
 });
 
-export const signupUserWithEmail = async () => {
-  return await API.post(authSignupURL, {
-    email: "nijin@gmail.com",
-    password: "nijin@123",
-    returnSecureToken: true,
-  });
+type TAuthData = {
+  email: string;
+  password: string;
+  returnSecureToken?: boolean;
 };
+
+export const signUpUserWithEmail = async (authData: TAuthData) => {
+  return await API.post(authSignupURL, authData);
+};
+
+export const signInUserWithEmail = async (authData: TAuthData) => {
+  return await API.post(authSignInURL, authData);
+};
+
+export default API;
