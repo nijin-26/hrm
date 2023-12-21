@@ -11,7 +11,6 @@ const Button = ({
   loading,
   onClick,
 }: IButton) => {
-  console.log(loading, "loading");
   return (
     <StyledButton
       className={className}

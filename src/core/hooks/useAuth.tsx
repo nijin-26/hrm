@@ -1,11 +1,12 @@
-import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-
-import { useCookies } from "react-cookie";
-import API, { signInUserWithEmail } from "../api/authAPI";
-import { loginUser, logoutUser } from "../store/reducers/authReducer";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import { jwtDecode } from "jwt-decode";
+
+import { signInUserWithEmail } from "../api/authAPI";
+import { loginUser, logoutUser } from "../store/reducers/authReducer";
 import { IAppContextState } from "../interfaces/AppContextInterface";
 
 const useAuth = () => {
@@ -15,20 +16,20 @@ const useAuth = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: IAppContextState) => state.auth.user);
 
-  const [cookies, setCookie, removeCookie] = useCookies(["authToken"]);
+  const [cookies, setCookie, removeCookie] = useCookies(["authToken"]); // Ref: https://www.npmjs.com/package/react-cookie
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("use effect called", cookies, dispatch);
     const authToken = cookies.authToken;
 
     if (authToken) {
       dispatch(loginUser());
 
-      const decodedToken = decodeToken(authToken);
+      const decodedToken = jwtDecode(authToken); // jwt-decode npm package
       const currentTime = Math.floor(Date.now() / 1000);
 
-      if (decodedToken && decodedToken.exp < currentTime) {
+      // Check token expiry
+      if (decodedToken && decodedToken.exp! < currentTime) {
         logout();
       }
     }
@@ -40,7 +41,7 @@ const useAuth = () => {
       const authResponse = await signInUserWithEmail({ email, password });
 
       if (authResponse) {
-        const authToken = authResponse.data.localId;
+        const authToken = authResponse.data.idToken; // JWT Access Token
         dispatch(loginUser());
         setCookie("authToken", authToken, { path: "/" });
         toast.success("Welcome. You are succesfully logged in.");
@@ -86,14 +87,6 @@ const useAuth = () => {
     login,
     logout,
   };
-};
-
-const decodeToken = (token: string) => {
-  try {
-    return JSON.parse(atob(token.split(".")[1]));
-  } catch (error) {
-    return null;
-  }
 };
 
 export default useAuth;
