@@ -3,23 +3,21 @@ const LOGIN_USER = "LOGIN_USER";
 const LOGOUT_USER = "LOGOUT_USER";
 
 // Action Creators
-const loginUser = (authToken: string) => ({
+const loginUser = () => ({
   type: LOGIN_USER,
-  payload: authToken,
 });
-
 const logoutUser = () => ({ type: LOGOUT_USER });
 
 const initialState = {
-  user: null,
+  user: { isAuthenticated: false },
 };
 
 const authReducer = (state = initialState, action: any): { user: any } => {
   switch (action.type) {
     case LOGIN_USER:
-      return { user: { authToken: action.payload.authToken } };
+      return { user: { isAuthenticated: true } };
     case LOGOUT_USER:
-      return { user: null };
+      return { user: { isAuthenticated: false } };
     default:
       return state;
   }

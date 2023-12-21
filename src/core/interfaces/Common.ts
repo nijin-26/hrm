@@ -13,6 +13,7 @@ export interface IButton {
   children: ReactNode;
   onClick?: () => void;
   disabled?: boolean;
+  loading?: boolean;
 }
 
 export interface IFilterOptions {

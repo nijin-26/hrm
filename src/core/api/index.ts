@@ -61,8 +61,4 @@ export const deleteData = (
   return API.delete(url, config);
 };
 
-
-
-
-
 export default API;

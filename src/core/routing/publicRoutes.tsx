@@ -1,22 +1,31 @@
-import { createBrowserRouter, createHashRouter } from "react-router-dom";
+import { Navigate, createBrowserRouter } from "react-router-dom";
+
+// Components
 import EmployeeListing from "../../pages/EmployeeListing/EmployeeListing";
 import EmployeeForm from "../../pages/EmployeeForm/EmployeeForm";
 import EmployeeView from "../../pages/EmployeeView/EmployeeView";
 import ErrorPage from "./ErrorPage";
-import Layout from "../../components/Layout/Layout";
 import Login from "../../pages/Auth/Login/Login";
+
+// Layout Components
+import Layout from "../../components/Layout/Layout";
+import LoginLayout from "../../components/Layout/LoginLayout";
 
 export const routes = createBrowserRouter(
   [
     {
-      path: "",
+      element: <LoginLayout />,
+      children: [
+        {
+          path: "/login",
+          element: <Login />,
+        },
+      ],
+    },
+    {
       element: <Layout />,
       errorElement: <ErrorPage />,
       children: [
-        {
-          path: "login",
-          element: <Login />,
-        },
         {
           path: "/",
           element: <EmployeeListing />,
@@ -35,6 +44,7 @@ export const routes = createBrowserRouter(
         },
       ],
     },
+    { path: "*", element: <Navigate to="/login" replace /> },
   ],
   { basename: "/" }
 );

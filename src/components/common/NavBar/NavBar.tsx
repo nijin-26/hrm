@@ -1,17 +1,19 @@
 import { BiSearchAlt2 } from "react-icons/bi";
 import { FaRegSun } from "react-icons/fa";
 import { BsMoonStars } from "react-icons/bs";
+import { TbLogout } from "react-icons/tb";
+
 import Logo from "../../../assets/logo.png";
 
 import { Nav, ThemeToggle } from "./NavBar.styles";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useActionData, useLocation } from "react-router-dom";
 import { useThemeContext } from "../../../core/theme/ThemeContext";
 import { ChangeEvent, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IAppContextState } from "../../../core/interfaces/AppContextInterface";
 import { Dispatch } from "redux";
 import actionTypes from "../../../core/store/actionTypes";
-import Button from "../Button/Button";
+import useAuth from "../../../core/hooks/useAuth";
 
 const NavBar = () => {
   const searchNameRef = useRef<HTMLInputElement | null>(null);
@@ -21,6 +23,7 @@ const NavBar = () => {
   const dispatch = useDispatch<Dispatch>();
 
   const { pathname } = useLocation();
+  const { logout } = useAuth();
 
   useEffect(() => {
     const handleKeyDown = (e: any) => {
@@ -70,14 +73,21 @@ const NavBar = () => {
           />
           <BiSearchAlt2 className="search-icon" fontSize={28} />
         </div>
-
-        <ThemeToggle onClick={() => tDispatch({ type: "TOGGLE_DARK_LIGHT" })}>
-          {tState.colorMode === "light" ? (
-            <BsMoonStars color="#fff" fontSize={32} />
-          ) : (
-            <FaRegSun color="#fff" fontSize={32} />
-          )}
-        </ThemeToggle>
+        <div
+          style={{
+            color: "#fff",
+            fontSize: "32px",
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            cursor: "pointer",
+          }}
+        >
+          <TbLogout onClick={logout} />
+          <ThemeToggle onClick={() => tDispatch({ type: "TOGGLE_DARK_LIGHT" })}>
+            {tState.colorMode === "light" ? <BsMoonStars /> : <FaRegSun />}
+          </ThemeToggle>
+        </div>
       </div>
     </Nav>
   );
