@@ -16,16 +16,15 @@ const useAuth = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: IAppContextState) => state.auth.user);
 
-  const [cookies, setCookie, removeCookie] = useCookies(["authToken"]); // Ref: https://www.npmjs.com/package/react-cookie
+  const [cookies, setCookie, removeCookie] = useCookies(["accessToken"]); // Ref: https://www.npmjs.com/package/react-cookie
   const navigate = useNavigate();
 
   useEffect(() => {
-    const authToken = cookies.authToken;
-
-    if (authToken) {
+    const accessToken = cookies.accessToken;
+    if (accessToken) {
       dispatch(loginUser());
 
-      const decodedToken = jwtDecode(authToken); // jwt-decode npm package
+      const decodedToken = jwtDecode(accessToken); // jwt-decode npm package
       const currentTime = Math.floor(Date.now() / 1000);
 
       // Check token expiry
@@ -33,7 +32,7 @@ const useAuth = () => {
         logout();
       }
     }
-  }, [cookies.authToken, dispatch]);
+  }, [cookies.accessToken, dispatch]);
 
   const login = async (email: string, password: string) => {
     setLoading(true);
@@ -41,14 +40,16 @@ const useAuth = () => {
       const authResponse = await signInUserWithEmail({ email, password });
 
       if (authResponse) {
-        const authToken = authResponse.data.idToken; // JWT Access Token
+        console.log(authResponse, "auth response");
+        const accessToken = authResponse.data.idToken; // JWT Access Token
         dispatch(loginUser());
-        setCookie("authToken", authToken, { path: "/" });
+        setCookie("accessToken", accessToken, { path: "/" });
         toast.success("Welcome. You are succesfully logged in.");
         navigate("/");
         setLoading(false);
       }
     } catch (error: any) {
+      console.log(error.response.data.error.message);
       setLoading(false);
       if (error.response.data.error.message === "INVALID_LOGIN_CREDENTIALS")
         toast.error("Invalid login credentials. Try Again");
@@ -60,26 +61,9 @@ const useAuth = () => {
   };
 
   const logout = () => {
-    removeCookie("authToken", { path: "/" });
+    removeCookie("accessToken", { path: "/" });
     dispatch(logoutUser());
   };
-
-  // useEffect(() => {
-  //   const interceptor = API.interceptors.response.use(
-  //     (response) => response,
-  //     (error) => {
-  //       if (error.response.status === 401) {
-  //         console.log("Unauthorized");
-  //         logout();
-  //       }
-  //       return Promise.reject(error);
-  //     }
-  //   );
-
-  //   return () => {
-  //     API.interceptors.response.eject(interceptor);
-  //   };
-  // }, [logout]);
 
   return {
     user,
