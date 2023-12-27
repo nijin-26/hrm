@@ -40,5 +40,3 @@ export const refreshAccessToken = async (currentRefreshToken: string) => {
     refresh_token: currentRefreshToken,
   });
 };
-
-export default API;

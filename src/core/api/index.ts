@@ -1,11 +1,26 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+} from "axios";
 import { onResponse, onResponseError } from "./responseInterceptor";
 import { FirebaseData } from "../interfaces/APIDataInterface";
+import { onRequest, onRequestError } from "./requestInterceptor";
 
 const API: AxiosInstance = axios.create({
   baseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
   timeout: 120000,
 });
+
+API.interceptors.request.use(
+  onRequest as unknown as (
+    value: InternalAxiosRequestConfig<any>
+  ) =>
+    | InternalAxiosRequestConfig<any>
+    | Promise<InternalAxiosRequestConfig<any>>,
+  onRequestError
+);
 
 API.interceptors.response.use(
   onResponse as unknown as (
