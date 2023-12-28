@@ -5,7 +5,6 @@ import Button from "../../../components/common/Button/Button";
 import { loginFormValidationSchema } from "../../../core/utils/loginFormValidationSchema";
 
 import useAuth from "../../../core/hooks/useAuth";
-import { Loader } from "../../../components/common/Loader/Loader";
 
 const Login = () => {
   const { loading, login } = useAuth();
@@ -15,8 +14,10 @@ const Login = () => {
     password: "",
   };
 
-  const handleLogin = async (values: { email: string; password: string }) =>
+  const handleLogin = async (values: { email: string; password: string }) => {
+    console.log(values, "handle login");
     login(values.email, values.password);
+  };
 
   return (
     <div className={styles.container}>
@@ -33,13 +34,13 @@ const Login = () => {
             label="User Name"
             name="email"
             type="text"
-            placeholder="Enter user name"
+            placeholder="Enter user name (admin@qb.com)" // For testing purpose
           />
           <Input
             label="Password"
             name="password"
             type="password"
-            placeholder="Enter Password"
+            placeholder="Enter Password (admin@123)" // For testing purpose
           />
 
           <div className={styles.button}>

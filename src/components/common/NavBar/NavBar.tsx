@@ -76,14 +76,14 @@ const NavBar = () => {
         <div
           style={{
             color: "#fff",
-            fontSize: "32px",
+            fontSize: "24px",
             display: "flex",
             alignItems: "center",
             gap: "10px",
             cursor: "pointer",
           }}
         >
-          <TbLogout onClick={logout} />
+          <TbLogout onClick={logout} style={{ fontSize: "28px" }} />
           <ThemeToggle onClick={() => tDispatch({ type: "TOGGLE_DARK_LIGHT" })}>
             {tState.colorMode === "light" ? <BsMoonStars /> : <FaRegSun />}
           </ThemeToggle>

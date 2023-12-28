@@ -58,6 +58,7 @@ const EmployeeForm = () => {
       skill: [],
     });
   const [imageFile, setImageFile] = useState<File | string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const state = useSelector((state: IAppContextState) => state);
   const dispatch = useDispatch<Dispatch>();
@@ -136,6 +137,8 @@ const EmployeeForm = () => {
       });
 
       if (userResponse) {
+        setLoading(false);
+
         const response = await postEmployeeData(`/employee/${empId}.json`, {
           ...employeeData,
           userId: userResponse.data.localId,
@@ -155,6 +158,8 @@ const EmployeeForm = () => {
         }
       }
     } catch (error: any) {
+      setLoading(false);
+
       if (error?.response?.data.error.message === "EMAIL_EXISTS")
         toast.error("Email already exists.");
       else {
@@ -175,6 +180,7 @@ const EmployeeForm = () => {
       );
 
       if (response) {
+        setLoading(false);
         toast.success("Employee Updated Successfully");
         dispatch({
           type: actionTypes.UPDATE_EMPLOYEE,
@@ -186,12 +192,14 @@ const EmployeeForm = () => {
         navigate(`/view/${empId}`);
       }
     } catch (error: any) {
+      setLoading(false);
       toast.error("Error updating employee. Try again");
     }
   };
 
   const handleFormSubmit = async (values: IEmployeeDetails) => {
     try {
+      setLoading(true);
       const employeeDetails = {
         ...values,
         id: values.id ? values.id : generateUniqueKey(state.employees),
@@ -261,7 +269,8 @@ const EmployeeForm = () => {
                 label="Temporary Password"
                 name="password"
                 type="password"
-                placeholder="Enter Mobile Number"
+                placeholder="Enter a strong password"
+                disabled={currentFormType === "edit"}
               />
             </div>
             <div className={style.inputGroup}>
@@ -311,7 +320,9 @@ const EmployeeForm = () => {
               <Button btnType="secondary" onClick={() => navigate("/")}>
                 Cancel
               </Button>
-              <Button type="submit">Submit</Button>
+              <Button type="submit" loading={loading}>
+                Submit
+              </Button>
             </div>
           </Form>
         </Formik>

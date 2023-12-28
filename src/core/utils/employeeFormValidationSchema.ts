@@ -21,8 +21,8 @@ export const employeeFormValidationSchema = (mode: string) => {
     role: Yup.string().required("Role is required"),
     skill: Yup.array().of(Yup.string()),
   };
-
-  if (mode === "edit")
+  console.log(mode, "schemaa");
+  if (mode !== "edit")
     return Yup.object().shape({
       ...validationObj,
       password: Yup.string().required("Temporary password is required"),

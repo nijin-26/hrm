@@ -3,7 +3,7 @@ import { InputWrapper } from "./Input.style";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 
-const Input = ({ label, ...props }: any) => {
+const Input = ({ label, disabled, ...props }: any) => {
   const [field, meta] = useField(props);
 
   useEffect(() => {
@@ -15,7 +15,12 @@ const Input = ({ label, ...props }: any) => {
   return (
     <InputWrapper>
       <label htmlFor={props.id || props.name}>{label}</label>
-      <input className="text-input" {...field} {...props} />
+      <input
+        className={disabled ? "disabled" : ""}
+        disabled={disabled ?? false}
+        {...field}
+        {...props}
+      />
 
       {meta.touched && meta.error ? (
         <span className="error">{meta.error}</span>

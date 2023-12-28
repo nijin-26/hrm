@@ -57,14 +57,13 @@ const useAuth = () => {
         setLoading(false);
       }
     } catch (error: any) {
-      console.log(error.response.data.error.message);
-      setLoading(false);
-      if (error.response.data.error.message === "INVALID_LOGIN_CREDENTIALS")
+      if (error.response.data.error.message === "INVALID_LOGIN_CREDENTIALS") {
         toast.error("Invalid login credentials. Try Again");
-      else {
+      } else {
         toast.error("Error Login. Try Again");
         console.log(error, "Login Error");
       }
+      setLoading(false);
     }
   };
 
