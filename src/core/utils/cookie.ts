@@ -18,7 +18,7 @@ export function setCookie(name: TCookieName, value: string) {
     cookieValue =
       encodeURIComponent(value) +
       (decodedToken.exp ? `; expires=${expiration.toUTCString()}` : "");
-  } else cookieValue = encodeURIComponent(value); 
+  } else cookieValue = encodeURIComponent(value);
 
   document.cookie = `${name}=${cookieValue}; path=/`;
 }
@@ -37,20 +37,3 @@ export const getCookie = (name: TCookieName) => {
   if (parts && parts.length === 2) return parts?.pop()?.split(";")?.shift();
   return null;
 };
-
-// !:
-// const setCookieWithExpirationFromJwt = (name: string, jwtToken: string) => {
-//   const decodedToken: { exp?: number } = jwtDecode(jwtToken);
-
-//   if (decodedToken.exp) {
-//     const expirationDate = new Date(decodedToken.exp * 1000);
-
-//     const expiresAttribute = `expires=${expirationDate.toUTCString()}`;
-
-//     const cookieValue = encodeURIComponent(jwtToken);
-
-//     document.cookie = `${name}=${cookieValue}; ${expiresAttribute}; path=/`;
-//   } else {
-//     console.error("JWT token doesn't contain 'exp' claim.");
-//   }
-// };

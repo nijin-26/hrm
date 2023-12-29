@@ -10,6 +10,11 @@ import { loginUser, logoutUser } from "../store/reducers/authReducer";
 import { IAppContextState } from "../interfaces/AppContextInterface";
 import { getCookie, removeCookie, setCookie } from "../utils/cookie";
 
+type TDecodedToken = {
+  exp: number;
+  email: string;
+};
+
 const useAuth = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -24,9 +29,10 @@ const useAuth = () => {
   useEffect(() => {
     const accessToken = getCookie("accessToken");
     if (accessToken) {
-      dispatch(loginUser());
+      const decodedToken: TDecodedToken = jwtDecode(accessToken); // jwt-decode npm package
 
-      const decodedToken = jwtDecode(accessToken); // jwt-decode npm package
+      dispatch(loginUser(decodedToken.email));
+
       const currentTime = Math.floor(Date.now() / 1000);
 
       // Check token expiry
@@ -51,8 +57,9 @@ const useAuth = () => {
         const refreshToken = authResponse.data.refreshToken;
         setCookie("accessToken", accessToken);
         setCookie("refreshToken", refreshToken);
-        dispatch(loginUser());
-        toast.success("Welcome. You are succesfully logged in.");
+        const decodedToken: TDecodedToken = jwtDecode(accessToken); // jwt-decode npm package
+        dispatch(loginUser(decodedToken.email));
+        toast.success("Welcome Back.");
         navigate("/");
         setLoading(false);
       }

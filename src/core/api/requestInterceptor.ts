@@ -2,8 +2,6 @@ import { AxiosError, AxiosRequestConfig } from "axios";
 import { getCookie } from "../utils/cookie";
 
 export const onRequest = (config: AxiosRequestConfig) => {
-  const token = getCookie("accessToken");
-
   // !: Bearer token method is not working for firebase.
   // const headers = token ? { Authorization: `Bearer ${token}` } : {};
 

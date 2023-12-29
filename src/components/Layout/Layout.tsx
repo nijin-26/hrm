@@ -28,7 +28,7 @@ const Layout = () => {
           <Outlet />
         ) : (
           <Navigate to={"/login"} replace={true} />
-        )}
+        )}  
       </main>
       <ScrollToTop />
     </div>
