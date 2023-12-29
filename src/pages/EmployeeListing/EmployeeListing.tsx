@@ -24,24 +24,80 @@ import { BiUserPlus } from "react-icons/bi";
 import { MouseEvent, useEffect, useState } from "react";
 
 // Store and API
-import { useAppContext } from "../../core/store/AppContext";
 import actionType from "../../core/store/actionTypes";
-import { deleteData } from "../../core/api";
+import { deleteData, getEmployeeData } from "../../core/api";
+import { useDispatch, useSelector } from "react-redux";
+import { IAppContextState } from "../../core/interfaces/AppContextInterface";
+import { Dispatch } from "redux";
+import actionTypes from "../../core/store/actionTypes";
+import { getArrayFromObjects } from "../../core/utils/getArrayFromObjects";
 
 const EmployeeListing = () => {
   // State
+  const [loading, setLoading] = useState(false);
   const [employeeId, setEmployeeId] = useState<string>("");
   const [toggleFilter, setToggleFilter] = useState(true);
   const [toggleDeleteModal, setToggleDeleteModal] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [userSelectedPage, setUserSelectedPage] = useState(1);
-  const [employeesPerPage, setEmployeesPerPage] = useState(5);
+  const [employeesPerPage] = useState(5);
   const [employeesLength, setEmployeesLength] = useState(0);
 
-  // Context and navigation
-  const { loading, state, dispatch } = useAppContext();
-  const { sortBy, sortOrder } = state.filterSort;
   const navigate = useNavigate();
+
+  // Redux
+  const state = useSelector((state: IAppContextState) => state);
+  const dispatch = useDispatch<Dispatch>();
+  const { sortBy, sortOrder } = state.filterSort;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await getEmployeeData("/.json");
+        if (response && response.employee) {
+          setLoading(false);
+          const employeeArr = getArrayFromObjects(response.employee);
+          dispatch({
+            type: actionTypes.SET_EMPLOYEES,
+            payload: employeeArr,
+          });
+          dispatch({
+            type: actionTypes.SET_FILTERED_EMPLOYEES,
+            payload: employeeArr,
+          });
+          dispatch({
+            type: actionTypes.SET_ROLES,
+            payload: getArrayFromObjects(response.role),
+          });
+          dispatch({
+            type: actionTypes.SET_DEPARTMENTS,
+            payload: getArrayFromObjects(response.department),
+          });
+          dispatch({
+            type: actionTypes.SET_SKILLS,
+            payload: getArrayFromObjects(response.skill),
+          });
+        } else throw new Error("Response not found.");
+      } catch (error) {
+        setLoading(false);
+        toast.error("Error fetching data. Try Again. Check your network.");
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    if (!state.employees.length) fetchData();
+  }, []);
+
+  useEffect(() => {
+    dispatch({
+      type: actionType.FILTER_SORT_EMPLOYEES,
+      payload: {
+        employees: state.employees,
+        filterSort: state.filterSort,
+      },
+    });
+  }, [state.employees, state.filterSort]);
 
   // <<<<<< Event listeners for shortcuts >>>>>>>>>>>>
   useEffect(() => {
@@ -58,11 +114,16 @@ const EmployeeListing = () => {
   useEffect(() => {
     if (state.filteredEmployees.length !== employeesLength) {
       if (state.filteredEmployees.length === state.employees.length) {
-        setCurrentPage(userSelectedPage);
+        setCurrentPage(Math.max(1, userSelectedPage));
       } else {
         setCurrentPage(1);
       }
       setEmployeesLength(state.filteredEmployees.length);
+    }
+
+    // Check if currentListOfEmployees has zero length and currentPage is greater than 1
+    if (currentListOfEmployees.length === 0 && currentPage > 1) {
+      handlePageChange(currentPage - 1);
     }
   }, [state.filteredEmployees, employeesLength, userSelectedPage]);
 
@@ -70,8 +131,8 @@ const EmployeeListing = () => {
     currentPage * employeesPerPage,
     state.filteredEmployees.length
   );
+  const firstPostIndex = (currentPage - 1) * employeesPerPage;
 
-  const firstPostIndex = lastPostIndex - employeesPerPage;
   const currentListOfEmployees = state.filteredEmployees.slice(
     firstPostIndex,
     lastPostIndex
@@ -94,6 +155,7 @@ const EmployeeListing = () => {
   };
 
   const handleSort = (column: string) => {
+    console.log(state, "state from employee listing");
     if (column === sortBy) {
       dispatch({
         type: actionType.SET_SORT_ORDER,
@@ -103,17 +165,19 @@ const EmployeeListing = () => {
       dispatch({ type: actionType.SET_SORT_BY, payload: column });
       dispatch({ type: actionType.SET_SORT_ORDER, payload: "asc" });
     }
-    dispatch({ type: actionType.FILTER_SORT_EMPLOYEES });
   };
 
   const handleEmployeeDelete = async (id: string) => {
     try {
       await deleteData(`/employee/${id}.json`);
+      if (currentListOfEmployees.length === 1 && currentPage > 1) {
+        handlePageChange(currentPage - 1);
+      }
       dispatch({ type: actionType.DELETE_EMPLOYEE, payload: id });
       toast.success("Employee deleted successfully.");
+
       setToggleDeleteModal(false);
       setEmployeeId("");
-      dispatch({ type: actionType.FILTER_SORT_EMPLOYEES });
     } catch (error) {
       toast.error("Error in deleting employee. Try Again");
     }

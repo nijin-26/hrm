@@ -1,17 +1,16 @@
-import AppContextProvider from "./core/store/AppContext";
-
 import { RouterProvider } from "react-router-dom";
 import { routes } from "./core/routing/publicRoutes";
 import ThemeContextProvider from "./core/theme/ThemeContext";
-import { ToastContainer } from "react-toastify";
+import { Provider } from "react-redux";
+import { store } from "./core/store/store";
 
 function App() {
   return (
-    <AppContextProvider>
+    <Provider store={store}>
       <ThemeContextProvider>
         <RouterProvider router={routes} />
       </ThemeContextProvider>
-    </AppContextProvider>
+    </Provider>
   );
 }
 

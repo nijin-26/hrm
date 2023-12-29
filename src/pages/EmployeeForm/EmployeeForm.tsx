@@ -29,12 +29,16 @@ import { getFormattedDate } from "../../core/utils/formatDate";
 import { generateUniqueKey } from "../../core/utils/generateUniqueID";
 
 // Store and API
-import { useAppContext } from "../../core/store/AppContext";
 import actionTypes from "../../core/store/actionTypes";
 import { postEmployeeData, updateEmployeeData } from "../../core/api";
 import { toast } from "react-toastify";
 import { uploadImage } from "../../core/firebase/uploadImage";
 import SelectedSkills from "../../components/common/SelectedSkills/SelectedSkills";
+
+// Redux Store
+import { useDispatch, useSelector } from "react-redux";
+import { IAppContextState } from "../../core/interfaces/AppContextInterface";
+import { Dispatch } from "redux";
 
 const EmployeeForm = () => {
   const [initialEmployeeDetails, setInitialEmployeeDetails] =
@@ -53,7 +57,9 @@ const EmployeeForm = () => {
     });
   const [imageFile, setImageFile] = useState<File | string | null>(null);
 
-  const { state, dispatch } = useAppContext();
+  const state = useSelector((state: IAppContextState) => state);
+  const dispatch = useDispatch<Dispatch>();
+
   const location = useLocation();
   const navigate = useNavigate();
   const theme = useTheme();
@@ -71,18 +77,16 @@ const EmployeeForm = () => {
 
   useEffect(() => {
     const loadEmployeeDetails = () => {
-      if (currentFormType === "edit" && employeeId) {
-        const selectedEmployee = findEmployeeById(employeeId);
+      const selectedEmployee = findEmployeeById(employeeId);
 
-        if (selectedEmployee) {
-          const formattedEmployeeDetails =
-            formatEmployeeDetails(selectedEmployee);
+      if (selectedEmployee) {
+        const formattedEmployeeDetails =
+          formatEmployeeDetails(selectedEmployee);
 
-          setInitialEmployeeDetails(formattedEmployeeDetails);
+        setInitialEmployeeDetails(formattedEmployeeDetails);
 
-          if (selectedEmployee.skill !== undefined) {
-            handleSelectedSkills(selectedEmployee.skill);
-          }
+        if (selectedEmployee.skill !== undefined) {
+          handleSelectedSkills(selectedEmployee.skill);
         }
       }
     };
@@ -101,7 +105,7 @@ const EmployeeForm = () => {
       };
     };
 
-    loadEmployeeDetails();
+    if (currentFormType === "edit" && employeeId) loadEmployeeDetails();
   }, []);
 
   const handleImageInput = (e: ChangeEvent) => {
@@ -121,12 +125,12 @@ const EmployeeForm = () => {
   const addEmployee = async (employeeData: IEmployeeDetails) => {
     try {
       const empId = employeeData.id;
-  
+
       const response = await postEmployeeData(
         `/employee/${empId}.json`,
         employeeData
       );
-  
+
       if (response) {
         toast.success("Employee Added Successfully");
         dispatch({
@@ -142,16 +146,16 @@ const EmployeeForm = () => {
       toast.error("Error adding employee");
     }
   };
-  
+
   const updateEmployee = async (employeeData: IEmployeeDetails) => {
     try {
       const empId: string = employeeData.id as string;
-  
+
       const response = await updateEmployeeData(
         `/employee/${empId}.json`,
         employeeData
       );
-  
+
       if (response) {
         toast.success("Employee Updated Successfully");
         dispatch({
@@ -167,7 +171,7 @@ const EmployeeForm = () => {
       toast.error("Error updating employee. Try again");
     }
   };
-  
+
   const handleFormSubmit = async (values: IEmployeeDetails) => {
     try {
       const employeeDetails = {
@@ -180,21 +184,18 @@ const EmployeeForm = () => {
           : values.imageURL,
         skill: selectedSkills.map((skill) => skill.id),
       };
-  
+
       // Remove unnecessary field
       delete employeeDetails.actions;
-  
-      if (currentFormType === "edit") 
-        updateEmployee(employeeDetails);
-       else 
-        addEmployee(employeeDetails);
-      
+
+      if (currentFormType === "edit") updateEmployee(employeeDetails);
+      else addEmployee(employeeDetails);
     } catch (error) {
       toast.error("Error Uploading Image. Try Again.");
       console.log(error, "Error uploading Image");
     }
   };
-  
+
   const formContainerStyle = {
     backgroundColor: theme.bgColor,
   } as CSSProperties;

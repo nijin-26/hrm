@@ -4,10 +4,19 @@ import actionTypes from "../actionTypes";
 
 // For setting filter options / Inputs
 
+const initialFilterSort: IFilterSortReducer = {
+  name: "",
+  department: "",
+  role: "",
+  skills: [],
+  sortBy: "",
+  sortOrder: "",
+};
+
 export const filterSortReducer = (
-  state: IFilterSortReducer,
+  state = initialFilterSort,
   action: IContextAction
-) => {
+): IFilterSortReducer => {
   switch (action.type) {
     case actionTypes.SET_FILTERS: {
       const { name, value } = action.payload;

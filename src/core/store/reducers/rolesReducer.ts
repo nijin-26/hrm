@@ -1,7 +1,12 @@
 import { IContextAction, IRoles } from "../../interfaces/Common";
 import actionTypes from "../actionTypes";
 
-export const rolesReducer = (state: IRoles[], action: IContextAction) => {
+const initialRoles: IRoles[] = [];
+
+export const rolesReducer = (
+  state = initialRoles,
+  action: IContextAction
+): IRoles[] => {
   switch (action.type) {
     case actionTypes.SET_ROLES:
       return action.payload;

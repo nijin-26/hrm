@@ -1,16 +1,21 @@
 import { TableWrapper } from "./listing.styles";
+
+// Icons
 import {
   TiArrowSortedDown,
   TiArrowSortedUp,
   TiArrowUnsorted,
 } from "react-icons/ti";
+
+// Interfaces
 import {
-  ITableHeader,
   ITableViewProps,
   TableDataType,
 } from "../../../core/interfaces/Common";
-import { useAppContext } from "../../../core/store/AppContext";
+
 import { Loader } from "../Loader/Loader";
+import { useSelector } from "react-redux";
+import { IAppContextState } from "../../../core/interfaces/AppContextInterface";
 
 const TableView = ({
   tableHeaders,
@@ -19,8 +24,8 @@ const TableView = ({
   handleRowClick,
   loading,
 }: ITableViewProps) => {
-  const { state } = useAppContext();
-  const { sortBy, sortOrder } = state.filterSort;
+  const filterSort = useSelector((state: IAppContextState) => state.filterSort);
+  const { sortBy, sortOrder } = filterSort;
 
   const handleCurrentSortIcon = () => {
     if (sortOrder === "asc") return <TiArrowSortedDown size={24} />;

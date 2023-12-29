@@ -33,8 +33,10 @@ import { IEmployeeDetails } from "../../core/interfaces/Common";
 import { getFormattedDate } from "../../core/utils/formatDate";
 
 // App Context
-import { useAppContext } from "../../core/store/AppContext";
 import { deleteData, getEmployeeById } from "../../core/api";
+import { useDispatch, useSelector } from "react-redux";
+import { IAppContextState } from "../../core/interfaces/AppContextInterface";
+import { Dispatch } from "redux";
 import actionTypes from "../../core/store/actionTypes";
 
 const EmployeeView = () => {
@@ -42,7 +44,9 @@ const EmployeeView = () => {
   const [toggleDeleteModal, setToggleDeleteModal] = useState<boolean>(false);
 
   // Context and Hooks
-  const { state, dispatch } = useAppContext();
+  const state = useSelector((state: IAppContextState) => state);
+  const dispatch = useDispatch<Dispatch>();
+
   const [selectedEmployee, setSelectedEmployee] = useState<IEmployeeDetails>();
   const theme = useTheme();
   const location = useLocation();
@@ -84,7 +88,7 @@ const EmployeeView = () => {
     } else {
       fetchEmployee();
     }
-  }, [employeeId, state.employees, navigate]);
+  }, []);
 
   // Delete employee
   const handleEmployeeDelete = async () => {
@@ -97,7 +101,6 @@ const EmployeeView = () => {
       // Show success toast and update UI
       toast.success("Employee deleted successfully.");
       setToggleDeleteModal(false);
-      dispatch({ type: actionTypes.FILTER_SORT_EMPLOYEES });
       navigate("/");
     } catch (error) {
       toast.error("Error in deleting employee. Try Again");

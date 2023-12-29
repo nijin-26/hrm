@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { ISkills } from "../interfaces/Common";
-import { useAppContext } from "../store/AppContext";
+import { useSelector } from "react-redux";
+import { IAppContextState } from "../interfaces/AppContextInterface";
 
 function useSkills() {
   const [searchInput, setSearchInput] = useState<string>("");
   const [skills, setSkills] = useState<ISkills[]>([]);
   const [selectedSkills, setSelectedSkills] = useState<ISkills[]>([]);
 
-  const { state } = useAppContext();
+  const state = useSelector((state: IAppContextState) => state);
 
   useEffect(() => {
     setSkills([...state.skills]);
