@@ -2,13 +2,12 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-// import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
 
 import { signInUserWithEmail } from "../api/authAPI";
 import { loginUser, logoutUser } from "../store/reducers/authReducer";
 import { IAppContextState } from "../interfaces/AppContextInterface";
-import { getCookie, removeCookie, setCookie } from "../utils/cookie";
+import { cookies } from "../utils/cookie";
 
 type TDecodedToken = {
   exp: number;
@@ -23,11 +22,8 @@ const useAuth = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: IAppContextState) => state.auth.user);
 
-  // ! Currently, avoided react-cookie package since I am not implementing intereceptors in react component or hook.
-  // const [cookies, setCookie, removeCookie] = useCookies(["accessToken"]); // Ref: https://www.npmjs.com/package/react-cookie
-
   useEffect(() => {
-    const accessToken = getCookie("accessToken");
+    const accessToken = cookies.get("accessToken");
     if (accessToken) {
       const decodedToken: TDecodedToken = jwtDecode(accessToken); // jwt-decode npm package
 
@@ -55,8 +51,10 @@ const useAuth = () => {
         console.log(authResponse, "auth response");
         const accessToken = authResponse.data.idToken; // JWT Access Token
         const refreshToken = authResponse.data.refreshToken;
-        setCookie("accessToken", accessToken);
-        setCookie("refreshToken", refreshToken);
+        cookies.set("accessToken", accessToken, { path: "/" });
+        cookies.set("refreshToken", refreshToken, { path: "/" });
+        // setCookie("accessToken", accessToken);
+        // setCookie("refreshToken", refreshToken);
         const decodedToken: TDecodedToken = jwtDecode(accessToken); // jwt-decode npm package
         dispatch(loginUser(decodedToken.email));
         toast.success("Welcome Back.");
@@ -75,8 +73,8 @@ const useAuth = () => {
   };
 
   const logout = () => {
-    removeCookie("accessToken");
-    removeCookie("refreshToken");
+    cookies.remove("accessToken");
+    cookies.remove("refreshToken");
     dispatch(logoutUser());
   };
 
