@@ -116,7 +116,6 @@ const EmployeeForm = () => {
 
   const removeSelectedImage = () => {
     setImageFile(null);
-
     setInitialEmployeeDetails((prev) => {
       return { ...prev, imageURL: "" } as IEmployeeDetails;
     });
@@ -125,12 +124,7 @@ const EmployeeForm = () => {
   const addEmployee = async (employeeData: IEmployeeDetails) => {
     try {
       const empId = employeeData.id;
-
-      const response = await postEmployeeData(
-        `/employee/${empId}.json`,
-        employeeData
-      );
-
+      const response = await postEmployeeData(empId, employeeData);
       if (response) {
         toast.success("Employee Added Successfully");
         dispatch({
@@ -151,10 +145,7 @@ const EmployeeForm = () => {
     try {
       const empId: string = employeeData.id as string;
 
-      const response = await updateEmployeeData(
-        `/employee/${empId}.json`,
-        employeeData
-      );
+      const response = await updateEmployeeData(empId, employeeData);
 
       if (response) {
         toast.success("Employee Updated Successfully");
