@@ -27,14 +27,12 @@ const useAuth = () => {
     if (accessToken) {
       const decodedToken: TDecodedToken = jwtDecode(accessToken); // jwt-decode npm package
 
-      dispatch(loginUser(decodedToken.email));
-
       const currentTime = Math.floor(Date.now() / 1000);
 
       // Check token expiry
       if (decodedToken && decodedToken.exp! < currentTime) {
         logout(); //If token expired, clear cookie and logout user
-      }
+      } else dispatch(loginUser(decodedToken.email)); // If token isn't expired.
     }
   }, []);
 
@@ -53,8 +51,6 @@ const useAuth = () => {
         const refreshToken = authResponse.data.refreshToken;
         cookies.set("accessToken", accessToken, { path: "/" });
         cookies.set("refreshToken", refreshToken, { path: "/" });
-        // setCookie("accessToken", accessToken);
-        // setCookie("refreshToken", refreshToken);
         const decodedToken: TDecodedToken = jwtDecode(accessToken); // jwt-decode npm package
         dispatch(loginUser(decodedToken.email));
         toast.success("Welcome Back.");
