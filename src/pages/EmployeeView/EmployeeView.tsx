@@ -59,9 +59,7 @@ const EmployeeView = () => {
   useEffect(() => {
     const fetchEmployee = async () => {
       try {
-        const response: unknown = await getEmployeeById(
-          `/employee/${employeeId}.json`
-        );
+        const response: unknown = await getEmployeeById(employeeId);
 
         // If employee details are found, update the state
         if (response) {
@@ -93,8 +91,7 @@ const EmployeeView = () => {
   // Delete employee
   const handleEmployeeDelete = async () => {
     try {
-      await deleteData(`/employee/${employeeId}.json`);
-
+      await deleteData(employeeId);
       // Update global state to remove the deleted employee
       dispatch({ type: actionTypes.DELETE_EMPLOYEE, payload: employeeId });
 

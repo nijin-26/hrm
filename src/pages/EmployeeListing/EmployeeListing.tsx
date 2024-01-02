@@ -54,7 +54,7 @@ const EmployeeListing = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await getEmployeeData("/.json");
+        const response = await getEmployeeData();
         if (response && response.employee) {
           setLoading(false);
           const employeeArr = getArrayFromObjects(response.employee);

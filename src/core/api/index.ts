@@ -7,6 +7,7 @@ import axios, {
 import { onResponse, onResponseError } from "./responseInterceptor";
 import { FirebaseData } from "../interfaces/APIDataInterface";
 import { onRequest, onRequestError } from "./requestInterceptor";
+import { IEmployeeDetails } from "../interfaces/Common";
 
 const API: AxiosInstance = axios.create({
   baseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
@@ -29,51 +30,32 @@ API.interceptors.response.use(
   onResponseError
 );
 
-export const getEmployeeData = (
-  url: string,
-  config?: AxiosRequestConfig
-): Promise<FirebaseData> => {
-  return API.get(url, config);
+export const getEmployeeData = (): Promise<FirebaseData> => {
+  return API.get("/.json");
 };
 
-export const getEmployeeById = (
-  url: string,
-  config?: AxiosRequestConfig
-): Promise<FirebaseData> => {
-  return API.get(url, config);
+export const getEmployeeById = (employeeId: string): Promise<FirebaseData> => {
+  return API.get(`/employee/${employeeId}.json`);
 };
-
-// export const postData = (
-//   url: string,
-//   payload: object,
-//   config?: AxiosRequestConfig
-// ) => {
-//   return API.post<FirebaseData>(url, payload, config);
-// };
 
 // * Used PUT method for posting a employee because direct posting is like pushing to firebase db, which generates a unique id, but here I need the 4 digit id I generated.
 // ? Reference: https://firebase.google.com/docs/reference/rest/database
 export const postEmployeeData = (
-  url: string,
-  payload: object,
-  config?: AxiosRequestConfig
+  empId: string,
+  employeeData: IEmployeeDetails
 ) => {
-  return API.put<FirebaseData>(url, payload, config);
+  return API.put<FirebaseData>(`/employee/${empId}.json`, employeeData);
 };
 
 export const updateEmployeeData = (
-  url: string,
-  payload: object,
-  config?: AxiosRequestConfig
+  empId: string,
+  employeeData: IEmployeeDetails
 ) => {
-  return API.put<FirebaseData>(url, payload, config);
+  return API.put<FirebaseData>(`/employee/${empId}.json`, employeeData);
 };
 
-export const deleteData = (
-  url: string,
-  config?: AxiosRequestConfig
-): Promise<FirebaseData> => {
-  return API.delete(url, config);
+export const deleteData = (employeeId: string): Promise<FirebaseData> => {
+  return API.delete(`/employee/${employeeId}.json`);
 };
 
 export default API;

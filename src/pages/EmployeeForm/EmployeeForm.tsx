@@ -119,7 +119,6 @@ const EmployeeForm = () => {
 
   const removeSelectedImage = () => {
     setImageFile(null);
-
     setInitialEmployeeDetails((prev) => {
       return { ...prev, imageURL: "" } as IEmployeeDetails;
     });
@@ -139,10 +138,7 @@ const EmployeeForm = () => {
       if (userResponse) {
         setLoading(false);
 
-        const response = await postEmployeeData(`/employee/${empId}.json`, {
-          ...employeeData,
-          userId: userResponse.data.localId,
-        });
+        const response = await postEmployeeData(empId, employeeData);
 
         if (response) {
           toast.success("Employee Added Successfully");
@@ -174,10 +170,7 @@ const EmployeeForm = () => {
       const empId: string = employeeData.id as string;
       delete employeeData.password;
 
-      const response = await updateEmployeeData(
-        `/employee/${empId}.json`,
-        employeeData
-      );
+      const response = await updateEmployeeData(empId, employeeData);
 
       if (response) {
         setLoading(false);
