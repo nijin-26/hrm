@@ -9,17 +9,18 @@ export const onRequest = (config: AxiosRequestConfig) => {
 
   const accessToken = cookies.get("accessToken");
 
+  // If url already contains params then add '&' else use '?'
+  const separator = config.url && config.url.includes("?") ? "&" : "?";
+
   // Add the auth query parameter to the URL
   if (config.url && config.url.includes("?auth=")) {
     // Replace the existing value with the new access token
     config.url = config.url.replace(
       /\?auth=.*?(&|$)/, //regex
-      `?auth=${accessToken}`
+      `${separator}auth=${accessToken}`
     );
   } else {
-    if (config.url && !config.url.includes("?auth")) {
-      config.url += `?auth=${accessToken}`;
-    }
+    config.url += `${separator}auth=${accessToken}`;
   }
 
   config.headers = {

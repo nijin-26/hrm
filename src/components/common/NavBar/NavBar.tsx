@@ -4,26 +4,42 @@ import { BsMoonStars } from "react-icons/bs";
 import { TbLogout } from "react-icons/tb";
 
 import Logo from "../../../assets/logo.png";
+import placeholder from "../../../assets/placeholder-image.png";
 
 import { Nav, ThemeToggle } from "./NavBar.styles";
-import { Link, useActionData, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useThemeContext } from "../../../core/theme/ThemeContext";
-import { ChangeEvent, useEffect, useRef } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IAppContextState } from "../../../core/interfaces/AppContextInterface";
 import { Dispatch } from "redux";
 import actionTypes from "../../../core/store/actionTypes";
 import useAuth from "../../../core/hooks/useAuth";
+import { getEmployeeByEmail } from "../../../core/api";
+
+type ICurrentEmployee = {
+  id: string;
+  fullName: string;
+  email: string;
+  imageURL: string;
+};
 
 const NavBar = () => {
+  const [currentEmployee, setCurrentEmployee] = useState<ICurrentEmployee>({
+    id: "",
+    fullName: "",
+    email: "",
+    imageURL: "",
+  });
   const searchNameRef = useRef<HTMLInputElement | null>(null);
   const { tState, tDispatch } = useThemeContext();
 
   const filterSort = useSelector((state: IAppContextState) => state.filterSort);
   const dispatch = useDispatch<Dispatch>();
 
+  const navigate = useNavigate();
   const { pathname } = useLocation();
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
 
   useEffect(() => {
     const handleKeyDown = (e: any) => {
@@ -40,9 +56,29 @@ const NavBar = () => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  useEffect(() => {
+    const fetchCurrentEmployee = async () => {
+      const empDetail = await getEmployeeByEmail(user.email);
+      if (empDetail) {
+        for (const key in empDetail) {
+          const emp = empDetail[key];
+          if (emp) {
+            setCurrentEmployee(() => ({
+              id: emp.id,
+              fullName: emp.fullName,
+              email: emp.email,
+              imageURL: emp.imageURL,
+            }));
+          }
+        }
+      }
+    };
+    fetchCurrentEmployee();
+  }, [user.email]);
+
   const handleInputChange = (e: ChangeEvent) => {
     const target = e.target as HTMLInputElement;
-    console.log(target.value);
+
     dispatch({
       type: actionTypes.SET_FILTERS,
       payload: {
@@ -74,19 +110,44 @@ const NavBar = () => {
           <BiSearchAlt2 className="search-icon" fontSize={28} />
         </div>
         <div
-          style={{
-            color: "#fff",
-            fontSize: "24px",
-            display: "flex",
-            alignItems: "center",
-            gap: "10px",
-            cursor: "pointer",
-          }}
+          className="navbar-actions"
+          onClick={() => navigate(`/view/${currentEmployee?.id}`)}
         >
-          <TbLogout onClick={logout} style={{ fontSize: "28px" }} />
-          <ThemeToggle onClick={() => tDispatch({ type: "TOGGLE_DARK_LIGHT" })}>
-            {tState.colorMode === "light" ? <BsMoonStars /> : <FaRegSun />}
-          </ThemeToggle>
+          <div className="user-card">
+            <img
+              src={placeholder}
+              alt="user-image"
+              className="user-card-image"
+            />
+            <div className="user-card-body">
+              <span style={{ fontWeight: 700 }}>Nijin</span>
+              <span>nijin@qb.com</span>
+            </div>
+
+            <TbLogout
+              onClick={(e) => {
+                e.stopPropagation();
+                logout();
+              }}
+              className="logout-btn"
+            />
+          </div>
+          <div
+            style={{
+              color: "#fff",
+              fontSize: "24px",
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              cursor: "pointer",
+            }}
+          >
+            <ThemeToggle
+              onClick={() => tDispatch({ type: "TOGGLE_DARK_LIGHT" })}
+            >
+              {tState.colorMode === "light" ? <BsMoonStars /> : <FaRegSun />}
+            </ThemeToggle>
+          </div>
         </div>
       </div>
     </Nav>

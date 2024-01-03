@@ -8,6 +8,7 @@ import { signInUserWithEmail } from "../api/authAPI";
 import { loginUser, logoutUser } from "../store/reducers/authReducer";
 import { IAppContextState } from "../interfaces/AppContextInterface";
 import { cookies } from "../utils/cookie";
+import { getEmployeeByEmail } from "../api";
 
 type TDecodedToken = {
   exp: number;
@@ -46,11 +47,11 @@ const useAuth = () => {
       });
 
       if (authResponse) {
-        console.log(authResponse, "auth response");
         const accessToken = authResponse.data.idToken; // JWT Access Token
         const refreshToken = authResponse.data.refreshToken;
         cookies.set("accessToken", accessToken, { path: "/" });
         cookies.set("refreshToken", refreshToken, { path: "/" });
+
         const decodedToken: TDecodedToken = jwtDecode(accessToken); // jwt-decode npm package
         dispatch(loginUser(decodedToken.email));
         toast.success("Welcome Back.");

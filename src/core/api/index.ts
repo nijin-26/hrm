@@ -38,6 +38,16 @@ export const getEmployeeById = (employeeId: string): Promise<FirebaseData> => {
   return API.get(`/employee/${employeeId}.json`);
 };
 
+type IEmployee = {
+  [id: string]: {
+    [id: string]: string;
+  };
+};
+
+export const getEmployeeByEmail = (email: string): Promise<IEmployee> => {
+  return API.get(`/employee/.json?orderBy="email"&equalTo="${email}"`);
+};
+
 // * Used PUT method for posting a employee because direct posting is like pushing to firebase db, which generates a unique id, but here I need the 4 digit id I generated.
 // ? Reference: https://firebase.google.com/docs/reference/rest/database
 export const postEmployeeData = (
