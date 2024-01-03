@@ -1,3 +1,5 @@
+import { cookies } from "../../utils/cookie";
+
 type TAuthUser = {
   user: {
     email: string;
@@ -19,7 +21,7 @@ const logoutUser = () => ({ type: LOGOUT_USER });
 const initialState: TAuthUser = {
   user: {
     email: "",
-    isAuthenticated: false,
+    isAuthenticated: cookies.get("accessToken") ? true : false,
   },
 };
 

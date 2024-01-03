@@ -23,7 +23,7 @@ export const routes = createBrowserRouter(
       ],
     },
     {
-      element: <Layout />,
+      element: <Layout />, // Protected Route
       errorElement: <ErrorPage />,
       children: [
         {
