@@ -115,13 +115,19 @@ const NavBar = () => {
         >
           <div className="user-card">
             <img
-              src={placeholder}
+              src={
+                currentEmployee.imageURL !== ""
+                  ? currentEmployee.imageURL
+                  : placeholder
+              }
               alt="user-image"
               className="user-card-image"
             />
             <div className="user-card-body">
-              <span style={{ fontWeight: 700 }}>Nijin</span>
-              <span>nijin@qb.com</span>
+              <span style={{ fontWeight: 700 }}>
+                {currentEmployee.fullName}
+              </span>
+              <span>{currentEmployee.email}</span>
             </div>
 
             <TbLogout
