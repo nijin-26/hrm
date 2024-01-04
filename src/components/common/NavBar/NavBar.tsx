@@ -109,11 +109,11 @@ const NavBar = () => {
           />
           <BiSearchAlt2 className="search-icon" fontSize={28} />
         </div>
-        <div
-          className="navbar-actions"
-          onClick={() => navigate(`/view/${currentEmployee?.id}`)}
-        >
-          <div className="user-card">
+        <div className="navbar-actions">
+          <div
+            className="user-card"
+            onClick={() => navigate(`/view/${currentEmployee?.id}`)}
+          >
             <img
               src={
                 currentEmployee.imageURL !== ""
