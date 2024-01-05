@@ -58,19 +58,23 @@ const NavBar = () => {
 
   useEffect(() => {
     const fetchCurrentEmployee = async () => {
-      const empDetail = await getEmployeeByEmail(user.email);
-      if (empDetail) {
-        for (const key in empDetail) {
-          const emp = empDetail[key];
-          if (emp) {
-            setCurrentEmployee(() => ({
-              id: emp.id,
-              fullName: emp.fullName,
-              email: emp.email,
-              imageURL: emp.imageURL,
-            }));
+      try {
+        const empDetail = await getEmployeeByEmail(user.email);
+        if (empDetail) {
+          for (const key in empDetail) {
+            const emp = empDetail[key];
+            if (emp) {
+              setCurrentEmployee(() => ({
+                id: emp.id,
+                fullName: emp.fullName,
+                email: emp.email,
+                imageURL: emp.imageURL,
+              }));
+            }
           }
         }
+      } catch (error) {
+        // console.log("Error fetching employee by email");
       }
     };
     fetchCurrentEmployee();

@@ -155,9 +155,11 @@ const EmployeeView = () => {
         <span onClick={() => navigate(`/edit/${employeeId}`)}>
           <BiEdit />
         </span>
-        <span onClick={() => setToggleDeleteModal(true)}>
-          <BiUserMinus />
-        </span>
+        {state.auth.user.email !== selectedEmployee?.email && (
+          <span onClick={() => setToggleDeleteModal(true)}>
+            <BiUserMinus />
+          </span>
+        )}
       </div>
       <section className={styles.viewEmployeeContainer}>
         <div className={styles.employeeDetails} style={employeeDetailsStyle}>
