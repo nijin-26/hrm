@@ -1,5 +1,6 @@
 import { StyledButton } from "./Button.styles";
 import { IButton } from "../../../core/interfaces/Common";
+import Spinner from "../Spinner/Spinner";
 
 const Button = ({
   className,
@@ -7,6 +8,7 @@ const Button = ({
   btnType = "primary",
   children,
   disabled,
+  loading,
   onClick,
 }: IButton) => {
   return (
@@ -17,7 +19,7 @@ const Button = ({
       onClick={onClick}
       disabled={disabled}
     >
-      {children}
+      {loading ? <Spinner /> : children}
     </StyledButton>
   );
 };

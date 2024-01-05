@@ -169,7 +169,7 @@ const EmployeeListing = () => {
 
   const handleEmployeeDelete = async (id: string) => {
     try {
-      await deleteData(`/employee/${id}.json`);
+      await deleteData(id);
       if (currentListOfEmployees.length === 1 && currentPage > 1) {
         handlePageChange(currentPage - 1);
       }

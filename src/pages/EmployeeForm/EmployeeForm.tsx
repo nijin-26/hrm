@@ -39,15 +39,17 @@ import SelectedSkills from "../../components/common/SelectedSkills/SelectedSkill
 import { useDispatch, useSelector } from "react-redux";
 import { IAppContextState } from "../../core/interfaces/AppContextInterface";
 import { Dispatch } from "redux";
+import { signUpUserWithEmail } from "../../core/api/authAPI";
 
 const EmployeeForm = () => {
   const [initialEmployeeDetails, setInitialEmployeeDetails] =
     useState<IEmployeeDetails>({
-      id: "",
+      id: "", // Employee ID
       fullName: "",
       dateOfBirth: "",
       dateOfJoin: "",
       email: "",
+      password: "",
       mobile: "",
       workLocation: "",
       imageURL: "",
@@ -56,6 +58,7 @@ const EmployeeForm = () => {
       skill: [],
     });
   const [imageFile, setImageFile] = useState<File | string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const state = useSelector((state: IAppContextState) => state);
   const dispatch = useDispatch<Dispatch>();
@@ -124,30 +127,53 @@ const EmployeeForm = () => {
   const addEmployee = async (employeeData: IEmployeeDetails) => {
     try {
       const empId = employeeData.id;
-      const response = await postEmployeeData(empId, employeeData);
-      if (response) {
-        toast.success("Employee Added Successfully");
-        dispatch({
-          type: actionTypes.ADD_EMPLOYEE,
-          payload: {
-            id: empId,
-            data: employeeData,
-          },
-        });
-        navigate("/");
+      const employeePassword: string = employeeData.password!;
+      delete employeeData.password;
+
+      const userResponse = await signUpUserWithEmail({
+        email: employeeData.email!,
+        password: employeePassword,
+      });
+
+      if (userResponse) {
+        setLoading(false);
+
+        const response = await postEmployeeData(empId, employeeData);
+
+        if (response) {
+          toast.success("Employee Added Successfully");
+          dispatch({
+            type: actionTypes.ADD_EMPLOYEE,
+            payload: {
+              id: empId,
+              data: employeeData,
+              userId: userResponse.data.localId,
+            },
+          });
+          navigate("/");
+        }
       }
-    } catch (error) {
-      toast.error("Error adding employee");
+    } catch (error: any) {
+      setLoading(false);
+
+      if (error?.response?.data.error.message === "EMAIL_EXISTS")
+        toast.error("Email already exists.");
+      else {
+        toast.error("Error adding employee");
+        console.log(error, "Error singup");
+      }
     }
   };
 
   const updateEmployee = async (employeeData: IEmployeeDetails) => {
     try {
       const empId: string = employeeData.id as string;
+      delete employeeData.password;
 
       const response = await updateEmployeeData(empId, employeeData);
 
       if (response) {
+        setLoading(false);
         toast.success("Employee Updated Successfully");
         dispatch({
           type: actionTypes.UPDATE_EMPLOYEE,
@@ -159,12 +185,14 @@ const EmployeeForm = () => {
         navigate(`/view/${empId}`);
       }
     } catch (error: any) {
+      setLoading(false);
       toast.error("Error updating employee. Try again");
     }
   };
 
   const handleFormSubmit = async (values: IEmployeeDetails) => {
     try {
+      setLoading(true);
       const employeeDetails = {
         ...values,
         id: values.id ? values.id : generateUniqueKey(state.employees),
@@ -209,7 +237,7 @@ const EmployeeForm = () => {
         <Formik
           enableReinitialize
           initialValues={initialEmployeeDetails}
-          validationSchema={employeeFormValidationSchema}
+          validationSchema={employeeFormValidationSchema(currentFormType)}
           validateOnChange={false}
           onSubmit={handleFormSubmit}
         >
@@ -231,22 +259,29 @@ const EmployeeForm = () => {
                 placeholder="Enter email address"
               />
               <Input
+                label="Temporary Password"
+                name="password"
+                type="password"
+                placeholder="Enter a strong password"
+                disabled={currentFormType === "edit"}
+              />
+            </div>
+            <div className={style.inputGroup}>
+              <Input
                 label="Mobile Number"
                 name="mobile"
                 type="text"
                 placeholder="Enter Mobile Number"
               />
+              <Input label="Date of Birth" name="dateOfBirth" type="date" />
             </div>
             <div className={style.inputGroup}>
-              <Input label="Date of Birth" name="dateOfBirth" type="date" />
               <Select
                 label="Work Location"
                 name="workLocation"
                 placeholder="Select work location"
                 datas={workLocation}
               />
-            </div>
-            <div className={style.inputGroup}>
               <Select
                 label="Department"
                 name="department"
@@ -278,7 +313,9 @@ const EmployeeForm = () => {
               <Button btnType="secondary" onClick={() => navigate("/")}>
                 Cancel
               </Button>
-              <Button type="submit">Submit</Button>
+              <Button type="submit" loading={loading}>
+                Submit
+              </Button>
             </div>
           </Form>
         </Formik>

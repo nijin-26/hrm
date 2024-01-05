@@ -13,6 +13,7 @@ export interface IButton {
   children: ReactNode;
   onClick?: () => void;
   disabled?: boolean;
+  loading?: boolean;
 }
 
 export interface IFilterOptions {
@@ -81,10 +82,12 @@ export type TableDataType = IEmployeeDetails; // Union other type that the table
 
 export interface IEmployeeDetails {
   id: string;
+  userId?: string;
   fullName?: string;
   dateOfBirth?: number | string;
   dateOfJoin?: number | string;
   email?: string;
+  password?: string;
   mobile?: string;
   workLocation?: string;
   imageURL?: string;

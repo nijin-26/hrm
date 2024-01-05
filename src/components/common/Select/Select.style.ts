@@ -11,6 +11,8 @@ export const SelectWrapper = styled.div`
   select {
     /* width: 100%; */
     appearance: none;
+    font-size: 14px;
+    padding-inline: 8px;
   }
 
   .error {

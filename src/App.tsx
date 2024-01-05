@@ -1,5 +1,5 @@
 import { RouterProvider } from "react-router-dom";
-import { routes } from "./core/routing/publicRoutes";
+import { routes } from "./core/routing/router";
 import ThemeContextProvider from "./core/theme/ThemeContext";
 import { Provider } from "react-redux";
 import { store } from "./core/store/store";

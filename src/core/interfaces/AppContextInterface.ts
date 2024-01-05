@@ -11,6 +11,7 @@ export interface IFilterSortReducer {
 }
 
 export interface IAppContextState {
+  auth: { user: any };
   employees: IEmployeeDetails[];
   filteredEmployees: IEmployeeDetails[];
   skills: ISkills[];

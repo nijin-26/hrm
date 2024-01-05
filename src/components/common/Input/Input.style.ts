@@ -7,6 +7,11 @@ export const InputWrapper = styled.div`
   flex-direction: column;
   gap: 8px;
 
+  .disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+
   .error {
     color: red;
   }
