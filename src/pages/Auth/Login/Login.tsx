@@ -15,7 +15,6 @@ const Login = () => {
   };
 
   const handleLogin = async (values: { email: string; password: string }) => {
-    console.log(values, "handle login");
     login(values.email, values.password);
   };
 
